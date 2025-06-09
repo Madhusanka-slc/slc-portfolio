@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import BlogCard from './BlogCard';
 import BlogDetailsPage from './BlogDetailsPage';
 
+import dockerImage from '../assets/images/docker.jpg';
+import pytorchImage from '../assets/images/pytorch.png';
+import robotImage from '../assets/images/robot.jpeg';
 const BlogPage = () => {
   const [currentPage, setCurrentPage] = useState('blogList');
   const [selectedPost, setSelectedPost] = useState(null);
+
 
   const blogPosts = [
     {
@@ -12,21 +16,21 @@ const BlogPage = () => {
       title: "First Steps in React: A Beginner's Guide",
       subtitle: 'Getting started with component-based UI',
       description: 'This post covers the basics of React components, props, and state.',
-      imageUrl: 'src/assets/images/docker.jpg',
+      imageUrl: dockerImage,
     },
     {
       id: 2,
       title: 'Mastering Tailwind CSS for Rapid UI Development',
       subtitle: 'Utility-first CSS framework in action',
       description: 'Learn how to build beautiful and responsive UIs quickly with Tailwind.',
-      imageUrl: 'src/assets/images/pytorch.png',
+      imageUrl: pytorchImage,
     },
     {
       id: 3,
       title: 'Understanding Asynchronous JavaScript',
       subtitle: 'Callbacks, Promises, and Async/Await',
       description: 'A deep dive into handling asynchronous operations in JavaScript.',
-      imageUrl: 'src/assets/images/robot.jpeg',
+      imageUrl: robotImage,
     },
   ];
 

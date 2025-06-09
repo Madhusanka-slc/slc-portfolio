@@ -1,6 +1,7 @@
 import React from "react";
 import ProjectCard from "./ProjectCard"; // Adjust the path as needed
 import NavLink from './NavLink';
+import dockerImage from '../assets/images/docker.jpg';
 const ProjectsPage = ({ setCurrentPage, setSelectedProject }) => {
   // Sample project data
   const projects = [
@@ -9,21 +10,21 @@ const ProjectsPage = ({ setCurrentPage, setSelectedProject }) => {
       title: "SHARING NOTES with GITHUB ACTIONS",
       subtitle: "Obsidian Publish using GitHub Action",
       description: "A GitHub Action to publish Obsidian notes as a website.",
-      imageUrl: "src/assets/images/docker.jpg",
+      imageUrl: dockerImage,
     },
     {
       id: 2,
       title: "SYNC KINDLE HIGHLIGHTS TO NOTION",
       subtitle: "Kindle to Notion",
       description: "A way to seamlessly transfer your Kindle highlights to Notion.",
-      imageUrl: "src/assets/images/docker.jpg",
+      imageUrl: dockerImage,
     },
     {
       id: 3,
       title: "A dog sitting on a rock in front of a lake",
       subtitle: "Away to your Koenights to ston D",
       description: "A beautiful project showcasing nature photography.",
-      imageUrl: "src/assets/images/docker.jpg",
+      imageUrl: dockerImage,
     },
   ];
 

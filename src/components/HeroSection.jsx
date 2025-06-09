@@ -1,13 +1,13 @@
 import React from 'react';
 import SocialIcon from './SocialIcon'; // Make sure to import your SocialIcon component
-
+import profileImage from '../assets/images/pro.png'; 
 const HeroSection = () => {
   return (
     <section className="flex flex-col items-center justify-center w-full text-center px-4">
       {/* Profile Picture */}
       <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden mb-8 shadow-lg ring-4 ring-gray-700">
         <img
-          src="\src\assets\images\pro.png"
+          src={profileImage}
           alt="Chathura Madhusanka's profile"
           className="w-full h-full object-cover"
           onError={(e) => {
