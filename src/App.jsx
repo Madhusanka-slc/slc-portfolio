@@ -48,7 +48,7 @@ const App = () => {
     <div className="flex flex-col min-h-screen  text-gray-200 font-inter antialiased" style={{ backgroundColor: '#1d1e20' }}>
       {/* Header with navigation */}
       <header className="sticky top-0 z-50 bg-[#1d1e20]">
-        <Header setCurrentPage={setCurrentPage} />
+        <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
       </header>
 
       {/* Main content */}

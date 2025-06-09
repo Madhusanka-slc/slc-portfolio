@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NavLink = ({ onClick, children }) => {
+const NavLink = ({ onClick, children, isActive }) => {
   return (
     <a
       href="#"
@@ -8,7 +8,8 @@ const NavLink = ({ onClick, children }) => {
         e.preventDefault();
         onClick();
       }}
-      className="text-gray-300 hover:text-white transition-colors duration-200 rounded-md py-1 px-2"
+      className={`py-1 px-2 rounded-md transition-colors duration-200 
+        ${isActive ? 'font-bold text-white' : 'text-gray-300 hover:text-white'}`}
     >
       {children}
     </a>

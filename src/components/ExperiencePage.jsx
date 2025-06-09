@@ -5,7 +5,7 @@ const ExperiencePage = ({ setCurrentPage, setSelectedExperience }) => {
   const experiences = [
     {
       id: 1,
-      title: 'MPhil in Artificial Intelligence',
+      title: 'AI Researcher (MPhil)',
       company: 'University of Peradeniya',
       location: 'Sri Lanka',
       date: 'May 2025 - Present',
@@ -54,8 +54,8 @@ const ExperiencePage = ({ setCurrentPage, setSelectedExperience }) => {
 
   return (
     <section className="w-full flex flex-col items-center px-4">
-      <div className="w-full max-w-xl">
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-50 mb-8 text-center md:text-left">
+      <div className="w-full max-w-3xl">
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-50 mb-8 text-left border-b-1 p-4 border-b-gray-400">
           Experiences
         </h2>
         <div className="flex flex-col space-y-6 items-center w-full">

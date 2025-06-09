@@ -4,26 +4,28 @@ const ExperienceCard = ({ experience, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer rounded-lg shadow-lg overflow-hidden border border-gray-700 hover:shadow-xl transition-shadow duration-300 w-full p-4"
-      style={{ backgroundColor: "#252529" }}
+      className="cursor-pointer rounded-lg overflow-hidden border border-gray-700 hover:shadow-2xl hover:border-gray-400 transition-all duration-300 bg-[#2e2e33] group"
     >
       {experience.imageUrl && (
         <img
           src={experience.imageUrl}
           alt={experience.title}
-          className="w-full max-h-64 object-cover rounded-t-lg mb-4"
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src =
-              "https://placehold.co/600x400/4A5568/A0AEC0?text=Image+Error";
+            e.target.src = "https://placehold.co/600x400/4A5568/A0AEC0?text=Image+Error";
           }}
         />
       )}
-      <div className="p-4">
-        <h3 className="text-xl font-semibold text-gray-50 mb-1 saira-font">{experience.title}</h3>
-        <p className="text-sm text-gray-400 mb-1">{experience.company}</p>
-        <p className="text-sm text-gray-400 mb-1">{experience.location}</p>
-        <p className="text-sm text-gray-500">{experience.date}</p>
+
+      <div className="p-5">
+        <h3 className="text-xl sm:text-2xl font-semibold text-gray-100 group-hover:text-gray-100 transition-colors duration-300 mb-1">
+          {experience.title}
+        </h3>
+        <p className="text-gray-400 text-sm mb-1">
+          <span className="font-medium">{experience.company}</span> &middot; {experience.location}
+        </p>
+        <p className="text-gray-500 text-sm">{experience.date}</p>
       </div>
     </div>
   );

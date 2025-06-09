@@ -37,7 +37,7 @@ const ProjectsPage = ({ setCurrentPage, setSelectedProject }) => {
   return (
   <section className="w-full flex flex-col items-center px-4">
     <div className="w-full max-w-3xl">
-      <h2 className="text-3xl sm:text-4xl font-bold text-gray-50 mb-8 text-center md:text-left">
+      <h2 className="text-3xl sm:text-4xl font-bold text-gray-50 mb-8 text-left border-b-1 p-4 border-b-gray-700">
         Projects
       </h2>
        <div className="flex flex-col space-y-8 items-center w-full">

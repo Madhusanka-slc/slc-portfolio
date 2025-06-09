@@ -2,23 +2,33 @@ import React from "react";
 
 const ProjectCard = ({ project, onClick }) => {
   return (
-    <div onClick={onClick} className="cursor-pointer rounded-lg shadow-lg overflow-hidden border border-gray-700 hover:shadow-xl transition-shadow duration-300 w-full p-8" style={{ backgroundColor: '#252529' }}>
-      <img
-        src={project.imageUrl}
-        alt={project.title}
-        className="w-full max-h-xl object-cover rounded-t-lg"
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = "https://placehold.co/600x400/4A5568/A0AEC0?text=Image+Error";
-        }}
-      />
-      <div className="p-4">
-        <h3 className="text-xl font-semibold text-gray-50 mb-1">{project.title}</h3>
+    <div
+      onClick={onClick}
+      className="cursor-pointer rounded-lg overflow-hidden border border-gray-700 hover:border-gray-400 hover:shadow-2xl bg-[#2e2e33] transition-all duration-300 group"
+    >
+      <div className="relative overflow-hidden">
+        <img
+          src={project.imageUrl}
+          alt={project.title}
+          className="w-full max-h-xl rounded-t-lg object-cover transition-transform duration-300 group-hover:scale-105"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "https://placehold.co/600x400/4A5568/A0AEC0?text=Image+Error";
+          }}
+        />
+      </div>
+
+      <div className="p-5">
+        <h3 className="text-lg sm:text-xl font-bold text-gray-100 group-hover:text-gray-400 transition-colors mb-1">
+          {project.title}
+        </h3>
         {project.subtitle && (
-          <p className="text-sm text-gray-400 mb-2">{project.subtitle}</p>
+          <p className="text-sm text-gray-400 italic mb-2">{project.subtitle}</p>
         )}
         {project.description && (
-          <p className="text-base text-gray-300">{project.description}</p>
+          <p className="text-sm text-gray-300 leading-relaxed">
+            {project.description}
+          </p>
         )}
       </div>
     </div>

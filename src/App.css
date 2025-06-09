@@ -1,7 +1,27 @@
-.saira-font {
+/* .saira-font {
   font-family: "Saira", sans-serif;
   font-optical-sizing: auto;
   font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+
+.saira-portfolio {
+ font-family: "Saira", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+} */
+
+
+.saira-font {
+  font-family: "Saira", sans-serif;
+  font-optical-sizing: auto;
+  font-weight:500;
   font-style: normal;
   font-variation-settings:
     "wdth" 100;

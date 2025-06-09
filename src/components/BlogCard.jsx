@@ -4,7 +4,7 @@ const BlogCard = ({ post, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer rounded-lg shadow-lg overflow-hidden border border-gray-700 hover:shadow-xl transition-shadow duration-300 w-full p-8" style={{ backgroundColor: '#252529' }}>
+      className="cursor-pointer rounded-lg shadow-lg overflow-hidden border border-gray-700 hover:shadow-xl transition-shadow duration-300 w-full p-8" style={{ backgroundColor: '#2e2e33' }}>
       {post.imageUrl && (
         <img
           src={post.imageUrl}
