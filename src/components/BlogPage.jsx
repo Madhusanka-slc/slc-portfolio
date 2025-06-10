@@ -1,49 +1,38 @@
 import React, { useState } from 'react';
 import BlogCard from './BlogCard';
-import BlogDetailsPage from './BlogDetailsPage';
 
-import dockerImage from '../assets/images/docker.jpg';
-import pytorchImage from '../assets/images/pytorch.png';
-import robotImage from '../assets/images/robot.jpeg';
-const BlogPage = () => {
-  const [currentPage, setCurrentPage] = useState('blogList');
-  const [selectedPost, setSelectedPost] = useState(null);
-
-
+import visionImage from '../assets/images/docker.jpg';
+import mlopsImage from '../assets/images/pytorch.png';
+import embeddedImage from '../assets/images/robot.jpeg';
+const BlogPage = ({ setCurrentPage, setSelectedPost }) => {
   const blogPosts = [
     {
       id: 1,
-      title: "First Steps in React: A Beginner's Guide",
-      subtitle: 'Getting started with component-based UI',
-      description: 'This post covers the basics of React components, props, and state.',
-      imageUrl: dockerImage,
+      title: 'Building Real-Time Defect Detection Systems',
+      subtitle: 'Computer vision in manufacturing environments',
+      description: 'Learn how to train and deploy object detection models (e.g., YOLOv8) to automate quality control in mechanical workflows.',
+      imageUrl: visionImage,
     },
     {
       id: 2,
-      title: 'Mastering Tailwind CSS for Rapid UI Development',
-      subtitle: 'Utility-first CSS framework in action',
-      description: 'Learn how to build beautiful and responsive UIs quickly with Tailwind.',
-      imageUrl: pytorchImage,
+      title: 'MLOps for AI Engineers: From Notebook to Production',
+      subtitle: 'Bridging the gap between data science and deployment',
+      description: 'This post walks through the practical tools and techniques to automate, monitor, and deploy ML models using tools like Docker, GitHub Actions, and FastAPI.',
+      imageUrl: mlopsImage,
     },
     {
       id: 3,
-      title: 'Understanding Asynchronous JavaScript',
-      subtitle: 'Callbacks, Promises, and Async/Await',
-      description: 'A deep dive into handling asynchronous operations in JavaScript.',
-      imageUrl: robotImage,
+      title: 'Making Smart Mechatronic Toys with Embedded AI',
+      subtitle: 'Combining mechanical engineering with AI/ML',
+      description: 'Explore how to design interactive toys using microcontrollers, sensors, and AI-based motion or gesture recognition.',
+      imageUrl: embeddedImage,
     },
   ];
-
-  if (currentPage === 'blogDetails' && selectedPost) {
-    return (
-      <BlogDetailsPage post={selectedPost} setCurrentPage={setCurrentPage} />
-    );
-  }
 
   return (
     <section className="w-full flex flex-col items-center px-4">
       <div className="w-full max-w-3xl">
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-50 mb-8 text-left border-b-1 p-4 border-b-gray-400">Blog</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-50 mb-8 text-left border-b-1 p-4 border-b-gray-700">Blog</h2>
         <div className="flex flex-col space-y-8 items-center">
           {blogPosts.map((post) => (
             <BlogCard

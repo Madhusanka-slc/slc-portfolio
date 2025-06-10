@@ -10,31 +10,33 @@ import ExperiencePage from './components/ExperiencePage';
 import Footer from './components/Footer';
 import ProjectDetailsPage from "./components/ProjectDetailsPage";
 import ExperienceDetailsPage from "./components/ExperienceDetailsPage";
+import BlogDetailsPage from './components/BlogDetailsPage';
+
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedProject, setSelectedProject] = useState(null);
-   const [selectedExperience, setSelectedExperience] = useState(null);
-   const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedExperience, setSelectedExperience] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   const renderPage = () => {
-  console.log("Rendering page:", currentPage);
+    console.log("Rendering page:", currentPage);
     console.log("Selected project:", selectedProject);
     console.log("Selected experience:", selectedExperience);
     console.log("Selected blog post:", selectedPost);
     switch (currentPage) {
-       case 'projects':
+      case 'projects':
         // Pass setter function to allow setting project on click
         return <ProjectsPage setCurrentPage={setCurrentPage} setSelectedProject={setSelectedProject} />;
       case 'projectDetails':
         // Pass selected project object to details page
         return <ProjectDetailsPage project={selectedProject} setCurrentPage={setCurrentPage} />;
       case 'blog':
-        return   <BlogPage setCurrentPage={setCurrentPage} setSelectedPost={setSelectedPost}/>;
+        return <BlogPage setCurrentPage={setCurrentPage} setSelectedPost={setSelectedPost} />;
       case 'blogDetails':
         // Pass selected project object to details page
-        return <BlogDetailsPage post={selectedPost} setCurrentPage={setCurrentPage}/>;
+        return <BlogDetailsPage post={selectedPost} setCurrentPage={setCurrentPage} />;
       case 'experience':
-        return <ExperiencePage setCurrentPage={setCurrentPage} setSelectedExperience={setSelectedExperience}/>;
+        return <ExperiencePage setCurrentPage={setCurrentPage} setSelectedExperience={setSelectedExperience} />;
       case 'experienceDetails':
         // Pass selected project object to details page
         return <ExperienceDetailsPage experience={selectedExperience} setCurrentPage={setCurrentPage} />;
@@ -57,9 +59,9 @@ const App = () => {
       </main>
 
       {/* Footer */}
-     
+
       <Footer />
-   
+
     </div>
   );
 };

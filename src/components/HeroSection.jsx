@@ -1,11 +1,11 @@
 import React from 'react';
 import SocialIcon from './SocialIcon'; // Make sure to import your SocialIcon component
-import profileImage from '../assets/images/pro.png'; 
+import profileImage from '../assets/images/pro.png';
 const HeroSection = () => {
   return (
     <section className="flex flex-col items-center justify-center w-full text-center px-4">
       {/* Profile Picture */}
-      <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden mb-8 shadow-lg ring-4 ring-gray-700">
+      <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden mb-8 shadow-lg ring-2 ring-gray-700">
         <img
           src={profileImage}
           alt="Chathura Madhusanka's profile"
@@ -19,15 +19,15 @@ const HeroSection = () => {
 
       {/* Name */}
       <h2 className="text-3xl sm:text-4xl font-bold text-gray-50 mb-4">
-       Chathura Madhusanka
+        Chathura Madhusanka
       </h2>
 
       {/* Description */}
 
-    <p className="text-base sm:text-lg text-gray-400 leading-relaxed mb-8 max-w-2xl">
-  
-     Hi<span className="text-2xl mr-2">👋🏼 </span> I’m Chathura,  a Mechanical Engineer turned Software Developer and AI researcher specializing in the medical field. I’m passionate about applying AI across various industries to solve real-world problems and drive innovation. Let’s connect and explore how AI can transform your business!
-    </p>
+      <p className="text-base sm:text-lg text-gray-400 leading-relaxed mb-8 max-w-2xl">
+
+        Hi<span className="text-2xl mr-2">👋🏼 </span> I’m Chathura,  a Mechanical Engineer, Software Developer and AI researcher specializing in the medical field. I’m passionate about applying AI across various industries to solve real-world problems and drive innovation. Let’s connect and explore how AI can transform your business!
+      </p>
 
 
       {/* Social Media Icons */}

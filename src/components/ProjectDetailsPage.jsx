@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
-
+import DefectDetectionInfo from './info/project/DefectDetectionInfo';
+import ShopFloorBotInfo from './info/project/ShopFloorBotInfo';
+import MechatronicToyInfo from './info/project/MechatronicToyInfo';
+import PoseEstimationInfo from './info/project/PoseEstimationInfo';
 const ProjectDetailsPage = ({ project, setCurrentPage }) => {
   // Debug log to check if project prop is received
   useEffect(() => {
-    console.log('ProjectDetailsPage received project:', project);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [project]);
 
   return (
@@ -26,21 +29,25 @@ const ProjectDetailsPage = ({ project, setCurrentPage }) => {
 
       <button
         onClick={() => setCurrentPage('projects')}
-        className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700"
+        className="px-4 py-2 bg-blue-950 rounded hover:bg-blue-700"
       >
         Back to Projects
       </button>
 
-               <div className="mt-8 text-left max-w-2xl mx-auto">
-          <h3 className="text-xl font-semibold mb-2 text-gray-300">Example Project Info</h3>
-          <p className="text-gray-400 mb-4">
-            Select a project to see its detailed description here. You’ll find an overview of the tools used,
-            goals of the project, and links to key resources.
-          </p>
-          <p className="text-gray-500">
-            If no project appears, please go back to the Projects page and select one.
-          </p>
-        </div>
+      <div className="mt-8 text-left max-w-2xl mx-auto">
+
+        {/* Optional header */}
+        <h3 className="text-xl font-semibold mb-2 text-gray-300">More About This Project</h3>
+
+        {/* Conditionally render based on project title or ID */}
+        {project.id === 1 && <DefectDetectionInfo />}
+        {project.id === 2 && <MechatronicToyInfo />}
+        {project.id === 3 && <ShopFloorBotInfo />}
+        {project.id === 4 && <PoseEstimationInfo />}
+        {/* fallback or general content */}
+      </div>
+
+
     </section>
   );
 };
