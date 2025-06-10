@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import SocialIcon from './SocialIcon'; // Make sure to import your SocialIcon component
 import profileImage from '../assets/images/pro.png';
-const HeroSection = () => {
+const HeroSection = ({currentPage}) => {
+      useEffect(() => {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }, [currentPage]);
   return (
     <section className="flex flex-col items-center justify-center w-full text-center px-4">
       {/* Profile Picture */}
