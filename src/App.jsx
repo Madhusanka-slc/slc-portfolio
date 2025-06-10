@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './App.css';
 
 // Import components (make sure these are correctly created and exported)
@@ -17,7 +17,9 @@ const App = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedExperience, setSelectedExperience] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
-
+        useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }, [setCurrentPage]);
   const renderPage = () => {
     console.log("Rendering page:", currentPage);
     console.log("Selected project:", selectedProject);

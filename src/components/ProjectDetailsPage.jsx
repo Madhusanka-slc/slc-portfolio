@@ -4,11 +4,11 @@ import ShopFloorBotInfo from './info/project/ShopFloorBotInfo';
 import MechatronicToyInfo from './info/project/MechatronicToyInfo';
 import PoseEstimationInfo from './info/project/PoseEstimationInfo';
 const ProjectDetailsPage = ({ project, setCurrentPage }) => {
-  // Debug log to check if project prop is received
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [project]);
-
+    // Sample project data
+    useEffect(() => {
+      console.log("Rendering project:", project);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }, [project]);
   return (
     <section className="max-w-3xl p-6  rounded-lg  text-gray-100">
       <h2 className="text-3xl font-bold mb-4">{project.title}</h2>

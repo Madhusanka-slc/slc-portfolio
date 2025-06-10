@@ -10,6 +10,7 @@ import InternAirForceInfo from './info/experience/InternAirForceInfo';
 const ExperienceDetailsPage = ({ experience, setCurrentPage }) => {
   // Debug log to check if experience prop is received
   useEffect(() => {
+     console.log("Rendering experience:", experience);
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [experience]);
 

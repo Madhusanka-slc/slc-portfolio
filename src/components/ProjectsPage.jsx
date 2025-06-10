@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProjectCard from "./ProjectCard"; // Adjust the path as needed
 import dockerImage from '../assets/images/docker.jpg';
 const ProjectsPage = ({ setCurrentPage, setSelectedProject }) => {
-  // Sample project data
+      useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }, [setCurrentPage]);
   const projects = [
     {
       id: 1,

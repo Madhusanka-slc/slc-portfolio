@@ -5,6 +5,7 @@ import BlogMechatronicToysInfo from './info/blog/BlogMechatronicToysInfo';
 
 const BlogDetailsPage = ({ post, setCurrentPage }) => {
   useEffect(() => {
+     console.log("Rendering blog:", post);
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [post]);
 

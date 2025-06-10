@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import ExperienceCard from './ExperienceCard'; // Adjust path if needed
 
 const ExperiencePage = ({ setCurrentPage, setSelectedExperience }) => {
+        useEffect(() => {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }, [setCurrentPage]);
   const experiences = [
     {
       id: 1,

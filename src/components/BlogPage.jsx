@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect } from "react";
 import BlogCard from './BlogCard';
 
 import visionImage from '../assets/images/docker.jpg';
 import mlopsImage from '../assets/images/pytorch.png';
 import embeddedImage from '../assets/images/robot.jpeg';
 const BlogPage = ({ setCurrentPage, setSelectedPost }) => {
+        useEffect(() => {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }, [setCurrentPage]);
   const blogPosts = [
     {
       id: 1,
