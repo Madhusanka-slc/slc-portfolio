@@ -27,10 +27,12 @@ const HeroSection = ({currentPage}) => {
 
       {/* Description */}
 
-      <p className="text-base sm:text-lg text-gray-400 leading-relaxed mb-8 max-w-2xl">
+  <p className="text-base sm:text-lg text-gray-400 leading-relaxed mb-8 max-w-2xl">
+  Hi<span className="text-2xl mr-2">👋🏼</span> I’m Chathura — a curious mind who loves building smart solutions at the intersection of physical systems and AI. As an MPhil researcher, I’m exploring how machine learning can improve healthcare. With a background in mechanical engineering and full-stack development, I enjoy blending hardware, code, and intelligence. Let’s connect and create something impactful together!
+</p>
 
-        Hi<span className="text-2xl mr-2">👋🏼 </span> I’m Chathura,  a Mechanical Engineer, Software Developer and AI researcher specializing in the medical field. I’m passionate about applying AI across various industries to solve real-world problems and drive innovation. Let’s connect and explore how AI can transform your business!
-      </p>
+
+
 
 
       {/* Social Media Icons */}
