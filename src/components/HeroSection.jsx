@@ -27,9 +27,10 @@ const HeroSection = ({currentPage}) => {
 
       {/* Description */}
 
-  <p className="text-base sm:text-lg text-gray-400 leading-relaxed mb-8 max-w-2xl">
-  Hi<span className="text-2xl mr-2">👋🏼</span> I’m Chathura — a curious mind who loves building smart solutions at the intersection of physical systems and AI. As an MPhil researcher, I’m exploring how machine learning can improve healthcare. With a background in mechanical engineering and full-stack development, I enjoy blending hardware, code, and intelligence. Let’s connect and create something impactful together!
-</p>
+      <p className="text-base sm:text-lg text-gray-400 leading-relaxed mb-8 max-w-2xl">
+        Hi<span className="text-2xl mr-2">👋🏼</span> I’m Chathura — a curious mind who loves building smart solutions at the intersection of physical systems and AI. As an MPhil researcher, I’m exploring how machine learning can improve healthcare, drawing on my background in mechanical engineering and full-stack development. Let’s connect and create something impactful together!
+      </p>
+
 
 
 
