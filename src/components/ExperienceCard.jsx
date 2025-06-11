@@ -22,10 +22,10 @@ const ExperienceCard = ({ experience, onClick }) => {
         <h3 className="text-xl sm:text-2xl font-semibold text-gray-100 group-hover:text-gray-100 transition-colors duration-300 mb-1">
           {experience.title}
         </h3>
-        <p className="text-gray-400 text-sm mb-1">
+        <p className="text-gray-400 text-sm sm:text-base mb-1">
           <span className="font-medium">{experience.company}</span> &middot; {experience.location}
         </p>
-        <p className="text-gray-500 text-sm">{experience.date}</p>
+        <p className="text-gray-500 text-sm sm:text-base">{experience.date}</p>
       </div>
     </div>
   );
