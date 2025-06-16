@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import DefectDetectionInfo from './info/project/DefectDetectionInfo';
-import ShopFloorBotInfo from './info/project/ShopFloorBotInfo';
 import MechatronicToyInfo from './info/project/MechatronicToyInfo';
 import PoseEstimationInfo from './info/project/PoseEstimationInfo';
+import FaceLandmarkDetectionInfo from './info/project/FaceLandmarkDetectionInfo';
 const ProjectDetailsPage = ({ project, setCurrentPage }) => {
-    // Sample project data
-    useEffect(() => {
-      console.log("Rendering project:", project);
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }, [project]);
+  // Sample project data
+  useEffect(() => {
+    console.log("Rendering project:", project);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [project]);
   return (
     <section className="max-w-3xl p-6  rounded-lg  text-gray-100">
       <h2 className="text-3xl font-bold mb-4">{project.title}</h2>
@@ -40,10 +40,10 @@ const ProjectDetailsPage = ({ project, setCurrentPage }) => {
         <h3 className="text-xl font-semibold mb-2 text-gray-300">More About This Project</h3>
 
         {/* Conditionally render based on project title or ID */}
-        {project.id === 1 && <DefectDetectionInfo />}
+        {project.id === 1 && <FaceLandmarkDetectionInfo />}
         {project.id === 2 && <MechatronicToyInfo />}
-        {project.id === 3 && <ShopFloorBotInfo />}
-        {project.id === 4 && <PoseEstimationInfo />}
+        {project.id === 3 && <PoseEstimationInfo />}
+        {project.id === 4 && <DefectDetectionInfo />}
         {/* fallback or general content */}
       </div>
 

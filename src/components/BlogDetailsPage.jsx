@@ -5,7 +5,7 @@ import BlogMechatronicToysInfo from './info/blog/BlogMechatronicToysInfo';
 
 const BlogDetailsPage = ({ post, setCurrentPage }) => {
   useEffect(() => {
-     console.log("Rendering blog:", post);
+    console.log("Rendering blog:", post);
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [post]);
 
@@ -40,9 +40,9 @@ const BlogDetailsPage = ({ post, setCurrentPage }) => {
         <h3 className="text-xl font-semibold mb-2 text-gray-300">More About This Blog</h3>
 
         {/* Conditionally render based on blog post ID */}
-        {post.id === 1 && <BlogDefectDetectionInfo />}
-        {post.id === 2 && <BlogMLOpsInfo />}
-        {post.id === 3 && <BlogMechatronicToysInfo />}
+        {post.id === 1 && <BlogMLOpsInfo />}
+        {post.id === 2 && <BlogMechatronicToysInfo />}
+        {post.id === 3 && <BlogDefectDetectionInfo />}
       </div>
     </section>
   );
