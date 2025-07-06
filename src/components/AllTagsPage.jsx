@@ -50,10 +50,10 @@ const AllTagsPage = ({ setCurrentPage, setSelectedTech }) => {
           <button
             key={tag}
             onClick={() => handleTagClick(tag)}
-            className="relative bg-gray-800 text-gray-200 px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition cursor-pointer"
+            className="relative bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-gray-600 transition cursor-pointer"
           >
             {/* Count badge */}
-            <span className="absolute top-0 right-1 text-xs text-blue-400 font-semibold">
+            <span className="absolute top-0 right-1 text-xs text-gray-400 font-semibold">
               {tagCounts[tag]}
             </span>
             {tag}
