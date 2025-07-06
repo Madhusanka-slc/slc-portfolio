@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import BlogDefectDetectionInfo from './info/blog/BlogDefectDetectionInfo';
-import BlogMLOpsInfo from './info/blog/BlogMLOpsInfo';
-import BlogMechatronicToysInfo from './info/blog/BlogMechatronicToysInfo';
+import React, { useEffect } from "react";
+import BlogDefectDetectionInfo from "./info/blog/BlogDefectDetectionInfo";
+import BlogMLOpsInfo from "./info/blog/BlogMLOpsInfo";
+import BlogMechatronicToysInfo from "./info/blog/BlogMechatronicToysInfo";
 
-const BlogDetailsPage = ({ post, setCurrentPage }) => {
+const BlogDetailsPage = ({ post, setCurrentPage, setSelectedTech }) => {
   useEffect(() => {
     console.log("Rendering blog:", post);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, [post]);
 
   return (
@@ -24,25 +24,43 @@ const BlogDetailsPage = ({ post, setCurrentPage }) => {
           className="w-full rounded mb-6 object-cover max-h-96"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = 'https://placehold.co/600x400/4A5568/A0AEC0?text=Image+Not+Found';
+            e.target.src =
+              "https://placehold.co/600x400/4A5568/A0AEC0?text=Image+Not+Found";
           }}
         />
       )}
 
       <button
-        onClick={() => setCurrentPage('blog')}
-        className="px-4 py-2 bg-blue-950 rounded hover:bg-blue-700"
+        onClick={() => setCurrentPage("blog")}
+        className="px-4 py-2 bg-blue-950 rounded hover:bg-blue-700 cursor-pointer"
       >
         Back to Blog
       </button>
 
       <div className="mt-8 text-left max-w-2xl mx-auto">
-        <h3 className="text-xl font-semibold mb-2 text-gray-300">More About This Blog</h3>
+        <h3 className="text-xl font-semibold mb-2 text-gray-300">
+          More About This Blog
+        </h3>
 
         {/* Conditionally render based on blog post ID */}
-        {post.id === 1 && <BlogMLOpsInfo />}
-        {post.id === 2 && <BlogMechatronicToysInfo />}
-        {post.id === 3 && <BlogDefectDetectionInfo />}
+        {post.id === 1 && (
+          <BlogMLOpsInfo
+            setCurrentPage={setCurrentPage}
+            setSelectedTech={setSelectedTech}
+          />
+        )}
+        {post.id === 2 && (
+          <BlogMechatronicToysInfo
+            setCurrentPage={setCurrentPage}
+            setSelectedTech={setSelectedTech}
+          />
+        )}
+        {post.id === 3 && (
+          <BlogDefectDetectionInfo
+            setCurrentPage={setCurrentPage}
+            setSelectedTech={setSelectedTech}
+          />
+        )}
       </div>
     </section>
   );

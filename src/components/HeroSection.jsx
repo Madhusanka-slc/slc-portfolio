@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import SocialIcon from './SocialIcon'; // Make sure to import your SocialIcon component
-import profileImage from '../assets/images/pro.png';
-const HeroSection = ({currentPage}) => {
-      useEffect(() => {
-          window.scrollTo({ top: 0, behavior: 'instant' });
-        }, [currentPage]);
+import SocialIcon from "./SocialIcon"; // Make sure to import your SocialIcon component
+import profileImage from "../assets/images/pro.png";
+const HeroSection = ({ currentPage }) => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [currentPage]);
   return (
     <section className="flex flex-col items-center justify-center w-full text-center px-4">
       {/* Profile Picture */}
@@ -15,7 +15,8 @@ const HeroSection = ({currentPage}) => {
           className="w-full h-full object-cover"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = "https://placehold.co/192x192/4a5568/a0aec0?text=Error";
+            e.target.src =
+              "https://placehold.co/192x192/4a5568/a0aec0?text=Error";
           }}
         />
       </div>
@@ -28,13 +29,10 @@ const HeroSection = ({currentPage}) => {
       {/* Description */}
 
       <p className="text-base sm:text-lg text-gray-400 leading-relaxed mb-8 max-w-2xl">
-        Hi<span className="text-2xl mr-2">👋🏼</span> I’m Chathura — a curious mind who loves building smart solutions at the intersection of physical systems and AI. As an MPhil researcher, I’m exploring how machine learning can improve healthcare, drawing on my background in mechanical engineering and full-stack development. Let’s connect and create something impactful together!
+        Hi<span className="text-2xl mr-2">👋🏼</span> I’m Chathura — a curious
+        mind who loves building smart solutions at the intersection of physical
+        systems and AI. Let’s connect and create something impactful together!
       </p>
-
-
-
-
-
 
       {/* Social Media Icons */}
       <div className="flex space-x-6">

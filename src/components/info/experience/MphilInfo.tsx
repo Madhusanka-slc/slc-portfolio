@@ -1,29 +1,56 @@
-import React from 'react';
+import React from "react";
+import { allExperiences } from "../../../data/experiencesData";
 
-const MphilInfo = () => {
+const MphilInfo = ({ setSelectedTech, setCurrentPage }) => {
+  const defectExperience = allExperiences.find((blog) => blog.id === 3);
+  const experienceSkills = defectExperience?.skills || [];
   return (
     <div className="text-gray-400 space-y-6">
       <div>
-        <h4 className="text-lg text-gray-300 font-semibold">Role & Responsibilities</h4>
+        <h4 className="text-lg text-gray-300 font-semibold">
+          Role & Responsibilities
+        </h4>
         <p>
-          As an MPhil researcher in Artificial Intelligence, I was responsible for designing and conducting research on AI-based models for cardiac valvular disease analysis. My key responsibilities included data collection, preprocessing, model development, validation, and collaborating with clinical partners.
+          As an MPhil researcher in Artificial Intelligence, I was responsible
+          for designing and conducting research on AI-based models for cardiac
+          valvular disease analysis. My key responsibilities included data
+          collection, preprocessing, model development, validation, and
+          collaborating with clinical partners.
         </p>
       </div>
 
       <div>
-        <h4 className="text-lg text-gray-300 font-semibold">Key Contributions</h4>
+        <h4 className="text-lg text-gray-300 font-semibold">
+          Key Contributions
+        </h4>
         <ul className="list-disc list-inside">
-          <li>Developed an AI model for mitral valve function assessment using multimodal imaging</li>
-          <li>Integrated echocardiography, X-ray, MRI, and CT data for robust feature extraction</li>
-          <li>Published research findings in relevant conferences and journals</li>
-          <li>Collaborated with cardiologists and radiologists to validate the clinical applicability</li>
+          <li>
+            Developed an AI model for mitral valve function assessment using
+            multimodal imaging
+          </li>
+          <li>
+            Integrated echocardiography, X-ray, MRI, and CT data for robust
+            feature extraction
+          </li>
+          <li>
+            Published research findings in relevant conferences and journals
+          </li>
+          <li>
+            Collaborated with cardiologists and radiologists to validate the
+            clinical applicability
+          </li>
         </ul>
       </div>
 
       <div>
-        <h4 className="text-lg text-gray-300 font-semibold">Work Environment</h4>
+        <h4 className="text-lg text-gray-300 font-semibold">
+          Work Environment
+        </h4>
         <p>
-          I worked in an interdisciplinary academic research environment, closely engaging with both the engineering and medical faculties. This setup provided access to cutting-edge imaging data and expert domain knowledge.
+          I worked in an interdisciplinary academic research environment,
+          closely engaging with both the engineering and medical faculties. This
+          setup provided access to cutting-edge imaging data and expert domain
+          knowledge.
         </p>
       </div>
 
@@ -40,14 +67,23 @@ const MphilInfo = () => {
       <div>
         <h4 className="text-lg text-gray-300 font-semibold">Impact</h4>
         <p>
-          The research contributed to early diagnosis of valvular heart diseases and supports healthcare professionals in resource-constrained settings with AI-assisted diagnostic tools.
+          The research contributed to early diagnosis of valvular heart diseases
+          and supports healthcare professionals in resource-constrained settings
+          with AI-assisted diagnostic tools.
         </p>
       </div>
 
       <div className="flex flex-wrap gap-2 mt-4">
-        {['AI Research', 'Medical Imaging', 'MPhil', 'Cardiology', 'Deep Learning', 'Python', 'Echocardiography'].map((tag) => (
-          <span key={tag} className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm">
-            {tag}
+        {experienceSkills.map((tech) => (
+          <span
+            key={tech}
+            onClick={() => {
+              setSelectedTech(tech);
+              setCurrentPage("techDetails");
+            }}
+            className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-gray-600 transition cursor-pointer"
+          >
+            {tech}
           </span>
         ))}
       </div>

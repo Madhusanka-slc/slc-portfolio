@@ -1,40 +1,51 @@
-import React from 'react';
+import React from "react";
+import { allBlogs } from "../../../data/blogsData";
+const BlogMechatronicToysInfo = ({ setSelectedTech, setCurrentPage }) => {
+  const defectBlog = allBlogs.find((blog) => blog.id === 2);
+  const blogSkills = defectBlog?.skills || [];
+  return (
+    <div className="text-gray-400 space-y-6">
+      <div>
+        <h4 className="text-lg text-gray-300 font-semibold">Overview</h4>
+        <p>
+          This blog dives into how to design interactive mechatronic toys that
+          blend mechanical engineering principles with AI and embedded systems.
+        </p>
+      </div>
 
-const BlogMechatronicToysInfo = () => {
-    return (
-        <div className="text-gray-400 space-y-6">
-            <div>
-                <h4 className="text-lg text-gray-300 font-semibold">Overview</h4>
-                <p>
-                    This blog dives into how to design interactive mechatronic toys that blend mechanical engineering principles with AI and embedded systems.
-                </p>
-            </div>
+      <div>
+        <h4 className="text-lg text-gray-300 font-semibold">Technical Focus</h4>
+        <ul className="list-disc list-inside">
+          <li>Using microcontrollers like Arduino or ESP32</li>
+          <li>Integrating sensors for motion and gesture recognition</li>
+          <li>AI model deployment on embedded hardware</li>
+        </ul>
+      </div>
 
-            <div>
-                <h4 className="text-lg text-gray-300 font-semibold">Technical Focus</h4>
-                <ul className="list-disc list-inside">
-                    <li>Using microcontrollers like Arduino or ESP32</li>
-                    <li>Integrating sensors for motion and gesture recognition</li>
-                    <li>AI model deployment on embedded hardware</li>
-                </ul>
-            </div>
+      <div>
+        <h4 className="text-lg text-gray-300 font-semibold">Impact</h4>
+        <p>
+          Encourages STEM learning and provides a creative outlet for developing
+          smart, engaging, and educational mechanical toys.
+        </p>
+      </div>
 
-            <div>
-                <h4 className="text-lg text-gray-300 font-semibold">Impact</h4>
-                <p>
-                    Encourages STEM learning and provides a creative outlet for developing smart, engaging, and educational mechanical toys.
-                </p>
-            </div>
-
-            <div className="flex flex-wrap gap-2 mt-4">
-                {['Mechatronics', 'Embedded AI', 'Arduino', 'Gesture Recognition', 'STEM Toys'].map((tag) => (
-                    <span key={tag} className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm">
-                        {tag}
-                    </span>
-                ))}
-            </div>
-        </div>
-    );
+      <div className="flex flex-wrap gap-2 mt-4">
+        {blogSkills.map((tech) => (
+          <span
+            key={tech}
+            onClick={() => {
+              setSelectedTech(tech);
+              setCurrentPage("techDetails");
+            }}
+            className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-gray-600 transition cursor-pointer"
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default BlogMechatronicToysInfo;

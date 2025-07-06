@@ -1,29 +1,52 @@
-import React from 'react';
+import React from "react";
+import { allExperiences } from "../../../data/experiencesData";
 
-const DeveloperInfo = () => {
+const DeveloperInfo = ({ setSelectedTech, setCurrentPage }) => {
+  const defectExperience = allExperiences.find((blog) => blog.id === 3);
+  const experienceSkills = defectExperience?.skills || [];
   return (
     <div className="text-gray-400 space-y-6">
       <div>
-        <h4 className="text-lg text-gray-300 font-semibold">Role & Responsibilities</h4>
+        <h4 className="text-lg text-gray-300 font-semibold">
+          Role & Responsibilities
+        </h4>
         <p>
-          As a Software Developer, I was responsible for designing, developing, and maintaining web and backend applications. I worked closely with cross-functional teams to deliver high-quality software solutions, ensuring performance, scalability, and security.
+          As a Software Developer, I was responsible for designing, developing,
+          and maintaining web and backend applications. I worked closely with
+          cross-functional teams to deliver high-quality software solutions,
+          ensuring performance, scalability, and security.
         </p>
       </div>
 
       <div>
-        <h4 className="text-lg text-gray-300 font-semibold">Key Contributions</h4>
+        <h4 className="text-lg text-gray-300 font-semibold">
+          Key Contributions
+        </h4>
         <ul className="list-disc list-inside">
           <li>Developed and optimized RESTful APIs and frontend interfaces</li>
-          <li>Implemented automated testing and CI/CD pipelines to improve deployment reliability</li>
-          <li>Collaborated with product managers and designers to deliver user-focused features</li>
-          <li>Improved application performance and reduced bugs through code reviews and refactoring</li>
+          <li>
+            Implemented automated testing and CI/CD pipelines to improve
+            deployment reliability
+          </li>
+          <li>
+            Collaborated with product managers and designers to deliver
+            user-focused features
+          </li>
+          <li>
+            Improved application performance and reduced bugs through code
+            reviews and refactoring
+          </li>
         </ul>
       </div>
 
       <div>
-        <h4 className="text-lg text-gray-300 font-semibold">Work Environment</h4>
+        <h4 className="text-lg text-gray-300 font-semibold">
+          Work Environment
+        </h4>
         <p>
-          I worked in an agile software development team using Scrum methodology. The environment was collaborative and fast-paced, encouraging continuous learning and innovation.
+          I worked in an agile software development team using Scrum
+          methodology. The environment was collaborative and fast-paced,
+          encouraging continuous learning and innovation.
         </p>
       </div>
 
@@ -40,14 +63,23 @@ const DeveloperInfo = () => {
       <div>
         <h4 className="text-lg text-gray-300 font-semibold">Impact</h4>
         <p>
-          My contributions helped enhance product functionality, reduced time-to-market for new features, and improved overall application stability and user satisfaction.
+          My contributions helped enhance product functionality, reduced
+          time-to-market for new features, and improved overall application
+          stability and user satisfaction.
         </p>
       </div>
 
       <div className="flex flex-wrap gap-2 mt-4">
-        {['Software Development', 'React', 'Node.js', 'Agile', 'API Design', 'CI/CD', 'JavaScript'].map((tag) => (
-          <span key={tag} className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm">
-            {tag}
+        {experienceSkills.map((tech) => (
+          <span
+            key={tech}
+            onClick={() => {
+              setSelectedTech(tech);
+              setCurrentPage("techDetails");
+            }}
+            className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-gray-600 transition cursor-pointer"
+          >
+            {tech}
           </span>
         ))}
       </div>
