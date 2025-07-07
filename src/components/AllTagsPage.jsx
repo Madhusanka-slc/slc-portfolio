@@ -34,15 +34,6 @@ const AllTagsPage = ({ setCurrentPage, setSelectedTech }) => {
     <section className="w-full px-4 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-8 border-b border-gray-700 pb-2">
         <h2 className="text-3xl text-gray-100 font-bold">All Tags</h2>
-        {/* Uncomment to enable Back to Home button */}
-        {/*
-        <button
-          onClick={() => setCurrentPage('home')}
-          className="text-sm px-4 py-1 bg-gray-700 text-white rounded hover:bg-gray-600 transition"
-        >
-          Back to Home
-        </button>
-        */}
       </div>
 
       <div className="flex flex-wrap gap-4">
@@ -50,7 +41,7 @@ const AllTagsPage = ({ setCurrentPage, setSelectedTech }) => {
           <button
             key={tag}
             onClick={() => handleTagClick(tag)}
-            className="relative bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-gray-600 transition cursor-pointer"
+            className="relative px-4 py-1 bg-gray-700 text-gray-300 rounded-full hover:bg-gray-600 border border-gray-500 mr-2 transition cursor-pointer text-m font-semibold"
           >
             {/* Count badge */}
             <span className="absolute top-0 right-1 text-xs text-gray-400 font-semibold">

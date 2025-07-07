@@ -26,15 +26,18 @@ const TechnologyPage = ({
     <section className="w-full px-4 max-w-4xl mx-auto">
       {/* Header with Tags label and current technology */}
       <div className="flex items-center  mb-8 border-b border-gray-700 pb-2">
-        
-          <button
-            className="px-4 py-2 bg-blue-950 rounded hover:bg-blue-700 mr-5 cursor-pointer"
-            onClick={() => setCurrentPage('allTags')}
-          >
-            Tags
-          </button>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-100 flex items-center flex-wrap gap-x-2">
-          <span className="text-gray-100 text-lg sm:text-xl font-bold">  {tech}</span>
+        <button
+          className="px-4 py-1 bg-gray-700 text-gray-300 rounded-full hover:bg-gray-600 border border-gray-500 mr-2 transition cursor-pointer text-m font-semibold"
+          onClick={() => setCurrentPage("allTags")}
+        >
+          Tags
+        </button>
+
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-100 flex items-center flex-wrap gap-x-2">
+          <span className="text-gray-100 text-lg sm:text-xl font-bold">
+            {" "}
+            {tech}
+          </span>
         </h2>
       </div>
 
@@ -50,7 +53,7 @@ const TechnologyPage = ({
                 type="project"
                 onClick={() => {
                   setSelectedProject(project);
-                  setCurrentPage('projectDetails');
+                  setCurrentPage("projectDetails");
                 }}
               />
             ))}
@@ -70,7 +73,7 @@ const TechnologyPage = ({
                 type="blog"
                 onClick={() => {
                   setSelectedPost(post);
-                  setCurrentPage('blogDetails');
+                  setCurrentPage("blogDetails");
                 }}
               />
             ))}
@@ -90,7 +93,7 @@ const TechnologyPage = ({
                 type="experience"
                 onClick={() => {
                   setSelectedExperience(exp);
-                  setCurrentPage('experienceDetails');
+                  setCurrentPage("experienceDetails");
                 }}
               />
             ))}
