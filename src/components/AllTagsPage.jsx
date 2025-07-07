@@ -33,7 +33,7 @@ const AllTagsPage = ({ setCurrentPage, setSelectedTech }) => {
   return (
     <section className="w-full px-4 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-8 border-b border-gray-700 pb-2">
-        <h2 className="text-3xl text-gray-100 font-bold">All Tags</h2>
+        <h2 className="text-3xl text-gray-100 font-bold">Tags</h2>
       </div>
 
       <div className="flex flex-wrap gap-4">
