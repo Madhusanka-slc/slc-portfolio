@@ -25,15 +25,16 @@ const TechnologyPage = ({
   return (
     <section className="w-full px-4 max-w-4xl mx-auto">
       {/* Header with Tags label and current technology */}
-      <div className="flex items-center justify-between mb-8 border-b border-gray-700 pb-2">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-100 flex items-center flex-wrap gap-x-2">
-          <span
-            className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full hover:bg-gray-600 transition cursor-pointer text-base sm:text-lg font-semibold"
+      <div className="flex items-center  mb-8 border-b border-gray-700 pb-2">
+        
+          <button
+            className="px-4 py-2 bg-blue-950 rounded hover:bg-blue-700 mr-5 cursor-pointer"
             onClick={() => setCurrentPage('allTags')}
           >
             Tags
-          </span>
-          <span className="text-blue-300 text-lg sm:text-xl font-bold">: {tech}</span>
+          </button>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-100 flex items-center flex-wrap gap-x-2">
+          <span className="text-gray-100 text-lg sm:text-xl font-bold">  {tech}</span>
         </h2>
       </div>
 
