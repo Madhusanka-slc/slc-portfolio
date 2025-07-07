@@ -23,23 +23,23 @@ const TechnologyCard = ({ item, onClick, type }) => {
       )}
 
       {/* Title */}
-      <h3 className="text-xl sm:text-2xl font-semibold text-gray-100 group-hover:text-gray-100 transition-colors duration-300 mb-2">
+      <h3 className="text-lg sm:text-xl font-semibold text-gray-100 group-hover:text-gray-100 transition-colors duration-300 mb-2">
         {item.title}
       </h3>
 
       {/* Experience specific details */}
       {type === 'experience' && (
         <>
-          <p className="text-gray-400 text-sm sm:text-base mb-1">
+          <p className="text-gray-400 text-sm mb-1">
             <span className="font-medium">{item.company}</span> &middot; {item.location}
           </p>
-          <p className="text-gray-500 text-sm sm:text-base">{item.date}</p>
+          <p className="text-gray-500 text-sm">{item.date}</p>
         </>
       )}
 
       {/* Subtitle for projects or blogs */}
       {(type === 'project' || type === 'blog') && item.subtitle && (
-        <p className="text-gray-400 text-sm sm:text-base">{item.subtitle}</p>
+        <p className="text-gray-400 text-sm  italic">{item.subtitle}</p>
       )}
     </div>
   );
