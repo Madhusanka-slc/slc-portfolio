@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import BlogDefectDetectionInfo from "./info/blog/BlogDefectDetectionInfo";
-import BlogMLOpsInfo from "./info/blog/BlogMLOpsInfo";
+import BlogSOLIDInfo from "./info/blog/BlogSOLIDInfo";
 import BlogMechatronicToysInfo from "./info/blog/BlogMechatronicToysInfo";
 
 const BlogDetailsPage = ({ post, setCurrentPage, setSelectedTech }) => {
@@ -44,19 +44,7 @@ const BlogDetailsPage = ({ post, setCurrentPage, setSelectedTech }) => {
 
         {/* Conditionally render based on blog post ID */}
         {post.id === 1 && (
-          <BlogMLOpsInfo
-            setCurrentPage={setCurrentPage}
-            setSelectedTech={setSelectedTech}
-          />
-        )}
-        {post.id === 2 && (
-          <BlogMechatronicToysInfo
-            setCurrentPage={setCurrentPage}
-            setSelectedTech={setSelectedTech}
-          />
-        )}
-        {post.id === 3 && (
-          <BlogDefectDetectionInfo
+          <BlogSOLIDInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}
           />
