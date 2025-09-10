@@ -51,7 +51,7 @@ const FaceLandmarkDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
         </p>
       </div>
 
-      <div>
+      {/* <div>
         <h4 className="text-lg text-gray-300 font-semibold">Resources</h4>
         <ul className="list-disc list-inside text-blue-400">
           <li>
@@ -91,7 +91,7 @@ const FaceLandmarkDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
             </a>
           </li>
         </ul>
-      </div>
+      </div> */}
 
       <div className="flex flex-wrap gap-2 mt-4">
         {projectSkills.map((tech) => (

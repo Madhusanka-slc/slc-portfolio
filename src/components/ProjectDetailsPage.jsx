@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import WakeWordDetectionInfo from "./info/project/WakeWordDetectionInfo";
 import DefectDetectionInfo from "./info/project/DefectDetectionInfo";
 import MechatronicToyInfo from "./info/project/MechatronicToyInfo";
 import PoseEstimationInfo from "./info/project/PoseEstimationInfo";
@@ -45,24 +46,18 @@ const ProjectDetailsPage = ({ project, setCurrentPage, setSelectedTech }) => {
 
         {/* Conditionally render based on project title or ID */}
         {project.id === 1 && (
-          <FaceLandmarkDetectionInfo
+          <WakeWordDetectionInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}
           />
         )}
         {project.id === 2 && (
-          <MechatronicToyInfo
+          <FaceLandmarkDetectionInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}
           />
         )}
         {project.id === 3 && (
-          <PoseEstimationInfo
-            setCurrentPage={setCurrentPage}
-            setSelectedTech={setSelectedTech}
-          />
-        )}
-        {project.id === 4 && (
           <DefectDetectionInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}
