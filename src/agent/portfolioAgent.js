@@ -10,6 +10,7 @@ const HEADERS = {
 };
 
 console.log("Using Cerebras API Key:", API_KEY ? "Yes" : "No");
+console.log("Using Cerebras API Key:", API_KEY ? "Yes" : "No");
 
 // Helper: format portfolio data for the system prompt
 function formatPortfolioList(projects, experiences, blogs) {
