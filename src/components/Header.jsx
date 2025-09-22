@@ -59,11 +59,14 @@ const Header = ({
         let target = null;
         let targetKey = null;
 
-        const normalize = (str) => str.toLowerCase().replace(/\s+/g, " ").trim();
+        const normalize = (str) =>
+          str.toLowerCase().replace(/\s+/g, " ").trim();
 
         switch (step.category) {
           case "project": {
-            const project = allProjects.find((p) => normalize(p.title) === normalize(step.title));
+            const project = allProjects.find(
+              (p) => normalize(p.title) === normalize(step.title)
+            );
             if (project) {
               targetKey = `project-${project.id}`;
               if (currentPage !== "projects") {
@@ -75,7 +78,9 @@ const Header = ({
             break;
           }
           case "blog": {
-            const blog = allBlogs.find((b) => normalize(b.title) === normalize(step.title));
+            const blog = allBlogs.find(
+              (b) => normalize(b.title) === normalize(step.title)
+            );
             if (blog) {
               targetKey = `blog-${blog.id}`;
               if (currentPage !== "blog") {
@@ -87,7 +92,9 @@ const Header = ({
             break;
           }
           case "experience": {
-            const exp = allExperiences.find((e) => normalize(e.title) === normalize(step.title));
+            const exp = allExperiences.find(
+              (e) => normalize(e.title) === normalize(step.title)
+            );
             if (exp) {
               targetKey = `experience-${exp.id}`;
               if (currentPage !== "experience") {
@@ -126,9 +133,11 @@ const Header = ({
 
         if (!isSpeakingRef.current) break;
 
-        if (step.introduction) await speakAsync(new SpeechSynthesisUtterance(step.introduction));
+        if (step.introduction)
+          await speakAsync(new SpeechSynthesisUtterance(step.introduction));
         if (!isSpeakingRef.current) break;
-        if (step.description) await speakAsync(new SpeechSynthesisUtterance(step.description));
+        if (step.description)
+          await speakAsync(new SpeechSynthesisUtterance(step.description));
       }
 
       if (response.end && isSpeakingRef.current) {
@@ -137,19 +146,24 @@ const Header = ({
     } catch (err) {
       console.error("Voice agent error:", err);
       if (isSpeakingRef.current)
-        speechSynthesis.speak(new SpeechSynthesisUtterance("Sorry, I could not understand that."));
+        speechSynthesis.speak(
+          new SpeechSynthesisUtterance("Sorry, I could not understand that.")
+        );
     } finally {
       isSpeakingRef.current = false;
     }
   };
 
   const startListening = () => {
-    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
+    if (
+      !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
+    ) {
       console.error("Speech recognition not supported");
       return;
     }
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = false;
@@ -184,28 +198,45 @@ const Header = ({
           className="self-start text-lg sm:text-xl font-bold text-gray-50 cursor-pointer md:justify-start"
           onClick={() => setCurrentPage("home")}
         >
-          <h1 className="text-gray-500 w-full text-left md:text-center">Portfolio</h1>
+          <h1 className="text-gray-500 w-full text-left md:text-center">
+            Portfolio
+          </h1>
         </div>
 
         <nav className="flex justify-center md:justify-start space-x-6 text-base font-medium w-full md:w-auto">
-          <NavLink onClick={() => setCurrentPage("home")} isActive={currentPage === "home"}>
+          <NavLink
+            onClick={() => setCurrentPage("home")}
+            isActive={currentPage === "home"}
+          >
             Home
           </NavLink>
-          <NavLink onClick={() => setCurrentPage("blog")} isActive={currentPage === "blog"}>
+          <NavLink
+            onClick={() => setCurrentPage("blog")}
+            isActive={currentPage === "blog"}
+          >
             Blog
           </NavLink>
-          <NavLink onClick={() => setCurrentPage("projects")} isActive={currentPage === "projects"}>
+          <NavLink
+            onClick={() => setCurrentPage("projects")}
+            isActive={currentPage === "projects"}
+          >
             Projects
           </NavLink>
-          <NavLink onClick={() => setCurrentPage("experience")} isActive={currentPage === "experience"}>
+          <NavLink
+            onClick={() => setCurrentPage("experience")}
+            isActive={currentPage === "experience"}
+          >
             Experience
           </NavLink>
 
-          <VoiceButton
-            isListening={isListening}
-            startListening={startListening}
-            stopListening={stopListening}
-          />
+          {/* Voice button wrapped for consistent spacing */}
+          <div className="flex items-center">
+            <VoiceButton
+              isListening={isListening}
+              startListening={startListening}
+              stopListening={stopListening}
+            />
+          </div>
         </nav>
       </div>
     </header>
