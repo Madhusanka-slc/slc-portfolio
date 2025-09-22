@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import NavLink from "./NavLink";
 import { scroller } from "react-scroll";
 import { askPortfolioAgent } from "../agent/portfolioAgent";
@@ -22,6 +22,24 @@ const Header = ({
     isSpeakingRef.current = false;
     speechSynthesis.cancel(); // Immediately stop any ongoing TTS
   };
+  const speakAsync = (text) =>
+    new Promise((resolve) => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.onend = resolve;
+      speechSynthesis.speak(utterance);
+    });
+  const hasSpokenRef = useRef(false);
+
+  useEffect(() => {
+    if (!hasSpokenRef.current) {
+      const introText = "Hi! I'm your portfolio assistant. I can help you explore projects, experiences, and blog posts through voice commands. Click the voice button and ask me about anything you'd like to know!";
+      isSpeakingRef.current = true;
+      speakAsync(introText).then(() => {
+        isSpeakingRef.current = false;
+      });
+      hasSpokenRef.current = true;
+    }
+  }, []);
 
   const handleTranscript = async (transcript) => {
     cancelSpeech(); // Stop previous speech if any
