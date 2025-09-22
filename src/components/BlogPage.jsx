@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, forwardRef } from "react";
 import BlogCard from "./BlogCard";
-import defectImage from "../assets/images/defect.png";
-import mlopsImage from "../assets/images/docker.jpg";
-import embeddedImage from "../assets/images/robot.jpeg";
-import { allBlogs } from "../data/blogsData"; // ✅ Import modularized blog data
+import { allBlogs } from "../data/blogsData";
 
-const BlogPage = ({ setCurrentPage, setSelectedPost }) => {
+// Use forwardRef to pass refs from parent
+const BlogPage = forwardRef(({ setCurrentPage, setSelectedPost }, ref) => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [setCurrentPage]);
+
+  // Ensure ref.current is always an object
+  if (ref && !ref.current) {
+    ref.current = {};
+  }
 
   return (
     <section className="w-full flex flex-col items-center px-4">
@@ -18,20 +21,28 @@ const BlogPage = ({ setCurrentPage, setSelectedPost }) => {
         </h2>
         <div className="flex flex-col space-y-8 items-center w-full">
           {allBlogs.map((post) => (
-            <BlogCard
+            <div
               key={post.id}
-              post={post}
+              id={`blog-${post.id}`}
+              ref={(el) => {
+                if (ref && ref.current) {
+                  // Store with full key like projects do
+                  ref.current[`blog-${post.id}`] = el;
+                }
+              }}
               onClick={() => {
-                setSelectedPost(post); // Set the entire blog object
-                setCurrentPage("blogDetails"); // Navigate to details page
+                setSelectedPost(post);
+                setCurrentPage("blogDetails");
               }}
               style={{ cursor: "pointer" }}
-            />
+            >
+              <BlogCard post={post} />
+            </div>
           ))}
         </div>
       </div>
     </section>
   );
-};
+});
 
 export default BlogPage;

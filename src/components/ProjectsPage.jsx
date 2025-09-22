@@ -1,10 +1,20 @@
-import React, { useEffect } from "react";
-import ProjectCard from "./ProjectCard"; // Adjust the path as needed
-import { allProjects } from "../data/projectsData"; // ✅ Import modularized data
-const ProjectsPage = ({ setCurrentPage, setSelectedProject }) => {
+import React, { useEffect, forwardRef } from "react";
+import ProjectCard from "./ProjectCard";
+import { allProjects } from "../data/projectsData";
+
+// Use forwardRef to pass refs from parent
+const ProjectsPage = forwardRef((props, ref) => {
+  const { setCurrentPage, setSelectedProject } = props;
+
   useEffect(() => {
+    console.log("Project refs set:", ref?.current);
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [setCurrentPage]);
+
+  // Ensure ref.current is always an object
+  if (ref && !ref.current) {
+    ref.current = {};
+  }
 
   return (
     <section className="w-full flex flex-col items-center px-4">
@@ -14,20 +24,27 @@ const ProjectsPage = ({ setCurrentPage, setSelectedProject }) => {
         </h2>
         <div className="flex flex-col space-y-8 items-center w-full">
           {allProjects.map((project) => (
-            <ProjectCard
+            <div
               key={project.id}
-              project={project}
+              id={`project-${project.id}`}
+              ref={(el) => {
+                if (ref && ref.current) {
+                  ref.current[`project-${project.id}`] = el;
+                }
+              }}
               onClick={() => {
-                setSelectedProject(project); // Set the entire project object
-                setCurrentPage("projectDetails"); // Navigate to details page
+                setSelectedProject(project);
+                setCurrentPage("projectDetails");
               }}
               style={{ cursor: "pointer" }}
-            />
+            >
+              <ProjectCard project={project} />
+            </div>
           ))}
         </div>
       </div>
     </section>
   );
-};
+});
 
 export default ProjectsPage;

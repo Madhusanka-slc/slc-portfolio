@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import "./App.css";
 
-// Import components (make sure these are correctly created and exported)
+// Import components
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import ProjectsPage from "./components/ProjectsPage";
@@ -20,22 +20,23 @@ const App = () => {
   const [selectedExperience, setSelectedExperience] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
   const [selectedTech, setSelectedTech] = useState(null);
+
+  // Refs for scrolling
+  const projectRefs = useRef({});
+  const blogRefs = useRef({});
+  const experienceRefs = useRef({});
+
   const renderPage = () => {
-    console.log("Rendering page:", currentPage);
-    console.log("Selected project:", selectedProject);
-    console.log("Selected experience:", selectedExperience);
-    console.log("Selected blog post:", selectedPost);
     switch (currentPage) {
       case "projects":
-        // Pass setter function to allow setting project on click
         return (
           <ProjectsPage
             setCurrentPage={setCurrentPage}
             setSelectedProject={setSelectedProject}
+            ref={projectRefs} // pass refs
           />
         );
       case "projectDetails":
-        // Pass selected project object to details page
         return (
           <ProjectDetailsPage
             project={selectedProject}
@@ -48,10 +49,10 @@ const App = () => {
           <BlogPage
             setCurrentPage={setCurrentPage}
             setSelectedPost={setSelectedPost}
+            ref={blogRefs} // pass refs
           />
         );
       case "blogDetails":
-        // Pass selected project object to details page
         return (
           <BlogDetailsPage
             post={selectedPost}
@@ -64,10 +65,10 @@ const App = () => {
           <ExperiencePage
             setCurrentPage={setCurrentPage}
             setSelectedExperience={setSelectedExperience}
+            ref={experienceRefs} // pass refs
           />
         );
       case "experienceDetails":
-        // Pass selected project object to details page
         return (
           <ExperienceDetailsPage
             experience={selectedExperience}
@@ -100,20 +101,24 @@ const App = () => {
 
   return (
     <div
-      className="flex flex-col min-h-screen  text-gray-200 font-inter antialiased"
+      className="flex flex-col min-h-screen text-gray-200 font-inter antialiased"
       style={{ backgroundColor: "#1d1e20" }}
     >
-      {/* Header with navigation */}
+      {/* Header with navigation + voice */}
       <header className="sticky top-0 z-50 bg-[#1d1e20]">
-        <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <Header
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          projectRefs={projectRefs}
+          blogRefs={blogRefs}
+          experienceRefs={experienceRefs}
+        />
       </header>
 
       {/* Main content */}
       <main className="flex-grow flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         {renderPage()}
       </main>
-
-      {/* Footer */}
 
       <Footer />
     </div>

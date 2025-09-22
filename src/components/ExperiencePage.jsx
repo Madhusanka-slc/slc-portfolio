@@ -1,58 +1,21 @@
-import React, { useEffect } from "react";
-import ExperienceCard from './ExperienceCard'; // Adjust path if needed
+import React, { useEffect, forwardRef } from "react";
+import ExperienceCard from "./ExperienceCard";
+import { allExperiences } from "../data/experiencesData";
 
-const ExperiencePage = ({ setCurrentPage, setSelectedExperience }) => {
-        useEffect(() => {
-          window.scrollTo({ top: 0, behavior: 'instant' });
-        }, [setCurrentPage]);
-  const experiences = [
-    {
-      id: 1,
-      title: 'AI Researcher (MPhil)',
-      company: 'University of Peradeniya',
-      location: 'Sri Lanka',
-      date: 'May 2025 - Present',
-    },
-    {
-      id: 2,
-      title: 'Software Engineer',
-      company: 'M I Synergy (Pvt) Ltd',
-      location: 'Sri Lanka.',
-      date: 'Apr 2023 - Present',
-    },
-    {
-      id: 3,
-      title: 'Trainee Software Engineer',
-      company: 'IJSE - Institute of Software Engineering',
-      location: 'Sri Lanka.',
-      date: 'May 2022 - Dec 2022',
-    },
-    {
-      id: 4,
-      title: 'Automation Engineer',
-      company: 'Bondville (Pvt) Ltd',
-      location: 'Sri Lanka.',
-      date: 'Mar 2021 - May 2022',
-    },
-    {
-      id: 5,
-      title: 'Mechanical Engineering Intern',
-      company: 'Bodyline (Pvt) Ltd',
-      location: 'Sri Lanka.',
-      date: 'Feb 2019 - May 2019',
-    },
-    {
-      id: 6,
-      title: 'Mechanical Engineering Intern',
-      company: 'Sri Lanka Air Force',
-      location: 'Sri Lanka.',
-      date: 'Nov 2017 - Jan 2018',
-    },
-  ];
+// Wrap component with forwardRef
+const ExperiencePage = forwardRef(({ setCurrentPage, setSelectedExperience }, ref) => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [setCurrentPage]);
+
+  // Ensure ref.current is always an object
+  if (ref && !ref.current) {
+    ref.current = {};
+  }
 
   const handleCardClick = (experience) => {
     setSelectedExperience(experience);
-    setCurrentPage('experienceDetails');
+    setCurrentPage("experienceDetails");
   };
 
   return (
@@ -62,9 +25,16 @@ const ExperiencePage = ({ setCurrentPage, setSelectedExperience }) => {
           Experiences
         </h2>
         <div className="flex flex-col space-y-6 items-center w-full">
-          {experiences.map((experience) => (
+          {allExperiences.map((experience) => (
             <div
               key={experience.id}
+              id={`experience-${experience.id}`}
+              ref={(el) => {
+                if (ref && ref.current) {
+                  // Store with full key like projects do
+                  ref.current[`experience-${experience.id}`] = el;
+                }
+              }}
               className="w-full cursor-pointer"
               onClick={() => handleCardClick(experience)}
             >
@@ -75,6 +45,6 @@ const ExperiencePage = ({ setCurrentPage, setSelectedExperience }) => {
       </div>
     </section>
   );
-};
+});
 
 export default ExperiencePage;
