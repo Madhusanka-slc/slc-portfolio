@@ -3,7 +3,7 @@ import { allProjects } from "../data/projectsData.js";
 import { allExperiences } from "../data/experiencesData.js";
 import { allBlogs } from "../data/blogsData.js";
 
-const API_KEY = import.meta.env.CEREBRAS_API;
+const API_KEY = import.meta.env.VITE_CEREBRAS_API_KEY;
 const HEADERS = {
   "Content-Type": "application/json",
   Authorization: `Bearer ${API_KEY}`,
