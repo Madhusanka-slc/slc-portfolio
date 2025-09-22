@@ -3,6 +3,7 @@ import React from 'react';
 
 const VoiceButton = ({ 
   isListening, 
+  isConnecting = false, // Add optional connecting state
   startListening, 
   stopListening, 
   waveformStyle = "smooth" // New prop to choose waveform style
@@ -36,15 +37,15 @@ const VoiceButton = ({
       fill="currentColor"
       aria-hidden="true"
     >
-      <rect x="3" y={isListening ? "10" : "12"} width="2" height={isListening ? "8" : "4"} rx="1" 
+      <rect x="3" y={isListening && !isConnecting ? "10" : "12"} width="2" height={isListening && !isConnecting ? "8" : "4"} rx="1" 
           style={{ transition: "all 0.3s ease" }} />
-      <rect x="7" y={isListening ? "8" : "11"} width="2" height={isListening ? "12" : "6"} rx="1" 
+      <rect x="7" y={isListening && !isConnecting ? "8" : "11"} width="2" height={isListening && !isConnecting ? "12" : "6"} rx="1" 
           style={{ transition: "all 0.3s ease", transitionDelay: "0.1s" }} />
-      <rect x="11" y={isListening ? "4" : "10"} width="2" height={isListening ? "20" : "8"} rx="1" 
+      <rect x="11" y={isListening && !isConnecting ? "4" : "10"} width="2" height={isListening && !isConnecting ? "20" : "8"} rx="1" 
           style={{ transition: "all 0.3s ease", transitionDelay: "0.2s" }} />
-      <rect x="15" y={isListening ? "6" : "9"} width="2" height={isListening ? "16" : "10"} rx="1" 
+      <rect x="15" y={isListening && !isConnecting ? "6" : "9"} width="2" height={isListening && !isConnecting ? "16" : "10"} rx="1" 
           style={{ transition: "all 0.3s ease", transitionDelay: "0.1s" }} />
-      <rect x="19" y={isListening ? "9" : "12"} width="2" height={isListening ? "10" : "4"} rx="1" 
+      <rect x="19" y={isListening && !isConnecting ? "9" : "12"} width="2" height={isListening && !isConnecting ? "10" : "4"} rx="1" 
           style={{ transition: "all 0.3s ease" }} />
     </svg>
   );
@@ -64,8 +65,28 @@ const VoiceButton = ({
     </svg>
   );
 
+  // Render connecting spinner
+  const renderConnectingSpinner = () => (
+    <svg
+      className="h-4 w-4 animate-spin"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 12a9 9 0 11-6.219-8.56" />
+    </svg>
+  );
+
   // Render the appropriate icon
   const renderIcon = () => {
+    if (isConnecting) {
+      return renderConnectingSpinner();
+    }
+    
     if (!isListening) {
       // Always show microphone when not listening
       return (
@@ -100,23 +121,58 @@ const VoiceButton = ({
     }
   };
 
+  // Handle button click
+  const handleClick = () => {
+    if (isConnecting) return; // Prevent clicks while connecting
+    
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening();
+    }
+  };
+
+  // Get appropriate aria label and title
+  const getButtonLabels = () => {
+    if (isConnecting) {
+      return {
+        ariaLabel: "Connecting to voice service",
+        title: "Connecting..."
+      };
+    } else if (isListening) {
+      return {
+        ariaLabel: "Stop Listening",
+        title: "Stop Listening"
+      };
+    } else {
+      return {
+        ariaLabel: "Start Listening",
+        title: "Start Voice Assistant"
+      };
+    }
+  };
+
+  const buttonLabels = getButtonLabels();
+
   return (
     <button
-      onClick={isListening ? stopListening : startListening}
-      aria-label={isListening ? "Stop Listening" : "Start Listening"}
-      title={isListening ? "Stop Listening" : "Start Listening"}
+      onClick={handleClick}
+      disabled={isConnecting}
+      aria-label={buttonLabels.ariaLabel}
+      title={buttonLabels.title}
       className={`
         h-8 w-8
         rounded-full
         transition-colors duration-300
         flex items-center justify-center
         bg-[#1d1e20] border border-gray-500
-        cursor-pointer
+        ${isConnecting ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}
         ${
           isListening
             ? "text-gray-400 gray-200 bg-[#424242] hover:border-gray-400 hover:text-white"
             : "text-gray-400 hover:border-gray-400 hover:text-gray-300"
         }
+        ${isConnecting ? "border-yellow-400 text-yellow-400" : ""}
       `}
     >
       {renderIcon()}
