@@ -195,12 +195,17 @@ const Header = ({
     <header className="w-full px-4 sm:px-6 lg:px-8 py-4 bg-[#1d1e20]">
       <div className="flex flex-col md:flex-row md:justify-around items-center space-y-2 md:space-y-0">
         <div
-          className="self-start text-lg sm:text-xl font-bold text-gray-50 cursor-pointer md:justify-start"
+          className="flex items-center space-x-3 cursor-pointer"
           onClick={() => setCurrentPage("home")}
         >
-          <h1 className="text-gray-500 w-full text-left md:text-center">
+          <h1 className="text-lg sm:text-xl font-bold text-gray-500">
             Portfolio
           </h1>
+          <VoiceButton
+            isListening={isListening}
+            startListening={startListening}
+            stopListening={stopListening}
+          />
         </div>
 
         <nav className="flex justify-center md:justify-start space-x-6 text-base font-medium w-full md:w-auto">
@@ -228,15 +233,6 @@ const Header = ({
           >
             Experience
           </NavLink>
-
-          {/* Voice button wrapped for consistent spacing */}
-          <div className="flex items-center">
-            <VoiceButton
-              isListening={isListening}
-              startListening={startListening}
-              stopListening={stopListening}
-            />
-          </div>
         </nav>
       </div>
     </header>
