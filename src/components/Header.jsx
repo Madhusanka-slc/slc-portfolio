@@ -35,6 +35,7 @@ const Header = ({
     if (currentAudioRef.current) {
       currentAudioRef.current.pause();
       currentAudioRef.current.currentTime = 0;
+      currentAudioRef.current.src = ''; // Clear the source to release blob
       currentAudioRef.current = null;
     }
   };
@@ -65,31 +66,53 @@ const Header = ({
       }
 
       const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
       
       return new Promise((resolve, reject) => {
-        const audio = new Audio(audioUrl);
+        const audio = new Audio();
         currentAudioRef.current = audio;
         
+        // Set up event listeners before setting src
+        audio.onloadeddata = () => {
+          console.log("Audio data loaded successfully");
+        };
+        
         audio.onended = () => {
-          URL.revokeObjectURL(audioUrl);
+          console.log("Audio playback ended");
           currentAudioRef.current = null;
           resolve();
         };
         
         audio.onerror = (error) => {
-          URL.revokeObjectURL(audioUrl);
+          console.log("Audio playback failed, falling back to browser TTS:", error);
           currentAudioRef.current = null;
-          console.log("Audio playback failed, falling back to browser TTS");
           speakAsync(text).then(resolve).catch(reject);
         };
+
+        audio.oncanplay = () => {
+          // Only play once we're sure the audio can play
+          audio.play().catch(error => {
+            console.log("Audio play failed, falling back to browser TTS:", error);
+            currentAudioRef.current = null;
+            speakAsync(text).then(resolve).catch(reject);
+          });
+        };
         
-        audio.play().catch(error => {
-          URL.revokeObjectURL(audioUrl);
-          currentAudioRef.current = null;
-          console.log("Audio play failed, falling back to browser TTS");
-          speakAsync(text).then(resolve).catch(reject);
-        });
+        // Create blob URL and set as source
+        const audioUrl = URL.createObjectURL(audioBlob);
+        audio.src = audioUrl;
+        
+        // Clean up blob URL after audio ends or errors
+        const cleanup = () => {
+          setTimeout(() => {
+            URL.revokeObjectURL(audioUrl);
+          }, 1000); // Small delay to ensure cleanup after playback
+        };
+        
+        audio.addEventListener('ended', cleanup, { once: true });
+        audio.addEventListener('error', cleanup, { once: true });
+        
+        // Load the audio
+        audio.load();
       });
     } catch (error) {
       console.log("Deepgram TTS error, falling back to browser TTS:", error);
