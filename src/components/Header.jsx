@@ -50,7 +50,7 @@ const Header = ({
         return speakAsync(text);
       }
 
-      const response = await fetch('https://api.deepgram.com/v1/speak?model=aura-arcas-en', {
+      const response = await fetch('https://api.deepgram.com/v1/speak?model=aura-orpheus-en', {
         method: 'POST',
         headers: {
           'Authorization': `Token ${deepgramKey}`,
