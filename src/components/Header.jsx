@@ -296,7 +296,7 @@ const Header = ({
         interim_results: true,
         smart_format: true,
         language: 'en-US',
-        utterance_end_ms: 1000,
+        utterance_end_ms: 2000,
       });
       deepgramConnectionRef.current = connection;
       connection.on(LiveTranscriptionEvents.Open, () => {
