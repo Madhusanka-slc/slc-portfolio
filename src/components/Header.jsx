@@ -17,7 +17,6 @@ const Header = ({
 }) => {
   const [isListening, setIsListening] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const deepgramConnectionRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioStreamRef = useRef(null);
@@ -27,6 +26,7 @@ const Header = ({
   const conversationHistoryRef = useRef([]);
   const audioContextRef = useRef(null);
   const currentAudioRef = useRef(null);
+  const listenTimeoutRef = useRef(null); // New ref for the timeout
 
   const cancelSpeech = () => {
     isSpeakingRef.current = false;
@@ -43,12 +43,10 @@ const Header = ({
 
   // Enhanced function to use Deepgram TTS
   const speakWithDeepgram = async (text) => {
-    setIsProcessing(true); // Start processing indicator
     try {
       const deepgramKey = await getDeepgramToken();
       if (!deepgramKey) {
         console.log("No Deepgram key, falling back to browser TTS");
-        setIsProcessing(false);
         return speakAsync(text);
       }
 
@@ -65,7 +63,6 @@ const Header = ({
 
       if (!response.ok) {
         console.log("Deepgram TTS failed, falling back to browser TTS");
-        setIsProcessing(false);
         return speakAsync(text);
       }
 
@@ -78,7 +75,6 @@ const Header = ({
         // Set up event listeners before setting src
         audio.onloadeddata = () => {
           console.log("Audio data loaded successfully");
-          setIsProcessing(false); // Stop processing indicator when audio is loaded
         };
 
         audio.onended = () => {
@@ -90,7 +86,6 @@ const Header = ({
         audio.onerror = (error) => {
           console.log("Audio playback failed, falling back to browser TTS:", error);
           currentAudioRef.current = null;
-          setIsProcessing(false);
           speakAsync(text).then(resolve).catch(reject);
         };
 
@@ -99,7 +94,6 @@ const Header = ({
           audio.play().catch(error => {
             console.log("Audio play failed, falling back to browser TTS:", error);
             currentAudioRef.current = null;
-            setIsProcessing(false);
             speakAsync(text).then(resolve).catch(reject);
           });
         };
@@ -112,7 +106,7 @@ const Header = ({
         const cleanup = () => {
           setTimeout(() => {
             URL.revokeObjectURL(audioUrl);
-          }, 1000); // Small delay to ensure cleanup after playback
+          }, 2000); // Small delay to ensure cleanup after playback
         };
 
         audio.addEventListener('ended', cleanup, { once: true });
@@ -123,7 +117,6 @@ const Header = ({
       });
     } catch (error) {
       console.log("Deepgram TTS error, falling back to browser TTS:", error);
-      setIsProcessing(false);
       return speakAsync(text);
     }
   };
@@ -131,25 +124,15 @@ const Header = ({
   // Fallback to browser speech synthesis
   const speakAsync = (text) =>
     new Promise((resolve) => {
-      setIsProcessing(true);
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.onstart = () => {
-        setIsProcessing(false); // Stop processing when speech starts
-      };
-      utterance.onend = () => {
-        resolve();
-      };
-      utterance.onerror = () => {
-        setIsProcessing(false);
-        resolve();
-      };
+      utterance.onend = resolve;
       speechSynthesis.speak(utterance);
     });
 
   useEffect(() => {
     if (!hasSpokenRef.current) {
       const introText =
-        "Hi! I'm portfolio assistant. I can help you explore projects, experiences, and blog posts through voice commands. Ask me about anything you'd like to know!";
+        "Hi! I'm your portfolio assistant. I can help you explore projects, experiences, and blog posts through voice commands. Ask me about anything you'd like to know!";
       isSpeakingRef.current = true;
       speakWithDeepgram(introText).then(() => {
         isSpeakingRef.current = false;
@@ -169,9 +152,6 @@ const Header = ({
 
     // Stop listening before processing
     await stopListening();
-
-    // Set processing state for the entire response cycle
-    setIsProcessing(true);
 
     console.log("Processing final transcript:", finalTranscript);
     isSpeakingRef.current = true;
@@ -277,9 +257,8 @@ const Header = ({
         await speakWithDeepgram("Sorry, I could not understand that.");
     } finally {
       isSpeakingRef.current = false;
-      setIsProcessing(false); // Clear processing state
       // Restart listening after the response is complete
-      await startListening();
+      startListening();
     }
   };
 
@@ -317,14 +296,13 @@ const Header = ({
         interim_results: true,
         smart_format: true,
         language: 'en-US',
-        utterance_end_ms: 2000,
+        utterance_end_ms: 1000,
       });
       deepgramConnectionRef.current = connection;
       connection.on(LiveTranscriptionEvents.Open, () => {
         console.log("✅ Deepgram connection opened.");
         setIsListening(true);
         setIsConnecting(false);
-        
         const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
         mediaRecorderRef.current = mediaRecorder;
         mediaRecorder.ondataavailable = (event) => {
@@ -347,7 +325,7 @@ const Header = ({
       });
       connection.on(LiveTranscriptionEvents.Transcript, (data) => {
         const transcript = data.channel.alternatives[0].transcript;
-        if (data.is_final && transcript.trim()) {
+        if (data.is_final) {
           console.log("Final part received, accumulating:", transcript);
           lastTranscriptRef.current += transcript + " ";
         }
@@ -368,6 +346,7 @@ const Header = ({
 
   const stopListening = async () => {
     console.log("Stopping listening...");
+    clearTimeout(listenTimeoutRef.current);
     cancelSpeech();
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
       mediaRecorderRef.current.stop();
@@ -383,11 +362,13 @@ const Header = ({
     }
     setIsListening(false);
     setIsConnecting(false);
-    // Don't clear processing state here as it might still be processing TTS
-    console.log("Listening stopped completely - resources saved");
+    console.log("Listening stopped completely");
   };
 
   const startListening = async () => {
+    // Clear any existing timeout to prevent multiple connections
+    clearTimeout(listenTimeoutRef.current);
+
     if (isListening) {
       await stopListening();
       return;
@@ -395,6 +376,15 @@ const Header = ({
     console.log("Starting voice recognition...");
     cancelSpeech();
     await connectToDeepgram();
+
+    // Start a timeout to check for silence and reconnect if needed
+    // This provides a continuous listening experience
+    listenTimeoutRef.current = setTimeout(() => {
+        if (isListening && !isSpeakingRef.current) {
+          console.log("1-minute silence detected, restarting connection for continuous conversation...");
+          stopListening().then(connectToDeepgram);
+        }
+      }, 60000); // 1 minute in milliseconds
   };
 
   useEffect(() => {
@@ -416,7 +406,6 @@ const Header = ({
           <VoiceButton
             isListening={isListening}
             isConnecting={isConnecting}
-            isProcessing={isProcessing}
             startListening={startListening}
             stopListening={stopListening}
             waveformStyle="smooth"
