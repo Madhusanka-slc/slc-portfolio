@@ -106,7 +106,7 @@ const Header = ({
         const cleanup = () => {
           setTimeout(() => {
             URL.revokeObjectURL(audioUrl);
-          }, 1000); // Small delay to ensure cleanup after playback
+          }, 2000); // Small delay to ensure cleanup after playback
         };
 
         audio.addEventListener('ended', cleanup, { once: true });
@@ -296,7 +296,7 @@ const Header = ({
         interim_results: true,
         smart_format: true,
         language: 'en-US',
-        utterance_end_ms: 1500,
+        utterance_end_ms: 1000,
       });
       deepgramConnectionRef.current = connection;
       connection.on(LiveTranscriptionEvents.Open, () => {
