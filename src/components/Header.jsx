@@ -22,14 +22,82 @@ const Header = ({
   const audioStreamRef = useRef(null);
   const isSpeakingRef = useRef(false);
   const hasSpokenRef = useRef(false);
-  const lastTranscriptRef = useRef(""); // This will accumulate the full sentence
+  const lastTranscriptRef = useRef("");
   const conversationHistoryRef = useRef([]);
+  const audioContextRef = useRef(null);
+  const currentAudioRef = useRef(null);
 
   const cancelSpeech = () => {
     isSpeakingRef.current = false;
     speechSynthesis.cancel();
+    
+    // Stop any playing Deepgram TTS audio
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause();
+      currentAudioRef.current.currentTime = 0;
+      currentAudioRef.current = null;
+    }
   };
 
+  // Enhanced function to use Deepgram TTS
+  const speakWithDeepgram = async (text) => {
+    try {
+      const deepgramKey = await getDeepgramToken();
+      if (!deepgramKey) {
+        console.log("No Deepgram key, falling back to browser TTS");
+        return speakAsync(text);
+      }
+
+      const response = await fetch('https://api.deepgram.com/v1/speak?model=aura-arcas-en', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Token ${deepgramKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: text,
+        }),
+      });
+
+      if (!response.ok) {
+        console.log("Deepgram TTS failed, falling back to browser TTS");
+        return speakAsync(text);
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      
+      return new Promise((resolve, reject) => {
+        const audio = new Audio(audioUrl);
+        currentAudioRef.current = audio;
+        
+        audio.onended = () => {
+          URL.revokeObjectURL(audioUrl);
+          currentAudioRef.current = null;
+          resolve();
+        };
+        
+        audio.onerror = (error) => {
+          URL.revokeObjectURL(audioUrl);
+          currentAudioRef.current = null;
+          console.log("Audio playback failed, falling back to browser TTS");
+          speakAsync(text).then(resolve).catch(reject);
+        };
+        
+        audio.play().catch(error => {
+          URL.revokeObjectURL(audioUrl);
+          currentAudioRef.current = null;
+          console.log("Audio play failed, falling back to browser TTS");
+          speakAsync(text).then(resolve).catch(reject);
+        });
+      });
+    } catch (error) {
+      console.log("Deepgram TTS error, falling back to browser TTS:", error);
+      return speakAsync(text);
+    }
+  };
+
+  // Fallback to browser speech synthesis
   const speakAsync = (text) =>
     new Promise((resolve) => {
       const utterance = new SpeechSynthesisUtterance(text);
@@ -42,7 +110,7 @@ const Header = ({
       const introText =
         "Hi! I'm your portfolio assistant. I can help you explore projects, experiences, and blog posts through voice commands. Click the voice button and ask me about anything you'd like to know!";
       isSpeakingRef.current = true;
-      speakAsync(introText).then(() => {
+      speakWithDeepgram(introText).then(() => {
         isSpeakingRef.current = false;
       });
       hasSpokenRef.current = true;
@@ -59,7 +127,6 @@ const Header = ({
     console.log("Processing final transcript:", finalTranscript);
     isSpeakingRef.current = true;
     
-    // Clear the transcript reference immediately after processing
     lastTranscriptRef.current = "";
 
     const newMessages = [...conversationHistoryRef.current, { role: "user", content: finalTranscript }];
@@ -76,18 +143,12 @@ const Header = ({
       }
       
       if (!response?.steps?.length && response.start.includes("I usually focus on")) {
-        await speakAsync(response.start);
+        await speakWithDeepgram(response.start);
         return;
       }
 
-      const speakAsyncChain = (utterance) =>
-        new Promise((resolve) => {
-          utterance.onend = () => resolve();
-          speechSynthesis.speak(utterance);
-        });
-
       if (response.start && isSpeakingRef.current) {
-        await speakAsyncChain(new SpeechSynthesisUtterance(response.start));
+        await speakWithDeepgram(response.start);
       }
 
       for (const step of response.steps || []) {
@@ -152,19 +213,19 @@ const Header = ({
         if (!isSpeakingRef.current) break;
 
         if (step.introduction)
-          await speakAsyncChain(new SpeechSynthesisUtterance(step.introduction));
+          await speakWithDeepgram(step.introduction);
         if (!isSpeakingRef.current) break;
         if (step.description)
-          await speakAsyncChain(new SpeechSynthesisUtterance(step.description));
+          await speakWithDeepgram(step.description);
       }
 
       if (response.end && isSpeakingRef.current) {
-        await speakAsyncChain(new SpeechSynthesisUtterance(response.end));
+        await speakWithDeepgram(response.end);
       }
     } catch (err) {
       console.error("Voice agent error:", err);
       if (isSpeakingRef.current)
-        await speakAsync("Sorry, I could not understand that.");
+        await speakWithDeepgram("Sorry, I could not understand that.");
     } finally {
       isSpeakingRef.current = false;
     }
@@ -184,75 +245,73 @@ const Header = ({
   };
 
   const connectToDeepgram = async () => {
-  if (isConnecting || isListening) {
-    console.log("Already active, skipping new connection...");
-    return;
-  }
-  setIsConnecting(true);
-  console.log("Starting Deepgram connection...");
-  try {
-    await stopListening();
-    const deepgramKey = await getDeepgramToken();
-    if (!deepgramKey) {
-      throw new Error("Deepgram API key not found");
+    if (isConnecting || isListening) {
+      console.log("Already active, skipping new connection...");
+      return;
     }
-    const deepgram = createClient(deepgramKey);
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    audioStreamRef.current = stream;
-    const connection = deepgram.listen.live({
-      model: 'nova-2',
-      interim_results: true,
-      smart_format: true,
-      language: 'en-US',
-      utterance_end_ms: 1000,
-    });
-    deepgramConnectionRef.current = connection;
-    connection.on(LiveTranscriptionEvents.Open, () => {
-      console.log("✅ Deepgram connection opened.");
-      setIsListening(true);
-      setIsConnecting(false);
-      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
-      mediaRecorderRef.current = mediaRecorder;
-      mediaRecorder.ondataavailable = (event) => {
-        // Only send data to Deepgram if the assistant is NOT speaking
-        if (event.data.size > 0 && connection.getReadyState() === 1 && !isSpeakingRef.current) {
-          connection.send(event.data);
+    setIsConnecting(true);
+    console.log("Starting Deepgram connection...");
+    try {
+      await stopListening();
+      const deepgramKey = await getDeepgramToken();
+      if (!deepgramKey) {
+        throw new Error("Deepgram API key not found");
+      }
+      const deepgram = createClient(deepgramKey);
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioStreamRef.current = stream;
+      const connection = deepgram.listen.live({
+        model: 'nova-2',
+        interim_results: true,
+        smart_format: true,
+        language: 'en-US',
+        utterance_end_ms: 1000,
+      });
+      deepgramConnectionRef.current = connection;
+      connection.on(LiveTranscriptionEvents.Open, () => {
+        console.log("✅ Deepgram connection opened.");
+        setIsListening(true);
+        setIsConnecting(false);
+        const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+        mediaRecorderRef.current = mediaRecorder;
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0 && connection.getReadyState() === 1 && !isSpeakingRef.current) {
+            connection.send(event.data);
+          }
+        };
+        mediaRecorder.start(100);
+      });
+      connection.on(LiveTranscriptionEvents.Close, (event) => {
+        console.log("🔌 Deepgram connection closed:", event);
+        setIsListening(false);
+        setIsConnecting(false);
+      });
+      connection.on(LiveTranscriptionEvents.Error, (error) => {
+        console.error("❌ Deepgram error:", error);
+        setIsListening(false);
+        setIsConnecting(false);
+        speakWithDeepgram("Sorry, a connection error occurred.");
+      });
+      connection.on(LiveTranscriptionEvents.Transcript, (data) => {
+        const transcript = data.channel.alternatives[0].transcript;
+        if (data.is_final) {
+          console.log("Final part received, accumulating:", transcript);
+          lastTranscriptRef.current += transcript + " ";
         }
-      };
-      mediaRecorder.start(100);
-    });
-    connection.on(LiveTranscriptionEvents.Close, (event) => {
-      console.log("🔌 Deepgram connection closed:", event);
+      });
+      connection.on(LiveTranscriptionEvents.UtteranceEnd, () => {
+        console.log("Utterance ended. Processing full sentence.");
+        if (!isSpeakingRef.current) {
+          processFullTranscript();
+        }
+      });
+    } catch (error) {
+      console.error("❌ Error connecting to Deepgram:", error);
       setIsListening(false);
       setIsConnecting(false);
-    });
-    connection.on(LiveTranscriptionEvents.Error, (error) => {
-      console.error("❌ Deepgram error:", error);
-      setIsListening(false);
-      setIsConnecting(false);
-      speakAsync("Sorry, a connection error occurred.");
-    });
-    connection.on(LiveTranscriptionEvents.Transcript, (data) => {
-      const transcript = data.channel.alternatives[0].transcript;
-      if (data.is_final) {
-        console.log("Final part received, accumulating:", transcript);
-        lastTranscriptRef.current += transcript + " ";
-      }
-    });
-    connection.on(LiveTranscriptionEvents.UtteranceEnd, () => {
-      console.log("Utterance ended. Processing full sentence.");
-      // Only process the transcript if the assistant is NOT speaking
-      if (!isSpeakingRef.current) {
-        processFullTranscript();
-      }
-    });
-  } catch (error) {
-    console.error("❌ Error connecting to Deepgram:", error);
-    setIsListening(false);
-    setIsConnecting(false);
-    speakAsync("Sorry, I couldn't access your microphone or connect to the speech service.");
-  }
-};
+      speakWithDeepgram("Sorry, I couldn't access your microphone or connect to the speech service.");
+    }
+  };
 
   const stopListening = async () => {
     console.log("Stopping listening...");
