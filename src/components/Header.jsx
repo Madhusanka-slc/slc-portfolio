@@ -52,7 +52,7 @@ const Header = ({
       if (isListening || deepgramConnectionRef.current) {
         stopListening();
       }
-    }, 10000); // 1 minute in milliseconds
+    }, 60000); // 1 minute in milliseconds
   };
 
   // Enhanced function to use Deepgram TTS
