@@ -1,7 +1,6 @@
 import { allProjects } from "../data/projectsData.js";
 import { allExperiences } from "../data/experiencesData.js";
 import { allBlogs } from "../data/blogsData.js";
-import { personalData } from "../data/personalData.js";
 
 const API_KEY = import.meta.env.VITE_CEREBRAS_API_KEY;
 const HEADERS = {
@@ -9,17 +8,7 @@ const HEADERS = {
   Authorization: `Bearer ${API_KEY}`,
 };
 
-function formatPortfolioList(personalData, projects, experiences, blogs) {
-  const personalStr = `
-About Me:
-- Name: ${personalData.name}
-- Title: ${personalData.title}
-- Location: ${personalData.location}
-- Summary: ${personalData.about}
-- Key Skills: ${Object.values(personalData.skills).flat().join(", ")}
-- Education: ${personalData.education[0].degree} at ${personalData.education[0].institution} (${personalData.education[0].period})
-`;
-
+function formatPortfolioList(projects, experiences, blogs) {
   const projStr = projects
     .map(
       (p, i) =>
@@ -44,8 +33,7 @@ About Me:
         }]`
     )
     .join("\n");
-
-  return `Personal Data:\n${personalStr}\n\nProjects:\n${projStr}\n\nExperiences:\n${expStr}\n\nBlogs:\n${blogStr}`;
+  return `Projects:\n${projStr}\n\nExperiences:\n${expStr}\n\nBlogs:\n${blogStr}`;
 }
 
 export async function askPortfolioAgent(userInput, messages) {
@@ -53,12 +41,12 @@ export async function askPortfolioAgent(userInput, messages) {
 You are my portfolio assistant speaking as me directly to recruiters, HRs, or CEOs. You represent me in real-time conversations with natural speech patterns, including conversational fillers and authentic human responses.
 
 Your knowledge base is strictly limited to the following portfolio data:
-${formatPortfolioList(personalData, allProjects, allExperiences, allBlogs)}
+${formatPortfolioList(allProjects, allExperiences, allBlogs)}
 
 CONVERSATION STYLE GUIDELINES:
 - Use natural conversational fillers: "um", "you know", "actually", "so", "well", "I mean", "like"
 - Include authentic hesitation sounds: "uhh", "hmm", "ah", "oh"
-- Use casual contractions: "I'm", "that's", "we've", "didn't", "can't"
+- Use casual contractions: "I'm", "that's", "we've", "didn't", "can't"  
 - Add natural transitions: "So basically", "What happened was", "The thing is", "Actually, funny story"
 - Include authentic reactions: "Oh yeah!", "Right, so", "Exactly!", "You bet"
 - Use conversational confirmations: "you see", "you know what I mean?", "if that makes sense"
@@ -76,7 +64,7 @@ RESPONSE FORMAT - Always respond in valid JSON:
       "description": "Keep this brief and to the point, no more than 3 sentences. Focus on the 'what and why' of your involvement."
     }
   ],
-  "end": "Brief, conversational closing. Can be a question." 
+  "end": "Natural wrap-up with conversational elements and enthusiasm"
 }
 
 SPECIFIC RULES:
@@ -95,7 +83,7 @@ SPECIFIC RULES:
 - Instead of: "This project demonstrates my skills"
 - Say: "So this project, it's actually pretty cool - I mean, it really shows how I approach problem-solving, if that makes sense"
 
-- Instead of: "I worked on various features"  
+- Instead of: "I worked on various features"  
 - Say: "Well, I ended up working on all sorts of different features - like, everything from the frontend UI to, um, some of the backend logic too"
 
 - **New Example - Adding humility:**
@@ -110,7 +98,7 @@ SPECIFIC RULES:
   const apiMessages = [
     { role: "system", content: systemPrompt },
     ...messages,
-    { role: "user", content: userInput },
+    { role: "user", content: userInput }
   ];
 
   const body = {
@@ -135,7 +123,7 @@ SPECIFIC RULES:
 
     const respJson = await response.json();
     const assistantResponse = respJson.choices[0].message.content;
-
+    
     try {
       return JSON.parse(assistantResponse);
     } catch {

@@ -132,7 +132,7 @@ const Header = ({
   useEffect(() => {
     if (!hasSpokenRef.current) {
       const introText =
-        "Hi! I'm your portfolio assistant. I can help you explore projects, experiences, and blog posts through voice commands. Click the voice button and ask me about anything you'd like to know!";
+        "Hi! I'm your portfolio assistant. I can help you explore projects, experiences, and blog posts through voice commands. Ask me about anything you'd like to know!";
       isSpeakingRef.current = true;
       speakWithDeepgram(introText).then(() => {
         isSpeakingRef.current = false;
