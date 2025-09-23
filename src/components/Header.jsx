@@ -26,7 +26,7 @@ const Header = ({
   const conversationHistoryRef = useRef([]);
   const audioContextRef = useRef(null);
   const currentAudioRef = useRef(null);
-  const listenTimeoutRef = useRef(null); // New ref for the timeout
+  const inactivityTimeoutRef = useRef(null); // Renamed for clarity
 
   const cancelSpeech = () => {
     isSpeakingRef.current = false;
@@ -39,6 +39,19 @@ const Header = ({
       currentAudioRef.current.src = ''; // Clear the source to release blob
       currentAudioRef.current = null;
     }
+  };
+
+  // Reset the inactivity timer
+  const resetInactivityTimer = () => {
+    clearTimeout(inactivityTimeoutRef.current);
+    
+    // Only set timer if we're currently listening or about to listen
+    inactivityTimeoutRef.current = setTimeout(() => {
+      console.log("1-minute inactivity detected, disconnecting to save resources...");
+      if (isListening || deepgramConnectionRef.current) {
+        stopListening();
+      }
+    }, 5000); // 1 minute in milliseconds
   };
 
   // Enhanced function to use Deepgram TTS
@@ -125,7 +138,9 @@ const Header = ({
   const speakAsync = (text) =>
     new Promise((resolve) => {
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.onend = resolve;
+      utterance.onend = () => {
+        resolve();
+      };
       speechSynthesis.speak(utterance);
     });
 
@@ -149,6 +164,9 @@ const Header = ({
       lastTranscriptRef.current = "";
       return;
     }
+
+    // Reset the inactivity timer since user is actively speaking
+    resetInactivityTimer();
 
     // Stop listening before processing
     await stopListening();
@@ -257,8 +275,9 @@ const Header = ({
         await speakWithDeepgram("Sorry, I could not understand that.");
     } finally {
       isSpeakingRef.current = false;
-      // Restart listening after the response is complete
-      startListening();
+      // Restart listening after the response is complete and reset timer
+      await startListening();
+      resetInactivityTimer();
     }
   };
 
@@ -303,6 +322,10 @@ const Header = ({
         console.log("✅ Deepgram connection opened.");
         setIsListening(true);
         setIsConnecting(false);
+        
+        // Start the inactivity timer when connection is ready
+        resetInactivityTimer();
+        
         const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
         mediaRecorderRef.current = mediaRecorder;
         mediaRecorder.ondataavailable = (event) => {
@@ -316,18 +339,22 @@ const Header = ({
         console.log("🔌 Deepgram connection closed:", event);
         setIsListening(false);
         setIsConnecting(false);
+        clearTimeout(inactivityTimeoutRef.current);
       });
       connection.on(LiveTranscriptionEvents.Error, (error) => {
         console.error("❌ Deepgram error:", error);
         setIsListening(false);
         setIsConnecting(false);
+        clearTimeout(inactivityTimeoutRef.current);
         speakWithDeepgram("Sorry, a connection error occurred.");
       });
       connection.on(LiveTranscriptionEvents.Transcript, (data) => {
         const transcript = data.channel.alternatives[0].transcript;
-        if (data.is_final) {
+        if (data.is_final && transcript.trim()) {
           console.log("Final part received, accumulating:", transcript);
           lastTranscriptRef.current += transcript + " ";
+          // Reset timer only on actual user speech (non-empty transcript)
+          resetInactivityTimer();
         }
       });
       connection.on(LiveTranscriptionEvents.UtteranceEnd, () => {
@@ -340,13 +367,14 @@ const Header = ({
       console.error("❌ Error connecting to Deepgram:", error);
       setIsListening(false);
       setIsConnecting(false);
+      clearTimeout(inactivityTimeoutRef.current);
       speakWithDeepgram("Sorry, I couldn't access your microphone or connect to the speech service.");
     }
   };
 
   const stopListening = async () => {
     console.log("Stopping listening...");
-    clearTimeout(listenTimeoutRef.current);
+    clearTimeout(inactivityTimeoutRef.current); // Clear the inactivity timer
     cancelSpeech();
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
       mediaRecorderRef.current.stop();
@@ -362,12 +390,12 @@ const Header = ({
     }
     setIsListening(false);
     setIsConnecting(false);
-    console.log("Listening stopped completely");
+    console.log("Listening stopped completely - resources saved");
   };
 
   const startListening = async () => {
     // Clear any existing timeout to prevent multiple connections
-    clearTimeout(listenTimeoutRef.current);
+    clearTimeout(inactivityTimeoutRef.current);
 
     if (isListening) {
       await stopListening();
@@ -376,19 +404,11 @@ const Header = ({
     console.log("Starting voice recognition...");
     cancelSpeech();
     await connectToDeepgram();
-
-    // Start a timeout to check for silence and reconnect if needed
-    // This provides a continuous listening experience
-    listenTimeoutRef.current = setTimeout(() => {
-        if (isListening && !isSpeakingRef.current) {
-          console.log("1-minute silence detected, restarting connection for continuous conversation...");
-          stopListening().then(connectToDeepgram);
-        }
-      }, 60000); // 1 minute in milliseconds
   };
 
   useEffect(() => {
     return () => {
+      clearTimeout(inactivityTimeoutRef.current);
       stopListening();
     };
   }, []);
