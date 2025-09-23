@@ -26,11 +26,12 @@ const Header = ({
   const conversationHistoryRef = useRef([]);
   const audioContextRef = useRef(null);
   const currentAudioRef = useRef(null);
+  const listenTimeoutRef = useRef(null); // New ref for the timeout
 
   const cancelSpeech = () => {
     isSpeakingRef.current = false;
     speechSynthesis.cancel();
-    
+
     // Stop any playing Deepgram TTS audio
     if (currentAudioRef.current) {
       currentAudioRef.current.pause();
@@ -66,22 +67,22 @@ const Header = ({
       }
 
       const audioBlob = await response.blob();
-      
+
       return new Promise((resolve, reject) => {
         const audio = new Audio();
         currentAudioRef.current = audio;
-        
+
         // Set up event listeners before setting src
         audio.onloadeddata = () => {
           console.log("Audio data loaded successfully");
         };
-        
+
         audio.onended = () => {
           console.log("Audio playback ended");
           currentAudioRef.current = null;
           resolve();
         };
-        
+
         audio.onerror = (error) => {
           console.log("Audio playback failed, falling back to browser TTS:", error);
           currentAudioRef.current = null;
@@ -96,21 +97,21 @@ const Header = ({
             speakAsync(text).then(resolve).catch(reject);
           });
         };
-        
+
         // Create blob URL and set as source
         const audioUrl = URL.createObjectURL(audioBlob);
         audio.src = audioUrl;
-        
+
         // Clean up blob URL after audio ends or errors
         const cleanup = () => {
           setTimeout(() => {
             URL.revokeObjectURL(audioUrl);
           }, 1000); // Small delay to ensure cleanup after playback
         };
-        
+
         audio.addEventListener('ended', cleanup, { once: true });
         audio.addEventListener('error', cleanup, { once: true });
-        
+
         // Load the audio
         audio.load();
       });
@@ -135,6 +136,8 @@ const Header = ({
       isSpeakingRef.current = true;
       speakWithDeepgram(introText).then(() => {
         isSpeakingRef.current = false;
+        // Start listening after the intro is done
+        startListening();
       });
       hasSpokenRef.current = true;
     }
@@ -147,9 +150,12 @@ const Header = ({
       return;
     }
 
+    // Stop listening before processing
+    await stopListening();
+
     console.log("Processing final transcript:", finalTranscript);
     isSpeakingRef.current = true;
-    
+
     lastTranscriptRef.current = "";
 
     const newMessages = [...conversationHistoryRef.current, { role: "user", content: finalTranscript }];
@@ -158,13 +164,13 @@ const Header = ({
       const response = await askPortfolioAgent(finalTranscript, newMessages);
       console.log("========== Voice Agent DEBUG ==========");
       console.log("Full Response Object:", response);
-      
+
       conversationHistoryRef.current = [...newMessages, { role: "assistant", content: JSON.stringify(response) }];
 
       if (conversationHistoryRef.current.length > 6) {
         conversationHistoryRef.current = conversationHistoryRef.current.slice(conversationHistoryRef.current.length - 6);
       }
-      
+
       if (!response?.steps?.length && response.start.includes("I usually focus on")) {
         await speakWithDeepgram(response.start);
         return;
@@ -251,6 +257,8 @@ const Header = ({
         await speakWithDeepgram("Sorry, I could not understand that.");
     } finally {
       isSpeakingRef.current = false;
+      // Restart listening after the response is complete
+      startListening();
     }
   };
 
@@ -288,7 +296,7 @@ const Header = ({
         interim_results: true,
         smart_format: true,
         language: 'en-US',
-        utterance_end_ms: 1000,
+        utterance_end_ms: 1500,
       });
       deepgramConnectionRef.current = connection;
       connection.on(LiveTranscriptionEvents.Open, () => {
@@ -338,6 +346,7 @@ const Header = ({
 
   const stopListening = async () => {
     console.log("Stopping listening...");
+    clearTimeout(listenTimeoutRef.current);
     cancelSpeech();
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
       mediaRecorderRef.current.stop();
@@ -357,6 +366,9 @@ const Header = ({
   };
 
   const startListening = async () => {
+    // Clear any existing timeout to prevent multiple connections
+    clearTimeout(listenTimeoutRef.current);
+
     if (isListening) {
       await stopListening();
       return;
@@ -364,6 +376,15 @@ const Header = ({
     console.log("Starting voice recognition...");
     cancelSpeech();
     await connectToDeepgram();
+
+    // Start a timeout to check for silence and reconnect if needed
+    // This provides a continuous listening experience
+    listenTimeoutRef.current = setTimeout(() => {
+        if (isListening && !isSpeakingRef.current) {
+          console.log("1-minute silence detected, restarting connection for continuous conversation...");
+          stopListening().then(connectToDeepgram);
+        }
+      }, 60000); // 1 minute in milliseconds
   };
 
   useEffect(() => {
