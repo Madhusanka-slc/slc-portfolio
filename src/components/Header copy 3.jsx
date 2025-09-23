@@ -22,7 +22,7 @@ const Header = ({
   const audioStreamRef = useRef(null);
   const isSpeakingRef = useRef(false);
   const hasSpokenRef = useRef(false);
-  const lastTranscriptRef = useRef(""); // This will accumulate the full sentence
+  const lastTranscriptRef = useRef("");
   const conversationHistoryRef = useRef([]);
 
   const cancelSpeech = () => {
@@ -49,19 +49,13 @@ const Header = ({
     }
   }, []);
 
-  const processFullTranscript = async () => {
-    const finalTranscript = lastTranscriptRef.current.trim();
-    if (!finalTranscript || isSpeakingRef.current) {
-      lastTranscriptRef.current = "";
-      return;
-    }
+  const handleAgentResponse = async (finalTranscript) => {
+    if (!finalTranscript || isSpeakingRef.current) return;
 
     console.log("Processing final transcript:", finalTranscript);
     isSpeakingRef.current = true;
-    
-    // Clear the transcript reference immediately after processing
-    lastTranscriptRef.current = "";
 
+    // Add user's new message to the history
     const newMessages = [...conversationHistoryRef.current, { role: "user", content: finalTranscript }];
 
     try {
@@ -69,20 +63,21 @@ const Header = ({
       console.log("========== Voice Agent DEBUG ==========");
       console.log("Full Response Object:", response);
       
+      // Add the agent's response to the history and trim
       conversationHistoryRef.current = [...newMessages, { role: "assistant", content: JSON.stringify(response) }];
-
       if (conversationHistoryRef.current.length > 6) {
         conversationHistoryRef.current = conversationHistoryRef.current.slice(conversationHistoryRef.current.length - 6);
       }
       
-      if (!response?.steps?.length && response.start.includes("I usually focus on")) {
-        await speakAsync(response.start);
+      // Handling the "irrelevant question" response from the agent
+      if (!response?.steps?.length && response.start.includes("I'm sorry, I can't find that")) {
+        speakAsync(response.start);
         return;
       }
 
       const speakAsyncChain = (utterance) =>
         new Promise((resolve) => {
-          utterance.onend = () => resolve();
+          utterance.onend = resolve;
           speechSynthesis.speak(utterance);
         });
 
@@ -164,9 +159,10 @@ const Header = ({
     } catch (err) {
       console.error("Voice agent error:", err);
       if (isSpeakingRef.current)
-        await speakAsync("Sorry, I could not understand that.");
+        speakAsync("Sorry, I could not understand that.");
     } finally {
       isSpeakingRef.current = false;
+      lastTranscriptRef.current = "";
     }
   };
 
@@ -184,75 +180,80 @@ const Header = ({
   };
 
   const connectToDeepgram = async () => {
-  if (isConnecting || isListening) {
-    console.log("Already active, skipping new connection...");
-    return;
-  }
-  setIsConnecting(true);
-  console.log("Starting Deepgram connection...");
-  try {
-    await stopListening();
-    const deepgramKey = await getDeepgramToken();
-    if (!deepgramKey) {
-      throw new Error("Deepgram API key not found");
+    if (isConnecting || isListening) {
+      console.log("Already active, skipping new connection...");
+      return;
     }
-    const deepgram = createClient(deepgramKey);
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    audioStreamRef.current = stream;
-    const connection = deepgram.listen.live({
-      model: 'nova-2',
-      interim_results: true,
-      smart_format: true,
-      language: 'en-US',
-      utterance_end_ms: 1000,
-    });
-    deepgramConnectionRef.current = connection;
-    connection.on(LiveTranscriptionEvents.Open, () => {
-      console.log("✅ Deepgram connection opened.");
-      setIsListening(true);
-      setIsConnecting(false);
-      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
-      mediaRecorderRef.current = mediaRecorder;
-      mediaRecorder.ondataavailable = (event) => {
-        // Only send data to Deepgram if the assistant is NOT speaking
-        if (event.data.size > 0 && connection.getReadyState() === 1 && !isSpeakingRef.current) {
-          connection.send(event.data);
+    setIsConnecting(true);
+    console.log("Starting Deepgram connection...");
+    try {
+      await stopListening();
+      const deepgramKey = await getDeepgramToken();
+      if (!deepgramKey) {
+        throw new Error("Deepgram API key not found");
+      }
+      const deepgram = createClient(deepgramKey);
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioStreamRef.current = stream;
+      const connection = deepgram.listen.live({
+        model: 'nova-2',
+        interim_results: true,
+        smart_format: true,
+        language: 'en-US',
+        utterance_end_ms: 1000,
+      });
+      deepgramConnectionRef.current = connection;
+      connection.on(LiveTranscriptionEvents.Open, () => {
+        console.log("✅ Deepgram connection opened.");
+        setIsListening(true);
+        setIsConnecting(false);
+        const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+        mediaRecorderRef.current = mediaRecorder;
+        mediaRecorder.ondataavailable = (event) => {
+          // THE FIX: Only send audio data if the app is not speaking
+          if (event.data.size > 0 && connection.getReadyState() === 1 && !isSpeakingRef.current) {
+            connection.send(event.data);
+          }
+        };
+        mediaRecorder.start(100);
+      });
+      connection.on(LiveTranscriptionEvents.Close, (event) => {
+        console.log("🔌 Deepgram connection closed:", event);
+        setIsListening(false);
+        setIsConnecting(false);
+      });
+      connection.on(LiveTranscriptionEvents.Error, (error) => {
+        console.error("❌ Deepgram error:", error);
+        setIsListening(false);
+        setIsConnecting(false);
+        speakAsync("Sorry, a connection error occurred.");
+      });
+      connection.on(LiveTranscriptionEvents.SpeechStarted, () => {
+        console.log("Speech started - user is talking");
+      });
+      connection.on(LiveTranscriptionEvents.SpeechEnded, () => {
+        console.log("Speech ended.");
+      });
+      connection.on(LiveTranscriptionEvents.Transcript, (data) => {
+        const transcript = data.channel.alternatives[0].transcript;
+        if (transcript) {
+          lastTranscriptRef.current = transcript;
         }
-      };
-      mediaRecorder.start(100);
-    });
-    connection.on(LiveTranscriptionEvents.Close, (event) => {
-      console.log("🔌 Deepgram connection closed:", event);
+      });
+      connection.on(LiveTranscriptionEvents.UtteranceEnd, () => {
+        const finalTranscript = lastTranscriptRef.current.trim();
+        if (finalTranscript) {
+          handleAgentResponse(finalTranscript);
+          lastTranscriptRef.current = "";
+        }
+      });
+    } catch (error) {
+      console.error("❌ Error connecting to Deepgram:", error);
       setIsListening(false);
       setIsConnecting(false);
-    });
-    connection.on(LiveTranscriptionEvents.Error, (error) => {
-      console.error("❌ Deepgram error:", error);
-      setIsListening(false);
-      setIsConnecting(false);
-      speakAsync("Sorry, a connection error occurred.");
-    });
-    connection.on(LiveTranscriptionEvents.Transcript, (data) => {
-      const transcript = data.channel.alternatives[0].transcript;
-      if (data.is_final) {
-        console.log("Final part received, accumulating:", transcript);
-        lastTranscriptRef.current += transcript + " ";
-      }
-    });
-    connection.on(LiveTranscriptionEvents.UtteranceEnd, () => {
-      console.log("Utterance ended. Processing full sentence.");
-      // Only process the transcript if the assistant is NOT speaking
-      if (!isSpeakingRef.current) {
-        processFullTranscript();
-      }
-    });
-  } catch (error) {
-    console.error("❌ Error connecting to Deepgram:", error);
-    setIsListening(false);
-    setIsConnecting(false);
-    speakAsync("Sorry, I couldn't access your microphone or connect to the speech service.");
-  }
-};
+      speakAsync("Sorry, I couldn't access your microphone or connect to the speech service.");
+    }
+  };
 
   const stopListening = async () => {
     console.log("Stopping listening...");
@@ -271,6 +272,7 @@ const Header = ({
     }
     setIsListening(false);
     setIsConnecting(false);
+    lastTranscriptRef.current = "";
     console.log("Listening stopped completely");
   };
 
