@@ -65,7 +65,8 @@ CONVERSATION STYLE GUIDELINES:
 - Be enthusiastic but natural: "Oh, that's a great question!", "I'm excited about that one"
 - **Project confidence with humility** - frame accomplishments in terms of collaboration and problem-solving
 
-RESPONSE FORMAT - Always respond in valid JSON:
+RESPONSE FORMAT - Always respond in valid JSON. You have two valid JSON formats:
+1. **Response with content**:
 {
   "start": "Natural, conversational opening with fillers (keep under 15 words)",
   "steps": [
@@ -78,6 +79,13 @@ RESPONSE FORMAT - Always respond in valid JSON:
   ],
   "end": "Maximum 6 words. Natural and brief."
 }
+2. **Clarification/Confirmation question**:
+{
+  "start": "Natural, conversational question (under 15 words)",
+  "steps": [],
+  "end": null
+}
+
 
 CONTEXT AWARENESS RULES:
 - **REMEMBER what you just shared** - if user asks about something you mentioned in previous response, recognize it immediately
@@ -123,7 +131,7 @@ SPECIFIC RULES:
      "steps": [relevant content based on guess],
      "end": "Right track?"
    }
-
+   
 3. **RESPONSE DEPTH STRATEGY**:
 
    **GENERAL/OVERVIEW QUESTIONS** (Keep brief, high-level summaries):
@@ -223,42 +231,42 @@ SPECIFIC RULES:
 13. When in doubt about specificity, start general and offer to go deeper.
 `;
 
-  const apiMessages = [
-    { role: "system", content: systemPrompt },
-    ...messages,
-    { role: "user", content: userInput },
-  ];
+  const apiMessages = [
+    { role: "system", content: systemPrompt },
+    ...messages,
+    { role: "user", content: userInput },
+  ];
 
-  const body = {
-    model: "qwen-3-235b-a22b-instruct-2507",
-    messages: apiMessages,
-    stream: false,
-    temperature: 0.8,
-    max_tokens: 2000,
-    top_p: 0.9,
-  };
+  const body = {
+    model: "qwen-3-235b-a22b-instruct-2507",
+    messages: apiMessages,
+    stream: false,
+    temperature: 0.8,
+    max_tokens: 2000,
+    top_p: 0.9,
+  };
 
-  try {
-    const response = await fetch("https://api.cerebras.ai/v1/chat/completions", {
-      method: "POST",
-      headers: HEADERS,
-      body: JSON.stringify(body),
-    });
+  try {
+    const response = await fetch("https://api.cerebras.ai/v1/chat/completions", {
+      method: "POST",
+      headers: HEADERS,
+      body: JSON.stringify(body),
+    });
 
-    if (!response.ok) {
-      throw new Error(`Cerebras API error: ${response.status} ${await response.text()}`);
-    }
+    if (!response.ok) {
+      throw new Error(`Cerebras API error: ${response.status} ${await response.text()}`);
+    }
 
-    const respJson = await response.json();
-    const assistantResponse = respJson.choices[0].message.content;
+    const respJson = await response.json();
+    const assistantResponse = respJson.choices[0].message.content;
 
-    try {
-      return JSON.parse(assistantResponse);
-    } catch {
-      return { raw: assistantResponse };
-    }
-  } catch (err) {
-    console.error("API call failed:", err);
-    throw err;
-  }
+    try {
+      return JSON.parse(assistantResponse);
+    } catch {
+      return { raw: assistantResponse };
+    }
+  } catch (err) {
+    console.error("API call failed:", err);
+    throw err;
+  }
 }
