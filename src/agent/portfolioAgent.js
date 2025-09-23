@@ -1,4 +1,3 @@
-// src/agent/portfolioAgent.js
 import { allProjects } from "../data/projectsData.js";
 import { allExperiences } from "../data/experiencesData.js";
 import { allBlogs } from "../data/blogsData.js";
@@ -9,10 +8,6 @@ const HEADERS = {
   Authorization: `Bearer ${API_KEY}`,
 };
 
-console.log("Using Cerebras API Key:", API_KEY ? "Yes" : "No");
-console.log("Using Cerebras API Key:", API_KEY ? "Yes" : "No");
-
-// Helper: format portfolio data for the system prompt
 function formatPortfolioList(projects, experiences, blogs) {
   const projStr = projects
     .map(
@@ -44,17 +39,14 @@ function formatPortfolioList(projects, experiences, blogs) {
   return `Projects:\n${projStr}\n\nExperiences:\n${expStr}\n\nBlogs:\n${blogStr}`;
 }
 
-// Main function to query the agent
-export async function askPortfolioAgent(userInput, messages = []) {
-  messages.push({ role: "user", content: userInput });
+export async function askPortfolioAgent(userInput, messages) {
 
   const systemPrompt = `
-You are my portfolio assistant. Imagine you are speaking directly to a recruiter, HR manager, or CEO who is asking me about my skills, experience, or projects. 
-
-Portfolio Knowledge:
+You are my portfolio assistant. Your role is to act as my voice, speaking directly to a recruiter, HR manager, or CEO.
+Your knowledge base is strictly limited to the following portfolio data:
 ${formatPortfolioList(allProjects, allExperiences, allBlogs)}
 
-Your task:
+Your task is to respond to user questions based ONLY on this information.
 - Respond ONLY in valid JSON.
 - Structure must always be:
 {
@@ -63,54 +55,67 @@ Your task:
     {
       "category": "project" | "experience" | "blog",
       "title": "Exact title of the item",
-      "introduction": "Short, natural sentence introducing why this is relevant, as if I’m telling it in an interview.",
-      "description": "2–3 sentences that expand on what I did, the skills I used, and the impact — phrased conversationally, not robotic."
+      "introduction": "Short, natural sentence introducing why this is relevant...",
+      "description": "2-3 sentences that expand on what I did..."
     }
   ],
-  "end": "A natural way to wrap up the answer, like I would say at the end of explaining my work."
+  "end": "A natural way to wrap up the answer..."
 }
 
 Rules:
-1. Sound conversational, confident, and human — like I’m really speaking to someone, not generating text.
-   Example: Instead of "This concludes the overview…" → say "That’s a bit about how I applied those skills" or "That’s one of the projects I’m most proud of."
-2. If no items match, return:
+1. Sound conversational, confident, and human.
+2. If the user's query is a follow-up about a previous response (e.g., "what did you explain before?"), or a general greeting, you must provide a conversational answer. In this case, **the "steps" array must be empty**. The response should be formatted as:
 {
-  "start": "I usually focus on sharing my portfolio, skills, projects, and experiences — would you like me to walk you through those?",
-  "steps": []
+  "start": "A conversational and helpful response based on the conversation history.",
+  "steps": [],
+  "end": "A brief, natural closing sentence."
 }
-3. Keep answers concise but flowing, as if answering in a real conversation.
-4. No explanations or meta-text outside JSON.
-
-User Query: "${userInput}"
+3. If the user's query is about a topic not in the portfolio data, return:
+{
+  "start": "I'm sorry, I can't find that in the portfolio. I can only provide information about the available projects, experiences, and blogs.",
+  "steps": [],
+  "end": "Would you like me to tell you about the available options?"
+}
+4. Keep answers concise but flowing, as if answering in a real conversation.
+5. No explanations or meta-text outside JSON.
 `;
+
+  const apiMessages = [
+    { role: "system", content: systemPrompt },
+    ...messages,
+    { role: "user", content: userInput }
+  ];
 
   const body = {
     model: "qwen-3-235b-a22b-instruct-2507",
-    messages: [{ role: "system", content: systemPrompt }, ...messages],
+    messages: apiMessages,
     stream: false,
     temperature: 0.7,
     max_tokens: 2000,
     top_p: 0.8,
   };
 
-  const response = await fetch("https://api.cerebras.ai/v1/chat/completions", {
-    method: "POST",
-    headers: HEADERS,
-    body: JSON.stringify(body),
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Cerebras API error: ${response.status} ${await response.text()}`
-    );
-  }
-
-  const respJson = await response.json();
-  const assistantResponse = respJson.choices[0].message.content;
-
   try {
-    return JSON.parse(assistantResponse);
-  } catch {
-    return { raw: assistantResponse };
+    const response = await fetch("https://api.cerebras.ai/v1/chat/completions", {
+      method: "POST",
+      headers: HEADERS,
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Cerebras API error: ${response.status} ${await response.text()}`);
+    }
+
+    const respJson = await response.json();
+    const assistantResponse = respJson.choices[0].message.content;
+
+    try {
+      return JSON.parse(assistantResponse);
+    } catch {
+      return { raw: assistantResponse };
+    }
+  } catch (err) {
+    console.error("API call failed:", err);
+    throw err;
   }
 }
