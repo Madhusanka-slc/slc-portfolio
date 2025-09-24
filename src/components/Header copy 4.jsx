@@ -19,8 +19,7 @@ const Header = ({
 }) => {
   const [isListening, setIsListening] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  const [isPlayingIntro, setIsPlayingIntro] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false); // Add processing state
+  const [isPlayingIntro, setIsPlayingIntro] = useState(false); // New state for intro
   const deepgramConnectionRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioStreamRef = useRef(null);
@@ -125,6 +124,20 @@ const Header = ({
       speechSynthesis.speak(utterance);
     });
 
+  // Remove the automatic intro useEffect
+  // useEffect(() => {
+  //   if (!hasSpokenRef.current) {
+  //     const introText =
+  //       "Hi! I'm your portfolio assistant. I can help you explore projects, experiences, and blog posts through voice commands. Ask me about anything you'd like to know!";
+  //     isSpeakingRef.current = true;
+  //     speakWithDeepgram(introText).then(() => {
+  //       isSpeakingRef.current = false;
+  //       startListening();
+  //     });
+  //     hasSpokenRef.current = true;
+  //   }
+  // }, []);
+
   const playIntroduction = async () => {
     const introText =
       "Hi! I'm your portfolio assistant. I can help you explore projects, experiences, and blog posts through voice commands. Ask me about anything you'd like to know!";
@@ -168,7 +181,6 @@ const Header = ({
     await stopListening();
 
     console.log("Processing final transcript:", finalTranscript);
-    setIsProcessing(true); // Start processing - shows yellow spinner
     isSpeakingRef.current = true;
     lastTranscriptRef.current = "";
 
@@ -252,10 +264,8 @@ const Header = ({
       }
     } catch (err) {
       console.error("Voice agent error:", err);
-      setIsProcessing(false); // Clear processing state on error
       if (isSpeakingRef.current) await speakWithDeepgram("Sorry, I could not understand that.");
     } finally {
-      setIsProcessing(false); // Clear processing state when done
       isSpeakingRef.current = false;
       startListening();
     }
@@ -407,7 +417,7 @@ const Header = ({
           </h1>
           <VoiceButton
             isListening={isListening}
-            isConnecting={isConnecting || isPlayingIntro || isProcessing} // Include processing state
+            isConnecting={isConnecting || isPlayingIntro} // Disable button during intro
             startListening={startListening}
             stopListening={stopListening}
             waveformStyle="smooth"
