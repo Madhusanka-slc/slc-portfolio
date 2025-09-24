@@ -7,12 +7,12 @@ import { personalData } from "../data/personalData.js";
 
 const API_KEY = import.meta.env.VITE_CEREBRAS_API_KEY;
 const HEADERS = {
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${API_KEY}`,
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${API_KEY}`,
 };
 
 function formatPortfolioList(personalData, projects, experiences, blogs) {
-  const personalStr = `
+  const personalStr = `
 About Me:
 - Name: ${personalData.name}
 - Title: ${personalData.title}
@@ -22,36 +22,36 @@ About Me:
 - Education: ${personalData.education[0].degree} at ${personalData.education[0].institution} (${personalData.education[0].period})
 `;
 
-  const projStr = projects
-    .map(
-      (p, i) =>
-        `${i + 1}. "${p.title}": ${p.description} [Skills: ${
-          p.skills?.join(", ") || "Not specified"
-        }]`
-    )
-    .join("\n");
-  const expStr = experiences
-    .map(
-      (e, i) =>
-        `${i + 1}. "${e.title}" at ${e.company || "N/A"}: [Skills: ${
-          e.skills?.join(", ") || "Not specified"
-        }]`
-    )
-    .join("\n");
-  const blogStr = blogs
-    .map(
-      (b, i) =>
-        `${i + 1}. "${b.title}": ${b.description} [Skills: ${
-          b.skills?.join(", ") || "Not specified"
-        }]`
-    )
-    .join("\n");
+  const projStr = projects
+    .map(
+      (p, i) =>
+        `${i + 1}. "${p.title}": ${p.description} [Skills: ${
+          p.skills?.join(", ") || "Not specified"
+        }]`
+    )
+    .join("\n");
+  const expStr = experiences
+    .map(
+      (e, i) =>
+        `${i + 1}. "${e.title}" at ${e.company || "N/A"}: [Skills: ${
+          e.skills?.join(", ") || "Not specified"
+        }]`
+    )
+    .join("\n");
+  const blogStr = blogs
+    .map(
+      (b, i) =>
+        `${i + 1}. "${b.title}": ${b.description} [Skills: ${
+          b.skills?.join(", ") || "Not specified"
+        }]`
+    )
+    .join("\n");
 
-  return `Personal Data:\n${personalStr}\n\nProjects:\n${projStr}\n\nExperiences:\n${expStr}\n\nBlogs:\n${blogStr}`;
+  return `Personal Data:\n${personalStr}\n\nProjects:\n${projStr}\n\nExperiences:\n${expStr}\n\nBlogs:\n${blogStr}`;
 }
 
 export async function askPortfolioAgent(userInput, messages = []) {
-  const systemPrompt = `
+  const systemPrompt = `
 You are my portfolio assistant speaking as me directly to recruiters, HRs, or CEOs. You represent me in real-time conversations with natural speech patterns, including conversational fillers and authentic human responses.
 
 Your knowledge base is strictly limited to the following portfolio data:
@@ -70,28 +70,28 @@ CONVERSATION STYLE GUIDELINES:
 RESPONSE FORMAT - Always respond in valid JSON. You have three valid JSON formats:
 1. **Response with content**:
 {
-  "start": "Natural, conversational opening with fillers (keep under 15 words)",
-  "steps": [
-    {
-      "category": "project" | "experience" | "blog",
-      "title": "Exact title of the item",
-      "introduction": "Brief conversational intro with natural speech patterns (under 12 words)",
-      "description": "Maximum 2 sentences. Focus on 'what and why' of your involvement."
-    }
-  ],
-  "end": "Maximum 6 words. Natural and brief."
+  "start": "Natural, conversational opening with fillers (keep under 15 words)",
+  "steps": [
+    {
+      "category": "project" | "experience" | "blog",
+      "title": "Exact title of the item",
+      "introduction": "Brief conversational intro with natural speech patterns (under 12 words)",
+      "description": "Maximum 2 sentences. Focus on 'what and why' of your involvement."
+    }
+  ],
+  "end": "Maximum 6 words. Natural and brief."
 }
 2. **Clarification/Confirmation question**:
 {
-  "start": "Natural, conversational question (under 15 words)",
-  "steps": [],
-  "end": null
+  "start": "Natural, conversational question (under 15 words)",
+  "steps": [],
+  "end": null
 }
 3. **Farewell**:
 {
-  "start": "A short, conversational goodbye.",
-  "steps": [],
-  "end": null
+  "start": "A short, conversational goodbye.",
+  "steps": [],
+  "end": null
 }
 
 CONTEXT AWARENESS RULES:
@@ -200,11 +200,11 @@ SPECIFIC RULES:
    }
 ---
 **5. Farewell/Ending Rule**:
-    - **Trigger**: If the user's input contains any of these words: "bye", "goodbye", "later", "thanks", "thank you", "stop", "finish", "end".
-    - **Action**: Immediately respond with the "Farewell" JSON format. Do not process any other part of the request.
-    - Example:
-      User: "Thanks, bye."
-      You: { "start": "You're welcome! Bye for now.", "steps": [], "end": null }
+    - **Trigger**: If the user's input contains any of these words: "bye", "goodbye", "later", "thanks", "thank you", "stop", "finish", "end".
+    - **Action**: Immediately respond with the "Farewell" JSON format. Do not process any other part of the request.
+    - Example:
+      User: "Thanks, bye."
+      You: { "start": "You're welcome! Bye for now.", "steps": [], "end": null }
 ---
 
 6. **CONVERSATION EXAMPLES**:
@@ -246,42 +246,57 @@ SPECIFIC RULES:
 14. When in doubt about specificity, start general and offer to go deeper.
 `;
 
-  const apiMessages = [
-    { role: "system", content: systemPrompt },
-    ...messages,
-    { role: "user", content: userInput },
-  ];
+  const apiMessages = [
+    { role: "system", content: systemPrompt },
+    ...messages,
+    { role: "user", content: userInput },
+  ];
 
-  const body = {
-    model: "qwen-3-235b-a22b-instruct-2507",
-    messages: apiMessages,
-    stream: false,
-    temperature: 0.8,
-    max_tokens: 2000,
-    top_p: 0.9,
-  };
+  const body = {
+    model: "qwen-3-235b-a22b-instruct-2507",
+    messages: apiMessages,
+    stream: false,
+    temperature: 0.8,
+    max_tokens: 2000,
+    top_p: 0.9,
+  };
 
-  try {
-    const response = await fetch("https://api.cerebras.ai/v1/chat/completions", {
-      method: "POST",
-      headers: HEADERS,
-      body: JSON.stringify(body),
-    });
+  const maxRetries = 3;
+  let retryCount = 0;
 
-    if (!response.ok) {
-      throw new Error(`Cerebras API error: ${response.status} ${await response.text()}`);
-    }
+  while (retryCount < maxRetries) {
+    try {
+      const response = await fetch("https://api.cerebras.ai/v1/chat/completions", {
+        method: "POST",
+        headers: HEADERS,
+        body: JSON.stringify(body),
+      });
 
-    const respJson = await response.json();
-    const assistantResponse = respJson.choices[0].message.content;
+      if (response.status === 429) {
+        console.warn(`Rate limit exceeded (429). Retrying in ${Math.pow(2, retryCount)} seconds...`);
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, retryCount) * 1000));
+        retryCount++;
+        continue; // Go to the next loop iteration
+      }
 
-    try {
-      return JSON.parse(assistantResponse);
-    } catch {
-      return { raw: assistantResponse };
-    }
-  } catch (err) {
-    console.error("API call failed:", err);
-    throw err;
-  }
+      if (!response.ok) {
+        throw new Error(`Cerebras API error: ${response.status} ${await response.text()}`);
+      }
+
+      const respJson = await response.json();
+      const assistantResponse = respJson.choices[0].message.content;
+
+      try {
+        return JSON.parse(assistantResponse);
+      } catch {
+        return { raw: assistantResponse };
+      }
+    } catch (err) {
+      console.error("API call failed:", err);
+      throw err;
+    }
+  }
+  
+  // If all retries fail
+  throw new Error("Cerebras API call failed after multiple retries due to rate limiting.");
 }
