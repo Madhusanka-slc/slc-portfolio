@@ -9,12 +9,12 @@ const HEADERS = {
   Authorization: `Bearer ${API_KEY}`,
 };
 
-// Rate limiting and retry configuration
+// Rate limiting and retry configuration - optimized for Vercel
 const RETRY_CONFIG = {
-  maxRetries: 3,
-  baseDelay: 1000, // Start with 1 second
-  maxDelay: 10000, // Max 10 seconds
-  backoffMultiplier: 2,
+  maxRetries: 2, // Reduced for faster response
+  baseDelay: 500, // Faster initial retry
+  maxDelay: 5000, // Reduced max delay
+  backoffMultiplier: 1.5, // Gentler backoff
 };
 
 // Simple in-memory cache for responses
@@ -99,8 +99,9 @@ function setCachedResponse(cacheKey, data) {
 
 // Summarize conversation history to maintain context while keeping it concise
 async function summarizeConversationHistory(messages) {
-  if (messages.length <= 4) {
-    // If we have 4 or fewer messages (2 Q&A pairs), no summarization needed
+  // Only summarize if we have more than 6 messages (3 Q&A pairs)
+  // This prevents unnecessary API calls for short conversations
+  if (messages.length <= 6) {
     return messages;
   }
 
@@ -109,62 +110,73 @@ async function summarizeConversationHistory(messages) {
     const messagesToSummarize = messages.slice(0, -4);
     const recentMessages = messages.slice(-4);
 
-    // Create summarization prompt
-    const summarizationMessages = [
-      {
-        role: "system",
-        content: `You are helping to summarize a conversation between a user and a portfolio assistant. 
-        Create a very brief summary (max 2-3 sentences) that captures:
-        1. What topics/projects/experiences were discussed
-        2. Any specific interests or focus areas the user showed
-        3. Key context needed for ongoing conversation
-        
-        Keep it concise and conversational. Focus only on portfolio-related topics.`
-      },
-      {
-        role: "user",
-        content: `Please summarize this conversation history:\n\n${messagesToSummarize.map(m => `${m.role}: ${m.content}`).join('\n\n')}`
-      }
-    ];
+    // Only summarize if there are substantial messages to summarize
+    if (messagesToSummarize.length < 4) {
+      return messages;
+    }
 
-    const summaryResponse = await makeAPICallWithRetry(summarizationMessages);
-    
+    // Create a simple summary without API call for better performance
+    const topics = [];
+    messagesToSummarize.forEach(msg => {
+      if (msg.role === 'user') {
+        const input = msg.content.toLowerCase();
+        if (input.includes('project')) topics.push('projects');
+        if (input.includes('experience')) topics.push('experience');
+        if (input.includes('skill')) topics.push('skills');
+        if (input.includes('python')) topics.push('Python');
+        if (input.includes('react')) topics.push('React');
+        if (input.includes('javascript')) topics.push('JavaScript');
+      }
+    });
+
+    const uniqueTopics = [...new Set(topics)];
+    const summary = uniqueTopics.length > 0 
+      ? `Previously discussed: ${uniqueTopics.join(', ')}`
+      : 'Previous general conversation about portfolio';
+
     // Create a condensed history with summary + recent messages
     const condensedHistory = [
       {
         role: "system",
-        content: `Previous conversation summary: ${summaryResponse}`
+        content: `Previous conversation context: ${summary}`
       },
       ...recentMessages
     ];
 
-    console.log(`Summarized ${messagesToSummarize.length} messages into context summary`);
+    console.log(`Condensed ${messagesToSummarize.length} messages into context summary`);
     return condensedHistory;
 
   } catch (error) {
-    console.warn('Failed to summarize conversation history, keeping last 4 messages only:', error);
+    console.warn('Failed to process conversation history, keeping last 4 messages only:', error);
     // Fallback: just keep the last 4 messages
     return messages.slice(-4);
   }
 }
 
-// Enhanced retry logic with exponential backoff
+// Enhanced retry logic with exponential backoff - optimized for Vercel
 async function makeAPICallWithRetry(apiMessages, retryCount = 0) {
   const body = {
     model: "qwen-3-235b-a22b-instruct-2507",
     messages: apiMessages,
     stream: false,
     temperature: 0.8,
-    max_tokens: 2000,
+    max_tokens: 1500, // Reduced for faster response
     top_p: 0.9,
   };
 
   try {
+    // Add timeout for Vercel
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
     const response = await fetch("https://api.cerebras.ai/v1/chat/completions", {
       method: "POST",
       headers: HEADERS,
       body: JSON.stringify(body),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -187,7 +199,8 @@ async function makeAPICallWithRetry(apiMessages, retryCount = 0) {
         err.status === 502 || // Bad gateway
         err.status === 503 || // Service unavailable
         err.status === 504 || // Gateway timeout
-        err.message.includes('fetch') // Network error
+        err.message.includes('fetch') || // Network error
+        err.name === 'AbortError' // Timeout
       )
     );
 
@@ -245,10 +258,17 @@ function getFallbackResponse(userInput) {
 }
 
 export async function askPortfolioAgent(userInput, messages = []) {
+  // Early cache check before processing (faster for repeated queries)
+  const quickCacheKey = generateCacheKey(userInput, messages.slice(-2));
+  const quickCachedResponse = getCachedResponse(quickCacheKey);
+  if (quickCachedResponse) {
+    return quickCachedResponse;
+  }
+
   // Summarize conversation history if it's getting too long
   const processedMessages = await summarizeConversationHistory(messages);
   
-  // Check cache first (using processed messages for cache key)
+  // Check cache again with processed messages
   const cacheKey = generateCacheKey(userInput, processedMessages);
   const cachedResponse = getCachedResponse(cacheKey);
   if (cachedResponse) {
@@ -272,7 +292,7 @@ CONVERSATION STYLE GUIDELINES:
 - **Project confidence with humility** - frame accomplishments in terms of collaboration and problem-solving
 
 RESPONSE FORMAT - Always respond in valid JSON. You have two valid JSON formats:
-1. **Response with content if skills projects blogs experience related**:
+1. **Response with content**:
 {
   "start": "Natural, conversational opening with fillers (keep under 15 words)",
   "steps": [
@@ -285,7 +305,7 @@ RESPONSE FORMAT - Always respond in valid JSON. You have two valid JSON formats:
   ],
   "end": "Maximum 6 words. Natural and brief."
 }
-2. **Clarification/Confirmation question or asking personal details**:
+2. **Clarification/Confirmation question**:
 {
   "start": "Natural, conversational question (under 15 words)",
   "steps": [],
