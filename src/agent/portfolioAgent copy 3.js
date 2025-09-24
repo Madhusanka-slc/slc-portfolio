@@ -97,57 +97,6 @@ function setCachedResponse(cacheKey, data) {
   }
 }
 
-// Summarize conversation history to maintain context while keeping it concise
-async function summarizeConversationHistory(messages) {
-  if (messages.length <= 4) {
-    // If we have 4 or fewer messages (2 Q&A pairs), no summarization needed
-    return messages;
-  }
-
-  try {
-    // Keep the last 4 messages (2 Q&A pairs) and summarize the rest
-    const messagesToSummarize = messages.slice(0, -4);
-    const recentMessages = messages.slice(-4);
-
-    // Create summarization prompt
-    const summarizationMessages = [
-      {
-        role: "system",
-        content: `You are helping to summarize a conversation between a user and a portfolio assistant. 
-        Create a very brief summary (max 2-3 sentences) that captures:
-        1. What topics/projects/experiences were discussed
-        2. Any specific interests or focus areas the user showed
-        3. Key context needed for ongoing conversation
-        
-        Keep it concise and conversational. Focus only on portfolio-related topics.`
-      },
-      {
-        role: "user",
-        content: `Please summarize this conversation history:\n\n${messagesToSummarize.map(m => `${m.role}: ${m.content}`).join('\n\n')}`
-      }
-    ];
-
-    const summaryResponse = await makeAPICallWithRetry(summarizationMessages);
-    
-    // Create a condensed history with summary + recent messages
-    const condensedHistory = [
-      {
-        role: "system",
-        content: `Previous conversation summary: ${summaryResponse}`
-      },
-      ...recentMessages
-    ];
-
-    console.log(`Summarized ${messagesToSummarize.length} messages into context summary`);
-    return condensedHistory;
-
-  } catch (error) {
-    console.warn('Failed to summarize conversation history, keeping last 4 messages only:', error);
-    // Fallback: just keep the last 4 messages
-    return messages.slice(-4);
-  }
-}
-
 // Enhanced retry logic with exponential backoff
 async function makeAPICallWithRetry(apiMessages, retryCount = 0) {
   const body = {
@@ -245,11 +194,8 @@ function getFallbackResponse(userInput) {
 }
 
 export async function askPortfolioAgent(userInput, messages = []) {
-  // Summarize conversation history if it's getting too long
-  const processedMessages = await summarizeConversationHistory(messages);
-  
-  // Check cache first (using processed messages for cache key)
-  const cacheKey = generateCacheKey(userInput, processedMessages);
+  // Check cache first
+  const cacheKey = generateCacheKey(userInput, messages);
   const cachedResponse = getCachedResponse(cacheKey);
   if (cachedResponse) {
     return cachedResponse;
@@ -272,7 +218,7 @@ CONVERSATION STYLE GUIDELINES:
 - **Project confidence with humility** - frame accomplishments in terms of collaboration and problem-solving
 
 RESPONSE FORMAT - Always respond in valid JSON. You have two valid JSON formats:
-1. **Response with content if skills projects blogs experience related**:
+1. **Response with content**:
 {
   "start": "Natural, conversational opening with fillers (keep under 15 words)",
   "steps": [
@@ -285,7 +231,7 @@ RESPONSE FORMAT - Always respond in valid JSON. You have two valid JSON formats:
   ],
   "end": "Maximum 6 words. Natural and brief."
 }
-2. **Clarification/Confirmation question or asking personal details**:
+2. **Clarification/Confirmation question**:
 {
   "start": "Natural, conversational question (under 15 words)",
   "steps": [],
@@ -438,7 +384,7 @@ SPECIFIC RULES:
 
   const apiMessages = [
     { role: "system", content: systemPrompt },
-    ...processedMessages,
+    ...messages,
     { role: "user", content: userInput },
   ];
 
