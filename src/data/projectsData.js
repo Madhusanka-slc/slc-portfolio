@@ -25,12 +25,18 @@ export const allProjects = [
   },
   {
     id: 3,
-    title: "Mechatronic Toy Design with 3D Vision Feedback",
-    subtitle: "Mechanical Design and CV Feedback Loop",
+    title: "Mechatronic Toy with ESP32 & Wake Word Detection",
+    subtitle: "Crank-driven Toy with Embedded AI for Hands-Free Control",
     description:
-      "Built a crank-driven automata toy integrating 3D-printed parts, Arduino, and OpenCV for performance tracking.",
+      "Built a crank-driven automata toy integrating 3D-printed parts, ESP32, and a TinyML wake word detection system for interactive, hands-free operation.",
     imageUrl: toyImage,
-    skills: ["OpenCV", "Arduino", "3D Printing", "Mechanical Design"],
+    skills: [
+      "ESP32",
+      "Wake Word Detection",
+      "TinyML",
+      "3D Printing",
+      "Mechanical Design",
+    ],
   },
   {
     id: 4,
@@ -39,7 +45,13 @@ export const allProjects = [
     description:
       "Developed a system using MediaPipe and TensorFlow to analyze posture and provide ergonomic risk scores in industry.",
     imageUrl: poseImage,
-    skills: ["MediaPipe", "TensorFlow", "Ergonomics", "Pose Estimation", "Python"],
+    skills: [
+      "MediaPipe",
+      "TensorFlow",
+      "Ergonomics",
+      "Pose Estimation",
+      "Python",
+    ],
   },
   {
     id: 5,
@@ -48,6 +60,12 @@ export const allProjects = [
     description:
       "Trained and deployed object detection models (e.g., YOLOv8) to automate quality control in mechanical workflows.",
     imageUrl: defectImage,
-    skills: ["YOLOv8", "Object Detection", "Quality Control", "Manufacturing", "Python"],
+    skills: [
+      "YOLOv8",
+      "Object Detection",
+      "Quality Control",
+      "Manufacturing",
+      "Python",
+    ],
   },
 ];

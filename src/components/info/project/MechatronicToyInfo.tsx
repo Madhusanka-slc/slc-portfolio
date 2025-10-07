@@ -1,18 +1,19 @@
 import React from "react";
 import { allProjects } from "../../../data/projectsData";
+
 const MechatronicToyInfo = ({ setSelectedTech, setCurrentPage }) => {
-  const defectProject = allProjects.find((project) => project.id === 2);
-  const projectSkills = defectProject?.skills || [];
+  // Get the correct project (id 3)
+  const toyProject = allProjects.find((project) => project.id === 3);
+  const projectSkills = toyProject?.skills || [];
+
   return (
     <div className="text-gray-400 space-y-6">
       <div>
         <h4 className="text-lg text-gray-300 font-semibold">Overview</h4>
         <p>
-          This project focuses on using computer vision and deep learning to
-          automate the inspection of mechanical components in a manufacturing
-          environment. It eliminates the need for manual quality control by
-          detecting surface defects such as cracks, rust, and deformation in
-          real-time.
+          This project combines a crank-driven mechatronic toy with an ESP32
+          microcontroller and an integrated wake word detection system, allowing
+          hands-free control of toy movements using voice commands.
         </p>
       </div>
 
@@ -20,32 +21,33 @@ const MechatronicToyInfo = ({ setSelectedTech, setCurrentPage }) => {
         <h4 className="text-lg text-gray-300 font-semibold">
           Technical Implementation
         </h4>
-        <p>
-          The core of the system is a YOLOv8 object detection model trained on a
-          custom dataset of annotated defects in metallic parts. Image data was
-          captured using industrial-grade cameras and labeled using Roboflow.
-          The inference engine was deployed on an edge device (Raspberry Pi 4
-          with Coral TPU) using Flask and OpenCV.
-        </p>
+        <ul className="list-disc list-inside">
+          <li>Designing mechanical parts using CAD and 3D printing</li>
+          <li>Programming ESP32 to control motors and actuators</li>
+          <li>Integrating wake word detection (TinyML on ESP32) for voice commands</li>
+          <li>Adding sensors for motion feedback and performance tracking</li>
+          <li>Optional AI/ML models for gesture or pattern recognition</li>
+        </ul>
       </div>
 
       <div>
         <h4 className="text-lg text-gray-300 font-semibold">Key Features</h4>
         <ul className="list-disc list-inside">
-          <li>Real-time defect detection using YOLOv8</li>
-          <li>Edge deployment on Raspberry Pi for low-latency processing</li>
-          <li>Automatic logging of defective parts with timestamp and image</li>
-          <li>Web-based dashboard for live monitoring and alerting</li>
+          <li>Crank-driven automata with interactive movement</li>
+          <li>ESP32 microcontroller for real-time control</li>
+          <li>Hands-free voice control via wake word detection</li>
+          <li>3D-printed custom mechanical parts</li>
+          <li>Modular design for easy modification and experimentation</li>
         </ul>
       </div>
 
       <div>
         <h4 className="text-lg text-gray-300 font-semibold">Impact</h4>
         <p>
-          The system significantly reduced human error in quality control and
-          helped identify 23% more defects than manual inspections over a 30-day
-          trial. It's particularly useful for small- to mid-scale mechanical
-          workshops aiming to adopt Industry 4.0 practices.
+          Combines mechanics, electronics, and embedded AI to provide an
+          interactive STEM learning experience. Hands-free control makes the toy
+          more engaging and demonstrates the application of TinyML in
+          real-world devices.
         </p>
       </div>
 
@@ -54,38 +56,29 @@ const MechatronicToyInfo = ({ setSelectedTech, setCurrentPage }) => {
         <ul className="list-disc list-inside text-blue-400">
           <li>
             <a
-              href="https://example.com/notes"
+              href="https://www.arduino.cc/en/Guide/HomePage"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Defect Detection Notes
+              Arduino/ESP32 Programming Guide
             </a>
           </li>
           <li>
             <a
-              href="https://github.com/yourusername/defect-detector"
+              href="https://www.3dprinting.com/learn/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              GitHub Repo - YOLOv8 Detection
+              3D Printing Resources
             </a>
           </li>
           <li>
             <a
-              href="https://example.com/image-labeling"
+              href="https://www.tensorflow.org/lite/microcontrollers"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Image Annotation with Roboflow
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://flask.palletsprojects.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Flask Deployment Guide
+              TinyML on Microcontrollers (Wake Word Detection)
             </a>
           </li>
         </ul>

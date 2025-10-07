@@ -44,7 +44,7 @@ const ProjectDetailsPage = ({ project, setCurrentPage, setSelectedTech }) => {
           More About This Project
         </h3>
 
-        {/* Conditionally render based on project title or ID */}
+        {/* Conditionally render project detail components based on project ID */}
         {project.id === 1 && (
           <WakeWordDetectionInfo
             setCurrentPage={setCurrentPage}
@@ -58,6 +58,18 @@ const ProjectDetailsPage = ({ project, setCurrentPage, setSelectedTech }) => {
           />
         )}
         {project.id === 3 && (
+          <MechatronicToyInfo
+            setCurrentPage={setCurrentPage}
+            setSelectedTech={setSelectedTech}
+          />
+        )}
+        {project.id === 4 && (
+          <PoseEstimationInfo
+            setCurrentPage={setCurrentPage}
+            setSelectedTech={setSelectedTech}
+          />
+        )}
+        {project.id === 5 && (
           <DefectDetectionInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}
