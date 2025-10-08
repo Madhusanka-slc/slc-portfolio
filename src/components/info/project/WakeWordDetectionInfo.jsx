@@ -52,6 +52,38 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
         </p>
       </div>
 
+      {/* YouTube Demo Section */}
+      <div>
+        <h4 className="text-lg text-gray-300 font-semibold mt-6">Demo Video</h4>
+        <div className="relative w-full pt-[56.25%] rounded-lg overflow-hidden shadow-lg">
+          <iframe
+            src="https://www.youtube.com/embed/re-dSV_a0tM?list=PLp1g3fyrnmBNehtqyPsrJY-gYQKH90ZPH"
+            title="Wake Word Detection Demo"
+            allowFullScreen
+            className="absolute top-0 left-0 w-full h-full border-0"
+          ></iframe>
+        </div>
+      </div>
+
+      {/* Colab Notebook Section */}
+      <div>
+        <h4 className="text-lg text-gray-300 font-semibold mt-6">
+          Colab Notebook
+        </h4>
+        <p>
+          Explore the model training and preprocessing steps in the Colab
+          notebook:
+        </p>
+        <a
+          href="https://colab.research.google.com/drive/YOUR_NOTEBOOK_ID"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition"
+        >
+          Open in Google Colab
+        </a>
+      </div>
+
       <div className="flex flex-wrap gap-2 mt-4">
         {projectSkills.map((tech) => (
           <span

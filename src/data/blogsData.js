@@ -2,6 +2,7 @@ import mlopsImage from "../assets/images/docker.jpg";
 import embeddedImage from "../assets/images/robot.jpeg";
 import defectImage from "../assets/images/defect.png";
 import solidImage from "../assets/images/SOLID.png";
+import unetImage from "../assets/images/unet-main.png";
 
 export const allBlogs = [
   {
@@ -29,7 +30,13 @@ export const allBlogs = [
     description:
       "Explore how to design interactive toys using microcontrollers, sensors, and AI-based motion or gesture recognition.",
     imageUrl: embeddedImage,
-    skills: ["Embedded Systems", "AI/ML", "Mechatronics", "Gesture Recognition", "Python"],
+    skills: [
+      "Embedded Systems",
+      "AI/ML",
+      "Mechatronics",
+      "Gesture Recognition",
+      "Python",
+    ],
   },
   {
     id: 4,
@@ -38,6 +45,29 @@ export const allBlogs = [
     description:
       "Learn how to train and deploy object detection models (e.g., YOLOv8) to automate quality control in mechanical workflows.",
     imageUrl: defectImage,
-    skills: ["YOLOv8", "Object Detection", "Computer Vision", "Manufacturing", "Python"],
+    skills: [
+      "YOLOv8",
+      "Object Detection",
+      "Computer Vision",
+      "Manufacturing",
+      "Python",
+    ],
   },
+    {
+    id: 5,
+    title: "Understanding U-Net Architecture for Image Segmentation",
+    subtitle: "Deep learning for precise medical and industrial image analysis",
+    description:
+      "Explore the U-Net convolutional neural network, designed for semantic segmentation tasks. Learn how its encoder-decoder structure with skip connections enables accurate pixel-level predictions in biomedical images and beyond.",
+    imageUrl: unetImage, // replace with your imported U-Net image
+    skills: [
+      "U-Net",
+      "Image Segmentation",
+      "Deep Learning",
+      "Computer Vision",
+      "PyTorch",
+      "TensorFlow",
+    ],
+  },
+
 ];
