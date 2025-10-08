@@ -1,6 +1,6 @@
 import React from "react";
 import { allBlogs } from "../../../data/blogsData";
-import unetImage from "../../../assets/images/24.png";
+import unetImage from "../../../assets/images/2.png";
 
 const BlogUNetInfo = ({ setSelectedTech, setCurrentPage }) => {
   const unetBlog = allBlogs.find((blog) => blog.id === 2); // replace 2 with your UNet blog ID
