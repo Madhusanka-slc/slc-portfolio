@@ -69,12 +69,12 @@ const BlogDetailsPage = ({ post, setCurrentPage, setSelectedTech }) => {
             setSelectedTech={setSelectedTech}
           />
         )}
-        {/* {post.id === 5 && (
+        {post.id === 5 && (
           <BlogUNetInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}
           />
-        )} */}
+        )}
       </div>
     </section>
   );

@@ -53,21 +53,21 @@ export const allBlogs = [
       "Python",
     ],
   },
-  //   {
-  //   id: 5,
-  //   title: "Understanding U-Net Architecture for Image Segmentation",
-  //   subtitle: "Deep learning for precise medical and industrial image analysis",
-  //   description:
-  //     "Explore the U-Net convolutional neural network, designed for semantic segmentation tasks. Learn how its encoder-decoder structure with skip connections enables accurate pixel-level predictions in biomedical images and beyond.",
-  //   imageUrl: unetImage, // replace with your imported U-Net image
-  //   skills: [
-  //     "U-Net",
-  //     "Image Segmentation",
-  //     "Deep Learning",
-  //     "Computer Vision",
-  //     "PyTorch",
-  //     "TensorFlow",
-  //   ],
-  // },
+    {
+    id: 5,
+    title: "Understanding U-Net Architecture for Image Segmentation",
+    subtitle: "Deep learning for precise medical and industrial image analysis",
+    description:
+      "Explore the U-Net convolutional neural network, designed for semantic segmentation tasks. Learn how its encoder-decoder structure with skip connections enables accurate pixel-level predictions in biomedical images and beyond.",
+    imageUrl: unetImage, // replace with your imported U-Net image
+    skills: [
+      "U-Net",
+      "Image Segmentation",
+      "Deep Learning",
+      "Computer Vision",
+      "PyTorch",
+      "TensorFlow",
+    ],
+  },
 
 ];
