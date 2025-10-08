@@ -53,7 +53,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
       </div>
 
       {/* YouTube Demo Section */}
-      <div>
+      {/* <div>
         <h4 className="text-lg text-gray-300 font-semibold mt-6">Demo Video</h4>
         <div className="relative w-full pt-[56.25%] rounded-lg overflow-hidden shadow-lg">
           <iframe
@@ -63,7 +63,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
             className="absolute top-0 left-0 w-full h-full border-0"
           ></iframe>
         </div>
-      </div>
+      </div> */}
 
       {/* Colab Notebook Section */}
       <div>

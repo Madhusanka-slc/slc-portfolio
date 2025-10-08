@@ -53,19 +53,19 @@ export const allProjects = [
       "Python",
     ],
   },
-  {
-    id: 5,
-    title: "Automated Defect Detection in Manufacturing",
-    subtitle: "Computer Vision in Manufacturing Environments",
-    description:
-      "Trained and deployed object detection models (e.g., YOLOv8) to automate quality control in mechanical workflows.",
-    imageUrl: defectImage,
-    skills: [
-      "YOLOv8",
-      "Object Detection",
-      "Quality Control",
-      "Manufacturing",
-      "Python",
-    ],
-  },
+  // {
+  //   id: 5,
+  //   title: "Automated Defect Detection in Manufacturing",
+  //   subtitle: "Computer Vision in Manufacturing Environments",
+  //   description:
+  //     "Trained and deployed object detection models (e.g., YOLOv8) to automate quality control in mechanical workflows.",
+  //   imageUrl: defectImage,
+  //   skills: [
+  //     "YOLOv8",
+  //     "Object Detection",
+  //     "Quality Control",
+  //     "Manufacturing",
+  //     "Python",
+  //   ],
+  // },
 ];
