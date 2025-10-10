@@ -24,16 +24,10 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
         <h4 className="text-lg text-gray-300 font-semibold">
           Pipeline Architecture
         </h4>
-        <pre className="
-          font-mono 
-          text-xs sm:text-sm md:text-base 
-          leading-4 sm:leading-5 md:leading-6 
-          whitespace-pre overflow-x-auto
-          p-4 bg-gray-900 border border-gray-700 rounded-lg
-        ">
-          {`
+        <pre className="font-mono text-xs sm:text-sm md:text-base  whitespace-pre overflow-x-auto">
+                        {`
               ┌───────────────────────┐
-              │  Audio Data Sources   │
+              │   Audio Data Sources  │
               │───────────────────────│
               │ • Activates (TTS)     │
               │ • Negatives (Noise)   │
@@ -42,7 +36,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
                         │
                         ▼
               ┌───────────────────────┐
-              │  Data Preprocessing   │
+              │   Data Preprocessing  │
               │───────────────────────│
               │ • Normalize volume    │
               │ • Mix with background │
@@ -52,7 +46,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
                         │
                         ▼
               ┌───────────────────────┐
-              │  Model Architecture   │
+              │   Model Architecture  │
               │───────────────────────│
               │ • Conv1D (features)   │
               │ • GRU × 2 (temporal)  │
@@ -69,7 +63,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
               │ • Use INMP441 mic     │
               │ • Real-time detection │
               └───────────────────────┘
-`}
+              `}
         </pre>
       </div>
 
