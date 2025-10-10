@@ -21,49 +21,56 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
 
       {/* Architecture / Pipeline Diagram */}
       <div>
-        <h4 className="text-lg text-gray-300 font-semibold">Pipeline Architecture</h4>
-<pre className="font-mono text-xs sm:text-sm md:text-base leading-6 whitespace-pre overflow-x-auto">
-{`
-┌───────────────────────┐
-│   Audio Data Sources  │
-│───────────────────────│
-│ • Activates (TTS)     │
-│ • Negatives (Noise)   │
-│ • Background Audio    │
-└─────────┬─────────────┘
-          │
-          ▼
-┌───────────────────────┐
-│   Data Preprocessing  │
-│───────────────────────│
-│ • Normalize volume    │
-│ • Mix with background │
-│ • Create 10s clips    │
-│ • Label time windows  │
-└─────────┬─────────────┘
-          │
-          ▼
-┌───────────────────────┐
-│   Model Architecture  │
-│───────────────────────│
-│ • Conv1D (features)   │
-│ • GRU × 2 (temporal)  │
-│ • Dense (prediction)  │
-│ • Dropout + BatchNorm │
-└─────────┬─────────────┘
-          │
-          ▼
-┌───────────────────────┐
-│ ESP32-S3 Deployment   │
-│───────────────────────│
-│ • Convert to TFLite   │
-│ • Deploy on board     │
-│ • Use INMP441 mic     │
-│ • Real-time detection │
-└───────────────────────┘
+        <h4 className="text-lg text-gray-300 font-semibold">
+          Pipeline Architecture
+        </h4>
+        <pre className="
+          font-mono 
+          text-xs sm:text-sm md:text-base 
+          leading-4 sm:leading-5 md:leading-6 
+          whitespace-pre overflow-x-auto
+          p-4 bg-gray-900 border border-gray-700 rounded-lg
+        ">
+          {`
+              ┌───────────────────────┐
+              │  Audio Data Sources   │
+              │───────────────────────│
+              │ • Activates (TTS)     │
+              │ • Negatives (Noise)   │
+              │ • Background Audio    │
+              └─────────┬─────────────┘
+                        │
+                        ▼
+              ┌───────────────────────┐
+              │  Data Preprocessing   │
+              │───────────────────────│
+              │ • Normalize volume    │
+              │ • Mix with background │
+              │ • Create 10s clips    │
+              │ • Label time windows  │
+              └─────────┬─────────────┘
+                        │
+                        ▼
+              ┌───────────────────────┐
+              │  Model Architecture   │
+              │───────────────────────│
+              │ • Conv1D (features)   │
+              │ • GRU × 2 (temporal)  │
+              │ • Dense (prediction)  │
+              │ • Dropout + BatchNorm │
+              └─────────┬─────────────┘
+                        │
+                        ▼
+              ┌───────────────────────┐
+              │ ESP32-S3 Deployment   │
+              │───────────────────────│
+              │ • Convert to TFLite   │
+              │ • Deploy on board     │
+              │ • Use INMP441 mic     │
+              │ • Real-time detection │
+              └───────────────────────┘
 `}
-</pre>
-
+        </pre>
       </div>
 
       {/* Resources Section */}
