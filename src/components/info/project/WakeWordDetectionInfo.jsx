@@ -22,7 +22,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
       {/* Architecture / Pipeline Diagram */}
       <div>
         <h4 className="text-lg text-gray-300 font-semibold">Pipeline Architecture</h4>
-<pre className="font-mono text-sm leading-6 whitespace-pre overflow-x-auto">
+<pre className="font-mono text-xs sm:text-sm md:text-base leading-6 whitespace-pre overflow-x-auto">
 {`
 ┌───────────────────────┐
 │   Audio Data Sources  │
