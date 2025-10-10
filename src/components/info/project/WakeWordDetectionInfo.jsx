@@ -22,8 +22,24 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
       {/* Architecture / Pipeline Diagram */}
       <div>
         <h4 className="text-lg text-gray-300 font-semibold">Pipeline Architecture</h4>
-<pre className="font-mono text-sm leading-6 whitespace-pre overflow-x-auto">
-{`
+ <pre        className="
+              text-sm       // Base size (mobile first): small text (e.g., 14px)
+              md:text-base  // Medium screens and up: default text (e.g., 16px)
+              lg:text-lg    // Large screens and up: slightly larger text (e.g., 18px)
+            "
+            style={{
+              fontFamily: "monospace", // Force a monospaced font
+              whiteSpace: "pre", // Ensure exact whitespace rendering
+              overflowX: "auto", // Allow horizontal scrolling on narrow screens
+              lineHeight: 1.25, // Adjust vertical spacing for tight look
+              padding: "0 1rem", // Add some horizontal padding
+            
+
+  
+              color: "#d1d5db", // Optional: Light text color (gray-300)
+            }}
+          >
+            {`
 ┌───────────────────────┐
 │   Audio Data Sources  │
 │───────────────────────│
@@ -62,7 +78,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
 │ • Real-time detection │
 └───────────────────────┘
 `}
-</pre>
+          </pre>
 
       </div>
 
