@@ -24,24 +24,19 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
         </h4>
         <ul className="list-disc list-inside space-y-1">
           <li>
-            <strong>Data Generation:</strong> Download activate and negative 
-            audio samples using ElevenLabs TTS API
+            <strong>Data Generation:</strong> Download audio samples via ElevenLabs TTS
           </li>
           <li>
-            <strong>Dataset Creation:</strong> Mix samples with background 
-            noise and generate training/validation datasets
+            <strong>Dataset Creation:</strong> Mix with background noise
           </li>
           <li>
-            <strong>Model Training:</strong> Train Conv1D + GRU model on 
-            audio spectrograms
+            <strong>Model Training:</strong> Train Conv1D + GRU model
           </li>
           <li>
-            <strong>Model Testing:</strong> Evaluate performance and test 
-            wake word detection
+            <strong>Model Testing:</strong> Evaluate detection performance
           </li>
           <li>
-            <strong>Hardware Deployment:</strong> Deploy optimized model 
-            to ESP32-S3 with INMP441 microphone
+            <strong>Hardware Deployment:</strong> Deploy to ESP32-S3
           </li>
         </ul>
       </div>
@@ -52,10 +47,10 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
           Model Architecture
         </h4>
         <ul className="list-disc list-inside space-y-1">
-          <li>Conv1D layer - Feature extraction from audio</li>
-          <li>Two GRU layers - Sequential pattern recognition</li>
-          <li>TimeDistributed Dense - Frame-by-frame predictions</li>
-          <li>Dropout & BatchNormalization - Model stability</li>
+          <li>Conv1D layer for feature extraction</li>
+          <li>Two GRU layers for pattern recognition</li>
+          <li>TimeDistributed Dense for predictions</li>
+          <li>Dropout & BatchNormalization layers</li>
         </ul>
       </div>
 
@@ -63,10 +58,12 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
       <div>
         <h4 className="text-lg text-gray-300 font-semibold">Key Features</h4>
         <ul className="list-disc list-inside space-y-1">
-          <li>Custom wake word training with synthetic data</li>
-          <li>Real-time detection on ESP32-S3 microcontroller</li>
-          <li>Low-power continuous listening mode</li>
-          <li>INMP441 I²S digital microphone integration</li>
+          <li>Custom wake word training</li>
+          <li>Real-time detection on ESP32-S3</li>
+          <li>Low-power continuous listening</li>
+          <li>INMP441 I²S microphone</li>
+          <li>&gt;95% detection accuracy</li>
+          <li>Model size &lt;500KB</li>
         </ul>
       </div>
 
@@ -94,7 +91,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
               GitHub Repo - Wake Word Detection
             </a>
           </li>
-          {/* <li>
+          <li>
             <a
               href="https://github.com/Madhusanka-slc/wake-word-detection/blob/main/notebooks/01_data_generation.ipynb"
               target="_blank"
@@ -120,7 +117,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
             >
               Model Testing & Inference Notebook
             </a>
-          </li> */}
+          </li>
         </ul>
       </div>
 
