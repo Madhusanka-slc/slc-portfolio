@@ -22,17 +22,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
       {/* Architecture / Pipeline Diagram */}
       <div>
         <h4 className="text-lg text-gray-300 font-semibold">Pipeline Architecture</h4>
- <pre            className="
-              // 1. RESPONSIVE FONT SIZE:
-              text-xs       // Small font for mobile
-              sm:text-sm    // Slightly larger for small tablets
-              md:text-base  // Base font for desktop
-
-              // 2. EXPLICIT, RESPONSIVE LINE HEIGHT (Crucial for alignment):
-              leading-4     // Tight line-height (e.g., 16px) for the smallest font
-              sm:leading-5  // Medium line-height (e.g., 20px) for small tablets
-              md:leading-6  // Default line-height (e.g., 24px) for desktop
-            "
+ <pre className="text-md"
             style={{
               fontFamily: "monospace", // Force a monospaced font
               whiteSpace: "pre", // Ensure exact whitespace rendering
