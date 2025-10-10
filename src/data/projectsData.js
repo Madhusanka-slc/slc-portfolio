@@ -12,7 +12,7 @@ export const allProjects = [
     description:
       "Developed a real-time wake word detection system on ESP32-S3 using the INMP441 digital I²S microphone for hands-free control in IoT applications.",
     imageUrl: wakeWordImage,
-    skills: ["ESP32-S3", "INMP441", "TinyML", "Audio Processing"],
+    skills: ["ESP32-S3", "INMP441", "TensorFlow Lite", "Audio Processing", "TensorFlow", "Python" ],
   },
   {
     id: 2,

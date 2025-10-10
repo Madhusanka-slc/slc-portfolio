@@ -16,7 +16,7 @@ const ProjectDetailsPage = ({ project, setCurrentPage, setSelectedTech }) => {
       {project.subtitle && (
         <h3 className="text-xl mb-2 text-gray-300">{project.subtitle}</h3>
       )}
-      <p className="mb-6">{project.description}</p>
+      <p className="mb-6 text-gray-400">{project.description}</p>
 
       {project.imageUrl && (
         <img

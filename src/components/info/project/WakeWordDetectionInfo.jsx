@@ -19,6 +19,69 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
         </p>
       </div>
 
+      {/* Architecture / Pipeline Diagram */}
+      <div>
+        <h4 className="text-lg text-gray-300 font-semibold">Pipeline Architecture</h4>
+        <pre className="text-gray-300 text-sm leading-6 whitespace-pre-wrap overflow-x-auto">
+{`
+        ┌────────────────────────┐
+        │   Audio Data Sources   │
+        │ ─────────────────────  │
+        │ • Activates (TTS)      │
+        │ • Negatives (Noise)    │
+        │ • Background Audio     │
+        └─────────┬──────────────┘
+                  │
+                  ▼
+        ┌────────────────────────┐
+        │   Data Preprocessing   │
+        │ ─────────────────────  │
+        │ • Normalize volume     │
+        │ • Mix with background  │
+        │ • Create 10s clips     │
+        │ • Label time windows   │
+        └─────────┬──────────────┘
+                  │
+                  ▼
+        ┌────────────────────────┐
+        │   Model Architecture   │
+        │ ─────────────────────  │
+        │ • Conv1D (features)    │
+        │ • GRU × 2 (temporal)   │
+        │ • Dense (prediction)   │
+        │ • Dropout + BatchNorm  │
+        └─────────┬──────────────┘
+                  │
+                  ▼
+        ┌────────────────────────┐
+        │     Model Training     │
+        │ ─────────────────────  │
+        │ • Train on dataset     │
+        │ • Validate accuracy    │
+        │ • Save GRU weights     │
+        └─────────┬──────────────┘
+                  │
+                  ▼
+        ┌────────────────────────┐
+        │   Model Evaluation     │
+        │ ─────────────────────  │
+        │ • Test predictions     │
+        │ • Evaluate detection   │
+        └─────────┬──────────────┘
+                  │
+                  ▼
+        ┌────────────────────────┐
+        │  ESP32-S3 Deployment   │
+        │ ─────────────────────  │
+        │ • Convert to TFLite    │
+        │ • Deploy on board      │
+        │ • Use INMP441 mic      │
+        │ • Real-time detection  │
+        └────────────────────────┘
+`}
+        </pre>
+      </div>
+
       {/* Resources Section */}
       <div>
         <h4 className="text-lg text-gray-300 font-semibold">Resources</h4>
@@ -29,7 +92,7 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              GitHub Repo - Wake Word Detection
+              GitHub - Wake Word Detection
             </a>
           </li>
         </ul>
