@@ -13,24 +13,24 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
       bgColor: "bg-gray-500/10",
       borderColor: "border-gray-500/30"
     },
-    {
-      title: "Data Preprocessing",
-      image: poseImage, // Add your image path here
-      bgColor: "bg-gray-500/10",
-      borderColor: "border-gray-500/30"
-    },
-    {
-      title: "Model Architecture",
-      image: poseImage, // Add your image path here
-      bgColor: "bg-gray-500/10",
-      borderColor: "border-gray-500/30"
-    },
-    {
-      title: "ESP32-S3 Deployment",
-      image: poseImage, // Add your image path here
-      bgColor: "bg-gray-500/10",
-      borderColor: "border-gray-500/30"
-    }
+    // {
+    //   title: "Data Preprocessing",
+    //   image: poseImage, // Add your image path here
+    //   bgColor: "bg-gray-500/10",
+    //   borderColor: "border-gray-500/30"
+    // },
+    // {
+    //   title: "Model Architecture",
+    //   image: poseImage, // Add your image path here
+    //   bgColor: "bg-gray-500/10",
+    //   borderColor: "border-gray-500/30"
+    // },
+    // {
+    //   title: "ESP32-S3 Deployment",
+    //   image: poseImage, // Add your image path here
+    //   bgColor: "bg-gray-500/10",
+    //   borderColor: "border-gray-500/30"
+    // }
   ];
 
   return (
