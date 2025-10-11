@@ -2,6 +2,7 @@ import React from "react";
 import { ArrowDown } from "lucide-react";
 import { allProjects } from "../../../data/projectsData";
 import poseImage from "../../../assets/images/process.png";
+import polImage from "../../../assets/images/polg.png";
 const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
   const wakeWordProject = allProjects.find((project) => project.id === 1);
   const projectSkills = wakeWordProject?.skills || [];
@@ -13,12 +14,12 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
       bgColor: "bg-gray-500/10",
       borderColor: "border-gray-500/30"
     },
-    // {
-    //   title: "Data Preprocessing",
-    //   image: poseImage, // Add your image path here
-    //   bgColor: "bg-gray-500/10",
-    //   borderColor: "border-gray-500/30"
-    // },
+    {
+      title: "Data Preprocessing",
+      image: polImage, // Add your image path here
+      bgColor: "bg-gray-500/10",
+      borderColor: "border-gray-500/30"
+    },
     // {
     //   title: "Model Architecture",
     //   image: poseImage, // Add your image path here
