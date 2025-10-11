@@ -9,31 +9,19 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
   const pipelineStages = [
     {
       title: "Audio Data Sources",
-      items: ["Activates (TTS)", "Negatives (Noise)", "Background Audio"],
-      bgColor: "bg-blue-500/10",
-      borderColor: "border-blue-500/30",
-      iconColor: "text-blue-400"
+      items: ["Activates (TTS)", "Negatives (Noise)", "Background Audio"]
     },
     {
       title: "Data Preprocessing",
-      items: ["Normalize volume", "Mix with background", "Create 10s clips", "Label time windows"],
-      bgColor: "bg-blue-500/10",
-      borderColor: "border-blue-500/30",
-      iconColor: "text-blue-400"
+      items: ["Normalize volume", "Mix with background", "Create 10s clips", "Label time windows"]
     },
     {
       title: "Model Architecture",
-      items: ["Conv1D (features)", "GRU × 2 (temporal)", "Dense (prediction)", "Dropout + BatchNorm"],
-      bgColor: "bg-blue-500/10",
-      borderColor: "border-blue-500/30",
-      iconColor: "text-blue-400"
+      items: ["Conv1D (features)", "GRU × 2 (temporal)", "Dense (prediction)", "Dropout + BatchNorm"]
     },
     {
       title: "ESP32-S3 Deployment",
-      items: ["Convert to TFLite", "Deploy on board", "Use INMP441 mic", "Real-time detection"],
-      bgColor: "bg-blue-500/10",
-      borderColor: "border-blue-500/30",
-      iconColor: "text-blue-400"
+      items: ["Convert to TFLite", "Deploy on board", "Use INMP441 mic", "Real-time detection"]
     }
   ];
 
@@ -53,28 +41,36 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
 
       {/* Architecture / Pipeline Diagram */}
       <div>
-        <h4 className="text-lg text-gray-300 font-semibold mb-4">
+        <h4 className="text-lg text-gray-300 font-semibold mb-6">
           Pipeline Architecture
         </h4>
-        <div className="space-y-3 max-w-3xl mx-auto">
+        <div className="space-y-4 max-w-3xl mx-auto">
           {pipelineStages.map((stage, idx) => (
             <React.Fragment key={idx}>
-              <div className={`border-2 ${stage.borderColor} ${stage.bgColor} rounded-xl p-4 sm:p-6 transition-all hover:scale-[1.02] hover:shadow-lg`}>
-                <h5 className={`${stage.iconColor} font-bold text-base sm:text-lg text-center mb-3 pb-2 border-b ${stage.borderColor}`}>
+              <div className="rounded-lg overflow-hidden border border-gray-700 hover:border-gray-400 hover:shadow-2xl bg-[#2e2e33] transition-all duration-300 group p-4 sm:p-6">
+                {/* Title */}
+                <h5 className="text-lg sm:text-xl font-bold text-gray-100 group-hover:text-gray-400 transition-colors text-center mb-4">
                   {stage.title}
                 </h5>
-                <ul className="space-y-2">
+                
+                {/* Items */}
+                <div className="space-y-2">
                   {stage.items.map((item, i) => (
-                    <li key={i} className="flex items-start text-sm sm:text-base">
-                      <span className={`mr-2 mt-0.5 ${stage.iconColor} font-bold`}>•</span>
-                      <span className="text-gray-300">{item}</span>
-                    </li>
+                    <div 
+                      key={i} 
+                      className="text-center py-2 px-3 rounded bg-gray-800/50 border border-gray-700"
+                    >
+                      <p className="text-sm sm:text-base text-gray-300">
+                        {item}
+                      </p>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
+              
               {idx < pipelineStages.length - 1 && (
                 <div className="flex justify-center py-2">
-                  <ArrowDown className="text-gray-500" size={28} strokeWidth={2.5} />
+                  <ArrowDown className="text-gray-500" size={32} strokeWidth={2.5} />
                 </div>
               )}
             </React.Fragment>
