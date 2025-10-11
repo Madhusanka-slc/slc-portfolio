@@ -17,23 +17,23 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
     {
       title: "Data Preprocessing",
       items: ["Normalize volume", "Mix with background", "Create 10s clips", "Label time windows"],
-      bgColor: "bg-purple-500/10",
-      borderColor: "border-purple-500/30",
-      iconColor: "text-purple-400"
+      bgColor: "bg-blue-500/10",
+      borderColor: "border-blue-500/30",
+      iconColor: "text-blue-400"
     },
     {
       title: "Model Architecture",
       items: ["Conv1D (features)", "GRU × 2 (temporal)", "Dense (prediction)", "Dropout + BatchNorm"],
-      bgColor: "bg-green-500/10",
-      borderColor: "border-green-500/30",
-      iconColor: "text-green-400"
+      bgColor: "bg-blue-500/10",
+      borderColor: "border-blue-500/30",
+      iconColor: "text-blue-400"
     },
     {
       title: "ESP32-S3 Deployment",
       items: ["Convert to TFLite", "Deploy on board", "Use INMP441 mic", "Real-time detection"],
-      bgColor: "bg-orange-500/10",
-      borderColor: "border-orange-500/30",
-      iconColor: "text-orange-400"
+      bgColor: "bg-blue-500/10",
+      borderColor: "border-blue-500/30",
+      iconColor: "text-blue-400"
     }
   ];
 
