@@ -1,7 +1,7 @@
 import React from "react";
 import { ArrowDown } from "lucide-react";
 import { allProjects } from "../../../data/projectsData";
-
+import poseImage from "../../../assets/images/process.png";
 const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
   const wakeWordProject = allProjects.find((project) => project.id === 1);
   const projectSkills = wakeWordProject?.skills || [];
@@ -9,19 +9,27 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
   const pipelineStages = [
     {
       title: "Audio Data Sources",
-      items: ["Activates (TTS)", "Negatives (Noise)", "Background Audio"]
+      image: poseImage, // Add your image path here
+      bgColor: "bg-gray-500/10",
+      borderColor: "border-gray-500/30"
     },
     {
       title: "Data Preprocessing",
-      items: ["Normalize volume", "Mix with background", "Create 10s clips", "Label time windows"]
+      image: poseImage, // Add your image path here
+      bgColor: "bg-gray-500/10",
+      borderColor: "border-gray-500/30"
     },
     {
       title: "Model Architecture",
-      items: ["Conv1D (features)", "GRU × 2 (temporal)", "Dense (prediction)", "Dropout + BatchNorm"]
+      image: poseImage, // Add your image path here
+      bgColor: "bg-gray-500/10",
+      borderColor: "border-gray-500/30"
     },
     {
       title: "ESP32-S3 Deployment",
-      items: ["Convert to TFLite", "Deploy on board", "Use INMP441 mic", "Real-time detection"]
+      image: poseImage, // Add your image path here
+      bgColor: "bg-gray-500/10",
+      borderColor: "border-gray-500/30"
     }
   ];
 
@@ -41,33 +49,19 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
 
       {/* Architecture / Pipeline Diagram */}
       <div>
-        <h4 className="text-lg text-gray-300 font-semibold mb-6">
+        <h4 className="text-lg text-gray-300 font-semibold mb-4">
           Pipeline Architecture
         </h4>
-        <div className="space-y-4 max-w-3xl mx-auto">
+        <div className="space-y-3 max-w-4xl mx-auto">
           {pipelineStages.map((stage, idx) => (
             <React.Fragment key={idx}>
-              <div className="rounded-lg overflow-hidden border border-gray-700 hover:border-gray-400 hover:shadow-2xl bg-[#2e2e33] transition-all duration-300 group p-4 sm:p-6">
-                {/* Title */}
-                <h5 className="text-lg sm:text-xl font-bold text-gray-100 group-hover:text-gray-400 transition-colors text-center mb-4">
-                  {stage.title}
-                </h5>
-                
-                {/* Items */}
-                <div className="space-y-2">
-                  {stage.items.map((item, i) => (
-                    <div 
-                      key={i} 
-                      className="text-center py-2 px-3 rounded bg-gray-800/50 border border-gray-700"
-                    >
-                      <p className="text-sm sm:text-base text-gray-300">
-                        {item}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+              <div className={`border-2 ${stage.borderColor} ${stage.bgColor} rounded-xl p-3 sm:p-4 transition-all duration-300 hover:border-gray-400 hover:shadow-2xl group`}>
+                <img 
+                  src={stage.image} 
+                  alt={stage.title}
+                  className="w-full h-auto rounded-lg object-contain transition-transform duration-300 group-hover:scale-105"
+                />
               </div>
-              
               {idx < pipelineStages.length - 1 && (
                 <div className="flex justify-center py-2">
                   <ArrowDown className="text-gray-500" size={32} strokeWidth={2.5} />
