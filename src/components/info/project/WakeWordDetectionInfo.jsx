@@ -4,6 +4,7 @@ import { allProjects } from "../../../data/projectsData";
 import poseImage from "../../../assets/images/process.png";
 import polImage from "../../../assets/images/polg.png";
 import convImage from "../../../assets/images/conv.png";
+import decoImage from "../../../assets/images/deco.png";
 const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
   const wakeWordProject = allProjects.find((project) => project.id === 1);
   const projectSkills = wakeWordProject?.skills || [];
@@ -27,12 +28,12 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
       bgColor: "bg-gray-500/10",
       borderColor: "border-gray-500/30"
     },
-    // {
-    //   title: "ESP32-S3 Deployment",
-    //   image: poseImage, // Add your image path here
-    //   bgColor: "bg-gray-500/10",
-    //   borderColor: "border-gray-500/30"
-    // }
+    {
+      title: "ESP32-S3 Deployment",
+      image: decoImage, // Add your image path here
+      bgColor: "bg-gray-500/10",
+      borderColor: "border-gray-500/30"
+    }
   ];
 
   return (
