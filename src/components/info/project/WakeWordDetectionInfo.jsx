@@ -2,9 +2,9 @@ import React from "react";
 import { ArrowDown } from "lucide-react";
 import { allProjects } from "../../../data/projectsData";
 import poseImage from "../../../assets/images/process.png";
-import polImage from "../../../assets/images/polg.png";
-import convImage from "../../../assets/images/conv.png";
-import decoImage from "../../../assets/images/deco.png";
+import polImage from "../../../assets/images/unet_pooling.png";
+import convImage from "../../../assets/images/unet_convolution.png";
+import decoImage from "../../../assets/images/unet_convolution.png";
 const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
   const wakeWordProject = allProjects.find((project) => project.id === 1);
   const projectSkills = wakeWordProject?.skills || [];
