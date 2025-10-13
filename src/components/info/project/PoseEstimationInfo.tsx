@@ -1,7 +1,7 @@
 import React from "react";
 import { allProjects } from "../../../data/projectsData";
 const PoseEstimationInfo = ({ setSelectedTech, setCurrentPage }) => {
-  const defectProject = allProjects.find((project) => project.id === 3);
+  const defectProject = allProjects.find((project) => project.id === 4);
   const projectSkills = defectProject?.skills || [];
   return (
     <div className="text-gray-400 space-y-6">

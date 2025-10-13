@@ -2,7 +2,7 @@ import React from "react";
 import { allBlogs } from "../../../data/blogsData";
 
 const BlogDefectDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
-  const defectBlog = allBlogs.find((blog) => blog.id === 3);
+  const defectBlog = allBlogs.find((blog) => blog.id === 4);
   const blogSkills = defectBlog?.skills || [];
 
   return (

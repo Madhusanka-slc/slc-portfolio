@@ -11,7 +11,7 @@ import decoderImage from "../../../assets/images/unet_decoder.png";
 import unetImage from "../../../assets/images/unet.png";
 
 const BlogUNetInfo = ({ setSelectedTech, setCurrentPage }) => {
-  const unetBlog = allBlogs.find((blog) => blog.id === 2); // replace 2 with your actual blog ID
+  const unetBlog = allBlogs.find((blog) => blog.id === 5); // replace 2 with your actual blog ID
   const blogSkills = unetBlog?.skills || [];
 
   const conceptStages = [

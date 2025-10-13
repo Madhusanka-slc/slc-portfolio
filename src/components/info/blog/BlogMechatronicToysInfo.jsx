@@ -1,7 +1,7 @@
 import React from "react";
 import { allBlogs } from "../../../data/blogsData";
 const BlogMechatronicToysInfo = ({ setSelectedTech, setCurrentPage }) => {
-  const defectBlog = allBlogs.find((blog) => blog.id === 2);
+  const defectBlog = allBlogs.find((blog) => blog.id === 3);
   const blogSkills = defectBlog?.skills || [];
   return (
     <div className="text-gray-400 space-y-6">
