@@ -2,7 +2,7 @@ import mlopsImage from "../assets/images/docker.jpg";
 import embeddedImage from "../assets/images/robot.jpeg";
 import defectImage from "../assets/images/defect.png";
 import solidImage from "../assets/images/SOLID.png";
-import unetImage from "../assets/images/unet-main.png";
+import unetImage from "../assets/images/imgseg.png";
 
 export const allBlogs = [
   {
