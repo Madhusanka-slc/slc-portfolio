@@ -10,7 +10,7 @@ import decoderImage from "../../../assets/images/unet_decoder.png";
 import unetImage from "../../../assets/images/unet.png";
 
 const BlogUNetInfo = ({ setSelectedTech, setCurrentPage }) => {
-  const unetBlog = allBlogs.find((blog) => blog.id === 5); // replace 5 with your U-Net blog ID
+  const unetBlog = allBlogs.find((blog) => blog.id === 1); // replace 5 with your U-Net blog ID
   const blogSkills = unetBlog?.skills || [];
 
   return (

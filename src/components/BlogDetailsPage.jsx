@@ -5,7 +5,8 @@ import BlogMechatronicToysInfo from "./info/blog/BlogMechatronicToysInfo";
 import BlogMLOpsInfo from "./info/blog/BlogMLOpsInfo";
 import BlogUNetInfo from "./info/blog/BlogUNetInfo";
 import BlogTransformerInfo from "./info/blog/BlogTransformerInfo";
-
+import BlogLangGraphInfo from "./info/blog/BlogLangGraphInfo";
+import BlogLLMInfo from "./info/blog/BlogLLMInfo";
 const BlogDetailsPage = ({ post, setCurrentPage, setSelectedTech }) => {
   useEffect(() => {
     console.log("Rendering blog:", post);
@@ -47,37 +48,19 @@ const BlogDetailsPage = ({ post, setCurrentPage, setSelectedTech }) => {
 
         {/* Conditionally render blog info components based on post ID */}
         {post.id === 1 && (
-          <BlogSOLIDInfo
-            setCurrentPage={setCurrentPage}
-            setSelectedTech={setSelectedTech}
-          />
-        )}
-        {post.id === 2 && (
-          <BlogMLOpsInfo
-            setCurrentPage={setCurrentPage}
-            setSelectedTech={setSelectedTech}
-          />
-        )}
-        {post.id === 3 && (
-          <BlogMechatronicToysInfo
-            setCurrentPage={setCurrentPage}
-            setSelectedTech={setSelectedTech}
-          />
-        )}
-        {post.id === 4 && (
-          <BlogDefectDetectionInfo
-            setCurrentPage={setCurrentPage}
-            setSelectedTech={setSelectedTech}
-          />
-        )}
-        {post.id === 5 && (
           <BlogUNetInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}
           />
         )}
-                {post.id === 6 && (
+        {post.id === 2 && (
           <BlogTransformerInfo
+            setCurrentPage={setCurrentPage}
+            setSelectedTech={setSelectedTech}
+          />
+        )}
+        {post.id === 3 && (
+          <BlogSOLIDInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}
           />
