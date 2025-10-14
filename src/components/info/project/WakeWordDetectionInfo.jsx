@@ -14,26 +14,8 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
       title: "Audio Data Sources",
       image: poseImage, // Add your image path here
       bgColor: "bg-gray-500/10",
-      borderColor: "border-gray-500/30"
+      borderColor: "border-gray-500/30",
     },
-    {
-      title: "Data Preprocessing",
-      image: polImage, // Add your image path here
-      bgColor: "bg-gray-500/10",
-      borderColor: "border-gray-500/30"
-    },
-    {
-      title: "Model Architecture",
-      image: convImage, // Add your image path here
-      bgColor: "bg-gray-500/10",
-      borderColor: "border-gray-500/30"
-    },
-    {
-      title: "ESP32-S3 Deployment",
-      image: decoImage, // Add your image path here
-      bgColor: "bg-gray-500/10",
-      borderColor: "border-gray-500/30"
-    }
   ];
 
   return (
@@ -44,9 +26,14 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
         <p>
           A complete wake word detection system built using TensorFlow, capable
           of training custom models and running real-time detection on an
-          ESP32-S3 microcontroller. The model listens continuously using an
-          INMP441 I²S microphone and activates upon hearing a specific trigger
-          word — all processed locally without cloud dependency.
+          ESP32-S3 microcontroller. I developed a full end-to-end pipeline that
+          downloads positive and negative samples from ElevenLabs relevant to
+          the custom wake word, uses a user-provided 10-second background audio
+          clip, preprocesses all data, and automatically generates structured
+          training and development datasets. The model is then trained,
+          optimized, and deployed to the ESP32-S3, where it continuously listens
+          via the INMP441 I²S microphone and activates upon hearing the trigger
+          word — all processed locally without any cloud dependency.
         </p>
       </div>
 
@@ -58,16 +45,22 @@ const WakeWordDetectionInfo = ({ setSelectedTech, setCurrentPage }) => {
         <div className="space-y-3 max-w-4xl mx-auto">
           {pipelineStages.map((stage, idx) => (
             <React.Fragment key={idx}>
-              <div className={`border-2 ${stage.borderColor} ${stage.bgColor} rounded-xl p-3 sm:p-4 transition-all duration-300 hover:border-gray-400 hover:shadow-2xl group`}>
-                <img 
-                  src={stage.image} 
+              <div
+                className={`border-2 ${stage.borderColor} ${stage.bgColor} rounded-xl p-3 sm:p-4 transition-all duration-300 hover:border-gray-400 hover:shadow-2xl group`}
+              >
+                <img
+                  src={stage.image}
                   alt={stage.title}
                   className="w-full h-auto rounded-lg object-contain transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               {idx < pipelineStages.length - 1 && (
                 <div className="flex justify-center py-2">
-                  <ArrowDown className="text-gray-500" size={32} strokeWidth={2.5} />
+                  <ArrowDown
+                    className="text-gray-500"
+                    size={32}
+                    strokeWidth={2.5}
+                  />
                 </div>
               )}
             </React.Fragment>
