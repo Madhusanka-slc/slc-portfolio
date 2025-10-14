@@ -1,4 +1,6 @@
 import React from "react";
+import { allBlogs } from "../../../data/blogsData";
+
 import convImage from "../../../assets/images/unet_convolution.png";
 import poolImage from "../../../assets/images/unet_pooling.png";
 import transImage from "../../../assets/images/unet_transpose.png";
@@ -7,7 +9,10 @@ import encoderImage from "../../../assets/images/unet_encoder.png";
 import decoderImage from "../../../assets/images/unet_decoder.png";
 import unetImage from "../../../assets/images/unet.png";
 
-const BlogUNetInfo = () => {
+const BlogUNetInfo = ({ setSelectedTech, setCurrentPage }) => {
+  const unetBlog = allBlogs.find((blog) => blog.id === 5); // replace 5 with your U-Net blog ID
+  const blogSkills = unetBlog?.skills || [];
+
   return (
     <div className="space-y-12 px-4 py-8">
       {/* Convolution Network */}
@@ -106,6 +111,22 @@ const BlogUNetInfo = () => {
           alt="U-Net Full"
           className="w-full rounded-2xl shadow-lg"
         />
+      </div>
+
+      {/* Skills */}
+      <div className="flex flex-wrap gap-2 mt-4">
+        {blogSkills.map((tech) => (
+          <span
+            key={tech}
+            onClick={() => {
+              setSelectedTech(tech);
+              setCurrentPage("techDetails");
+            }}
+            className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-gray-600 transition cursor-pointer"
+          >
+            {tech}
+          </span>
+        ))}
       </div>
     </div>
   );

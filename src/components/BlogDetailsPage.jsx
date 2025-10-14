@@ -4,6 +4,7 @@ import BlogSOLIDInfo from "./info/blog/BlogSOLIDInfo";
 import BlogMechatronicToysInfo from "./info/blog/BlogMechatronicToysInfo";
 import BlogMLOpsInfo from "./info/blog/BlogMLOpsInfo";
 import BlogUNetInfo from "./info/blog/BlogUNetInfo";
+import BlogTransformerInfo from "./info/blog/BlogTransformerInfo";
 
 const BlogDetailsPage = ({ post, setCurrentPage, setSelectedTech }) => {
   useEffect(() => {
@@ -71,6 +72,12 @@ const BlogDetailsPage = ({ post, setCurrentPage, setSelectedTech }) => {
         )}
         {post.id === 5 && (
           <BlogUNetInfo
+            setCurrentPage={setCurrentPage}
+            setSelectedTech={setSelectedTech}
+          />
+        )}
+                {post.id === 6 && (
+          <BlogTransformerInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}
           />

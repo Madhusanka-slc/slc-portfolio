@@ -3,6 +3,7 @@ import embeddedImage from "../assets/images/robot.jpeg";
 import defectImage from "../assets/images/defect.png";
 import solidImage from "../assets/images/SOLID.png";
 import unetImage from "../assets/images/imgseg.png";
+import transformerImage from "../assets/images/transformer_full.png"; // add your transformer image
 
 export const allBlogs = [
   {
@@ -53,13 +54,13 @@ export const allBlogs = [
       "Python",
     ],
   },
-    {
+  {
     id: 5,
     title: "Understanding U-Net Architecture for Image Segmentation",
     subtitle: "Deep learning for precise medical and industrial image analysis",
     description:
       "Explore the U-Net convolutional neural network, designed for semantic segmentation tasks. Learn how its encoder-decoder structure with skip connections enables accurate pixel-level predictions in biomedical images and beyond.",
-    imageUrl: unetImage, // replace with your imported U-Net image
+    imageUrl: unetImage,
     skills: [
       "U-Net",
       "Image Segmentation",
@@ -69,5 +70,21 @@ export const allBlogs = [
       "TensorFlow",
     ],
   },
-
+  {
+    id: 6,
+    title: "Understanding Transformer Architecture for Translation",
+    subtitle: "Deep learning with attention for sequence-to-sequence tasks",
+    description:
+      "Learn how Transformers revolutionized sequence modeling and translation. Covers prerequisites like RNN, GRU, LSTM, embeddings, attention mechanisms (Q, K, V), self-attention, multi-head attention, feed-forward networks, positional encoding, Add & Norm, and masked attention. Also explores encoder-only, decoder-only, and encoder-decoder model variants and their use cases.",
+    imageUrl: transformerImage,
+    skills: [
+      "Transformer",
+      "Attention Mechanism",
+      "Self-Attention",
+      "Multi-Head Attention",
+      "Sequence-to-Sequence",
+      "Deep Learning",
+      "NLP",
+    ],
+  },
 ];
