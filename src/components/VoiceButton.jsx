@@ -1,4 +1,3 @@
-// src/components/VoiceButton.jsx
 import React from "react";
 
 const VoiceButton = ({
@@ -252,7 +251,11 @@ const VoiceButton = ({
         transition-colors duration-300
         flex items-center justify-center
         bg-[#1d1e20] border border-gray-500
-        ${isConnecting || isProcessing ? "cursor-not-allowed opacity-75" : "cursor-pointer"}
+        ${
+          isConnecting || isProcessing
+            ? "cursor-not-allowed opacity-75"
+            : "cursor-pointer"
+        }
         ${
           isListening && !isConnecting && !isProcessing
             ? "text-gray-400 gray-200 bg-[#424242] hover:border-gray-400 hover:text-white"

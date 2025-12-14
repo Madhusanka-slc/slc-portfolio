@@ -8,11 +8,6 @@ const BlogPage = forwardRef(({ setCurrentPage, setSelectedPost }, ref) => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [setCurrentPage]);
 
-  // Ensure ref.current is always an object
-  if (ref && !ref.current) {
-    ref.current = {};
-  }
-
   return (
     <section className="w-full flex flex-col items-center px-4">
       <div className="w-full max-w-3xl">

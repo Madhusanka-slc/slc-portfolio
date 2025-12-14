@@ -33,7 +33,7 @@ const App = () => {
           <ProjectsPage
             setCurrentPage={setCurrentPage}
             setSelectedProject={setSelectedProject}
-            ref={projectRefs} // pass refs
+            ref={projectRefs}
           />
         );
       case "projectDetails":
@@ -49,7 +49,7 @@ const App = () => {
           <BlogPage
             setCurrentPage={setCurrentPage}
             setSelectedPost={setSelectedPost}
-            ref={blogRefs} // pass refs
+            ref={blogRefs}
           />
         );
       case "blogDetails":
@@ -65,7 +65,7 @@ const App = () => {
           <ExperiencePage
             setCurrentPage={setCurrentPage}
             setSelectedExperience={setSelectedExperience}
-            ref={experienceRefs} // pass refs
+            ref={experienceRefs}
           />
         );
       case "experienceDetails":
@@ -106,13 +106,7 @@ const App = () => {
     >
       {/* Header with navigation + voice */}
       <header className="sticky top-0 z-50 bg-[#1d1e20]">
-        <Header
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          projectRefs={projectRefs}
-          blogRefs={blogRefs}
-          experienceRefs={experienceRefs}
-        />
+        <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
       </header>
 
       {/* Main content */}

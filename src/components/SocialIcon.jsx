@@ -1,5 +1,4 @@
-// SocialIcon.jsx
-import React from 'react';
+import React from "react";
 
 const SocialIcon = ({ href, icon, label }) => {
   return (
@@ -7,7 +6,7 @@ const SocialIcon = ({ href, icon, label }) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={label || 'Social link'}
+      aria-label={label || "Social link"}
       className="text-gray-400 hover:text-white transition-colors duration-200"
     >
       <svg
