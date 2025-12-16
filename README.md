@@ -19,7 +19,7 @@ A React-based personal portfolio enhanced with a **voice assistant** that allows
 
 The voice assistant in this portfolio is divided into **three main processes**. The diagram below illustrates the flow:
 
-![Voice Assistant Architecture](./assets/voice-assistant-diagram.svg)  
+![Voice Assistant Architecture](./src/assets/voice-assistant-diagram.svg)
 
 ### 1. Speech-to-Text (STT) Process
 - Captures user speech via the browser microphone.  
