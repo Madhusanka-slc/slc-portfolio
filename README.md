@@ -32,9 +32,6 @@ The voice assistant is structured into **three main processes**. The diagram bel
   - UI actions (scroll, page navigation)  
   - Text for TTS feedback  
 - Frontend parses the response to control **React UI** and voice output.
-## Groq LLM Response Format
-
-The portfolio assistant receives structured JSON responses from the **Groq LLM (`llama-3.3-70b-versatile`)**. Each response includes:
 
 ```json
 {
@@ -50,12 +47,11 @@ The portfolio assistant receives structured JSON responses from the **Groq LLM (
   ],
   "end": "Let me know if you'd like details."
 }
+```
 
 ### **3. Text-to-Speech (TTS) Process**
 - Converts the agent’s text response to audio using **Deepgram TTS (`aura-orpheus-en` model)**.  
 - Plays audio in the browser so the **user hears the response**.  
 - STT pauses during playback to prevent audio feedback loops.
-
----
 
 This architecture enables **hands-free portfolio navigation**, **real-time conversational feedback**, and **dynamic UI interaction**.
