@@ -1,71 +1,94 @@
-import poseImage from "../assets/images/pose-walk.png";
-import toyImage from "../assets/images/robot.jpeg";
-import landMarksImage from "../assets/images/landmarks.png";
-import defectImage from "../assets/images/defect.png";
-import wakeWordImage from "../assets/images/wake-word.png";
+import spamImage from "../assets/images/spam-classifier.png";
+import bookImage from "../assets/images/book-recommender.png";
+import photoImage from "../assets/images/pic-generator.png";
+import toyImage from "../assets/images/tom-jerry.png";
+import dockerImage from "../assets/images/docker.jpg";
+import ocrImage from "../assets/images/ocr.png";
+import travelImage from "../assets/images/travel-ai.png";
+import messengerImage from "../assets/images/chat-ai.png";
+import ragImage from "../assets/images/langchain-rag.png";
+
 
 export const allProjects = [
-  {
+    {
     id: 1,
-    title: "Wake Word Detection on ESP32-S3",
-    subtitle: "Real-Time Trigger Word Detection using INMP441 Microphone",
+    title: "AI Photo Generator",
+    subtitle: "RepliFace - Custom Image Generation API",
     description:
-      "Developed a real-time wake word detection system on ESP32-S3 using the INMP441 digital I²S microphone for hands-free control in IoT applications.",
-    imageUrl: wakeWordImage,
-    skills: ["ESP32-S3", "INMP441", "TensorFlow Lite", "Audio Processing", "TensorFlow", "Python" ],
+      "AI-powered backend API generating custom photos using text prompts and fine-tuned Flux models on Replicate, with rate limiting and streaming responses.",
+    imageUrl: photoImage, // Replace with photoImage once available
+    skills: ["FastAPI", "Replicate", "Upstash Redis", "Flux", "Python"],
   },
   {
     id: 2,
-    title: "Real-Time Face Landmark Detection for HCI",
-    subtitle: "AI-Powered Facial Feature Mapping and Gesture Recognition",
+    title: "Spam Classifier API",
+    subtitle: "Machine Learning API for Message Classification",
     description:
-      "Implemented a real-time face landmark system using MediaPipe and Dlib for gesture-based control in accessibility and HCI applications.",
-    imageUrl: landMarksImage,
-    skills: ["MediaPipe", "Dlib", "Computer Vision", "HCI"],
+      "A machine learning API that classifies text messages as spam or ham using Flask and scikit-learn, with Astra DB integration for storing predictions and feedback tracking.",
+    imageUrl: spamImage,
+    skills: ["Python", "Flask", "scikit-learn", "Astra DB", "Docker"],
   },
   {
     id: 3,
-    title: "Mechatronic Toy with ESP32 & Wake Word Detection",
-    subtitle: "Crank-driven Toy with Embedded AI for Hands-Free Control",
+    title: "Book Recommender System",
+    subtitle: "LLM-Powered Book Recommendations",
     description:
-      "Built a crank-driven automata toy integrating 3D-printed parts, ESP32, and a TinyML wake word detection system for interactive, hands-free operation.",
-    imageUrl: toyImage,
-    skills: [
-      "ESP32",
-      "Wake Word Detection",
-      "TinyML",
-      "3D Printing",
-      "Mechanical Design",
-    ],
+      "An LLM-powered book recommendation system using vector search, zero-shot classification, and sentiment analysis to suggest books based on descriptions, with an interactive Gradio dashboard.",
+    imageUrl: bookImage, // Replace with bookImage once available
+    skills: ["Python", "LangChain", "Hugging Face", "Gradio", "FAISS"],
   },
   {
     id: 4,
-    title: "Real-Time Pose Estimation for Human-Machine Interaction",
-    subtitle: "AI for Ergonomics and Safety",
+    title: "AI Travel Agent",
+    subtitle: "Flight Price Prediction & Travel Recommendations",
     description:
-      "Developed a system using MediaPipe and TensorFlow to analyze posture and provide ergonomic risk scores in industry.",
-    imageUrl: poseImage,
-    skills: [
-      "MediaPipe",
-      "TensorFlow",
-      "Ergonomics",
-      "Pose Estimation",
-      "Python",
-    ],
+      "AI-powered travel system that predicts flight prices using MindsDB and suggests destinations with OpenAI integration, featuring a Next.js frontend and FastAPI backend.",
+    imageUrl: travelImage, // Replace with travelImage once available
+    skills: ["FastAPI", "Next.js", "MindsDB", "OpenAI", "Docker", "Postgres"],
   },
   {
     id: 5,
-    title: "Automated Defect Detection in Manufacturing",
-    subtitle: "Computer Vision in Manufacturing Environments",
+    title: "Docker AI Agent",
+    subtitle: "Containerized Multi-Agent System",
     description:
-      "Trained and deployed object detection models (e.g., YOLOv8) to automate quality control in mechanical workflows.",
-    imageUrl: defectImage,
-    skills: [
-      "YOLOv8",
-      "Object Detection",
-      "Quality Control",
-      "Manufacturing",
-      "Python",
-    ],
+      "Docker-based AI agent system with LangChain, LangGraph, and FastAPI, featuring multi-agent orchestration, email automation, and Postgres integration.",
+    imageUrl: dockerImage, // Replace with dockerImage once available
+    skills: ["Docker", "FastAPI", "LangChain", "LangGraph", "Postgres"],
   },
+  {
+    id: 6,
+    title: "OCR Text Extractor",
+    subtitle: "Image to Text Extraction Service",
+    description:
+      "FastAPI-based OCR service using Tesseract to extract text from images with file validation, API key authentication, and comprehensive test suite.",
+    imageUrl: ocrImage, // Replace with ocrImage once available
+    skills: ["FastAPI", "Tesseract", "Docker", "PyTest", "DigitalOcean"],
+  },
+  {
+    id: 7,
+    title: "LangChain RAG API",
+    subtitle: "Retrieval-Augmented Generation API",
+    description:
+      "RAG API built with LangChain and FastAPI for intelligent chat with private knowledge sources using vector embeddings, with Upstash Redis for rate limiting.",
+    imageUrl: ragImage, // Replace with ragImage once available
+    skills: ["LangChain", "FastAPI", "OpenAI", "Upstash", "Redis"],
+  },
+  {
+    id: 8,
+    title: "AI Multimodal Messenger",
+    subtitle: "Nova - Multimodal AI Assistant",
+    description:
+      "Python-based multimodal messenger integrating text, voice, and images with memory management, LangGraph workflow orchestration, and multiple AI models.",
+    imageUrl: messengerImage, // Replace with messengerImage once available
+    skills: ["Python", "LangGraph", "Chainlit", "TogetherAI", "Qdrant"],
+  },
+
+  {
+    id: 9,
+    title: "Wake Word Detection System",
+    subtitle: "TinyML-powered Voice Activation for ESP32",
+    description: "Deep learning pipeline for custom wake word detection, optimized for ESP32 deployment to enable hands-free voice control for embedded applications like the STEM Toy.",
+    imageUrl: toyImage,
+    skills: ["TinyML", "TensorFlow Lite", "ESP32", "Audio Processing", "Edge AI", "ElevenLabs"],
+  }
 ];

@@ -48,18 +48,6 @@ const BlogDetailsPage = ({ post, setCurrentPage, setSelectedTech }) => {
 
         {/* Conditionally render blog info components based on post ID */}
         {post.id === 1 && (
-          <BlogUNetInfo
-            setCurrentPage={setCurrentPage}
-            setSelectedTech={setSelectedTech}
-          />
-        )}
-        {post.id === 2 && (
-          <BlogTransformerInfo
-            setCurrentPage={setCurrentPage}
-            setSelectedTech={setSelectedTech}
-          />
-        )}
-        {post.id === 3 && (
           <BlogSOLIDInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}

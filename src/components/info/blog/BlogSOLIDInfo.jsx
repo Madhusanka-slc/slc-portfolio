@@ -2,7 +2,7 @@ import React from "react";
 import { allBlogs } from "../../../data/blogsData";
 
 const BlogSOLIDInfo = ({ setSelectedTech, setCurrentPage }) => {
-  const solidBlog = allBlogs.find((blog) => blog.id === 3); // replace 1 with your SOLID blog ID
+  const solidBlog = allBlogs.find((blog) => blog.id === 1); // replace 1 with your SOLID blog ID
   const blogSkills = solidBlog?.skills || [];
 
   return (
