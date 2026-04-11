@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import BlogDefectDetectionInfo from "./info/blog/BlogDefectDetectionInfo";
 import BlogSOLIDInfo from "./info/blog/BlogSOLIDInfo";
+import BlogTabTransformerInfo from "./info/blog/BlogTabTransformerInfo";
 import BlogMechatronicToysInfo from "./info/blog/BlogMechatronicToysInfo";
 import BlogMLOpsInfo from "./info/blog/BlogMLOpsInfo";
 import BlogUNetInfo from "./info/blog/BlogUNetInfo";
@@ -49,6 +50,12 @@ const BlogDetailsPage = ({ post, setCurrentPage, setSelectedTech }) => {
         {/* Conditionally render blog info components based on post ID */}
         {post.id === 1 && (
           <BlogSOLIDInfo
+            setCurrentPage={setCurrentPage}
+            setSelectedTech={setSelectedTech}
+          />
+        )}
+        {post.id === 2 && (
+          <BlogTabTransformerInfo
             setCurrentPage={setCurrentPage}
             setSelectedTech={setSelectedTech}
           />
